@@ -54,7 +54,7 @@ export const Terminal = () => {
       <div className="terminal-body">
         <p className="has-text-weight-bold">Hello! I'm Ashleigh</p>
         <br />
-        <p>Here's some key points that I'm good at.</p>
+        <p>Here's some facts about me:</p>
         <ul>
           <li>✅ Web Developer</li>
           <li>✅ App Developer</li>

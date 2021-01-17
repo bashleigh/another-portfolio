@@ -43,8 +43,8 @@ $terminalButtonSize: .75em;
             width: $terminalButtonSize / 3;
             height: $terminalButtonSize / 3;
             position: absolute;
-            top: .175em;
-            left: .175em;
+            top: $terminalButtonSize / 4;
+            left: $terminalButtonSize / 4;
             background: $terminalCloseBorder;
             border-radius: 1em;
           }
@@ -74,7 +74,7 @@ $terminalButtonSize: .75em;
     justify-content: flex-end;
 
     .has-text-weight-bold {
-      color: darken($terminalText, 10%);
+      color: lighten($terminalText, 10%);
     }
 
     .text-info {
