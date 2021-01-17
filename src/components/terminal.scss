@@ -67,10 +67,18 @@ $terminalButtonSize: .75em;
     padding: 1em;
     color: $terminalText;
     height: 50vh;
-    overflow: none;
+    min-height: 30em;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 
     .has-text-weight-bold {
       color: darken($terminalText, 10%);
+    }
+
+    .text-info {
+      color: $terminalBarAccents;
     }
   }
 
