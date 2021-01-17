@@ -1,0 +1,150 @@
+$terminalBackground: #0A1704;
+$terminalHeader: #000000;
+$terminalBorder: 1em;
+$terminalBar: #3D65D3;
+$terminalBarAccents: #F45BEE;
+$terminalText: #0D339D;
+$terminalClose: #FF4746;
+$terminalCloseBorder: #b81717;
+$terminalMinimise: #FFBE00;
+$terminalMinimiseBorder: #aa7813;
+$terminalExpand: #00DB47;
+$terminalExpandBorder: #0d791f;
+
+#terminal {
+  background: $terminalBackground;
+  border-radius: $terminalBorder;
+  box-shadow: 0 0 2em 2em rgba(0,0,0,.5);
+  font-family: Monaco;
+
+  .terminal-header {
+    background: $terminalHeader;
+    border-radius: $terminalBorder $terminalBorder 0 0;
+
+    .terminal-header-buttons {
+      display: flex;
+      flex-direction: row;
+      padding: .5em 1em;
+
+      .terminal-button {
+        width: .5em;
+        height: .5em;
+        border-radius: 1em;
+        margin-right: .5em;
+
+        &.close {
+          background: $terminalClose;
+          border: 1px solid $terminalCloseBorder;
+          position: relative;
+
+          &:after {
+            content: '';
+            width: .15em;
+            height: .15em;
+            position: absolute;
+            top: .175em;
+            left: .175em;
+            background: $terminalCloseBorder;
+            border-radius: 1em;
+          }
+        }
+
+        &.minimise {
+          background: $terminalMinimise;
+          border: 1px solid $terminalMinimiseBorder;
+        }
+
+        &.expand {
+          background: $terminalExpand;
+          border: 1px solid $terminalExpandBorder;
+        }
+      }
+    }
+  }
+
+  .terminal-body {
+    padding: 1em;
+    color: $terminalText;
+
+    .name-output {
+      p {
+        margin: 0;
+      }
+    }
+  }
+
+  .terminal-tmux-bar {
+    background: $terminalBar;
+    border-radius: 0 0 $terminalBorder $terminalBorder;
+    display: flex;
+    flex-direction: row;
+    color: $terminalText;
+
+    p {
+      color: $terminalText;
+    }
+
+    .screen, .name {
+      background: $terminalBarAccents;
+    }
+
+    .battery {
+      background: $terminalBackground;
+    }
+
+    .bar {
+      flex-grow: 10;
+    }
+
+    .screen, .name, .battery, .bar {
+      padding: .5em;
+    }
+
+    .screen {
+      border-bottom-left-radius: $terminalBorder;
+      padding-left: 1em;
+    }
+
+    .name {
+      border-bottom-right-radius: $terminalBorder;
+      padding-right: 1em;
+    }
+  }
+
+  .terminal-control {
+    color: $terminalText;
+
+    .terminal-input {
+      color: $terminalBarAccents;
+    }
+
+    .cursor {
+      background: $terminalText;
+      width: .5em;
+      height: 1.2em;
+      display: inline-block;
+      animation: flash 1s infinite;
+      position: relative;
+      top: .25em;
+    }
+  }
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+
+  59% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  81% {
+    opacity: 1;
+  }
+}
