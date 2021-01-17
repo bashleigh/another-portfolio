@@ -10,11 +10,12 @@ $terminalMinimise: #FFBE00;
 $terminalMinimiseBorder: #aa7813;
 $terminalExpand: #00DB47;
 $terminalExpandBorder: #0d791f;
+$terminalButtonSize: .75em;
 
 #terminal {
   background: $terminalBackground;
   border-radius: $terminalBorder;
-  box-shadow: 0 0 2em 2em rgba(0,0,0,.5);
+  box-shadow: 0 .5em 1em 1em rgba(0,0,0,.5);
   font-family: Monaco;
 
   .terminal-header {
@@ -27,8 +28,8 @@ $terminalExpandBorder: #0d791f;
       padding: .5em 1em;
 
       .terminal-button {
-        width: .5em;
-        height: .5em;
+        width: $terminalButtonSize;
+        height: $terminalButtonSize;
         border-radius: 1em;
         margin-right: .5em;
 
@@ -39,8 +40,8 @@ $terminalExpandBorder: #0d791f;
 
           &:after {
             content: '';
-            width: .15em;
-            height: .15em;
+            width: $terminalButtonSize / 3;
+            height: $terminalButtonSize / 3;
             position: absolute;
             top: .175em;
             left: .175em;
@@ -65,11 +66,11 @@ $terminalExpandBorder: #0d791f;
   .terminal-body {
     padding: 1em;
     color: $terminalText;
+    height: 50vh;
+    overflow: none;
 
-    .name-output {
-      p {
-        margin: 0;
-      }
+    .has-text-weight-bold {
+      color: darken($terminalText, 10%);
     }
   }
 
@@ -79,6 +80,7 @@ $terminalExpandBorder: #0d791f;
     display: flex;
     flex-direction: row;
     color: $terminalText;
+    font-size: .8em;
 
     p {
       color: $terminalText;
@@ -116,16 +118,45 @@ $terminalExpandBorder: #0d791f;
 
     .terminal-input {
       color: $terminalBarAccents;
-    }
 
-    .cursor {
-      background: $terminalText;
-      width: .5em;
-      height: 1.2em;
-      display: inline-block;
-      animation: flash 1s infinite;
-      position: relative;
-      top: .25em;
+      .field {
+        .control.has-icons-left .icon {
+          color: $terminalBarAccents;
+          height: auto;
+          width: auto;
+        }
+
+        .label {
+          color: $terminalText;
+          margin-bottom: 0;
+        }
+
+        .input {
+          background: transparent;
+          border: none;
+          padding-top: 0;
+          padding-left: 1em;
+          font-family: monaco;
+          color: $terminalText;
+          caret-color: transparent;
+
+          &:hover, &:active, &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+        }
+
+        .cursor {
+          background: $terminalText;
+          width: .5em;
+          height: 1.2em;
+          display: inline-block;
+          animation: flash 1s infinite;
+          position: absolute;
+          top: .25em;
+          left: 1em;
+        }
+      }
     }
   }
 }
