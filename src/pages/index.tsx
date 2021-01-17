@@ -9,5 +9,14 @@ export default () => (
       <title>Ashleigh Simonelli - Code Expert</title>
     </Helmet>
     <Hero />
+    <section className="section">
+      <div className="container">
+        <div className="columns is-vcentered is-centered">
+          <div className="column is-6">
+            <h2 className="title">About Me</h2>
+          </div>
+        </div>
+      </div>
+    </section>
   </>
 );
