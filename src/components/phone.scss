@@ -2,7 +2,6 @@
 $phoneWidth: 20em;
 $phoneHeight: 40em;
 $borderRadius: 2em;
-$contentColor: #F0FFFF;
 
 #phone {
   background: #000000;
@@ -12,10 +11,11 @@ $contentColor: #F0FFFF;
   display: flex;
   flex-direction: column;
   padding: 1em;
+  box-shadow: 0 .5em .5em .5em rgba(0,0,0,.2);
 
   .inner-skin {
     flex-grow: 10;
-    background-color: $contentColor;
+    background-color: $primary-50;
     border-radius: $borderRadius /2;
     padding: 1.5em;
     position: relative;
