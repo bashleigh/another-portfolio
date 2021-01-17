@@ -1,9 +1,10 @@
 import React from "react";
+import { Nav } from "./nav";
 import { Phone } from "./phone";
 import { Terminal } from "./terminal";
 
 export const Hero = () => (
-  <div className="hero is-fullheight">
+  <div className="hero is-fullheight is-primary">
     <div className="hero-body">
       <div className="container">
         <div className="columns is-centered is-vcentered">
@@ -16,5 +17,6 @@ export const Hero = () => (
         </div>
       </div>
     </div>
+    <Nav />
   </div>
 );
