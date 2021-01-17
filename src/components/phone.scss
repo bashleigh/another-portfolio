@@ -1,0 +1,65 @@
+$phoneWidth: 20em;
+$phoneHeight: 40em;
+$borderRadius: 2em;
+$contentColor: #F0FFFF;
+
+#phone {
+  background: #000000;
+  width: $phoneWidth;
+  height: $phoneHeight;
+  border-radius: $borderRadius;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+
+  .inner-skin {
+    flex-grow: 10;
+    background-color: $contentColor;
+    border-radius: $borderRadius /2;
+    padding: 1.5em;
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: $phoneWidth / 2;
+      height: 1em;
+      border-radius: 1em;
+      background-color: #000000;
+      top: -.5em;
+      left: $phoneWidth / 5;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: $phoneWidth / 3;
+      height: .5em;
+      border-radius: 1em;
+      background-color: #000000;
+      bottom: .25em;
+      left: ($phoneWidth - ($phoneWidth / 3)) / 2.5;
+    }
+
+    .phone-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .title {
+        font-size: 2.5em;
+        font-weight: bold;
+      }
+
+      .title, .subtitle {
+        color: #000000;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
+    }
+
+    svg {
+      width: 90%;
+    }
+  }
+}
