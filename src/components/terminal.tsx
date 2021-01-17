@@ -1,43 +1,48 @@
 import React, { useState } from "react";
 import "./terminal.scss";
 
-const commands: { [s: string]: (input: string[]) => string[] } = {
+const commands: { [s: string]: (input: string[]) => LineOut[] } = {
   hello: (input: string[]) => {
     if (input[0] && input[0] === "--help") {
       return [
-        "Hello command",
-        "returns a greeting",
-        "hello [name]",
-        "",
-        'hello Bob: returns "Hello Bob"',
+        {text: "Hello command"},
+        {text: "returns a greeting"},
+        {text: "hello [name]"},
+        {text: ""},
+        {text: 'hello Bob: returns "Hello Bob"'},
       ];
     }
-    return [`Hello! ${input[0] || ""}`];
+    return [{text:`Hello! ${input[0] || ""}`}];
   },
   commands: (input: string[]) => [
-    'Commands available:',
-    ' ',
-    'hello',
-    'commands',
+    { text: 'Commands available:', bold: true},
+    { text: ' '},
+    { text: 'hello'},
+    { text: 'commands'},
   ],
+  echo: (input: string[]) => [{text: input.join(' ')}],
 };
 
-const runCommand = (input: string): string[] => {
+const runCommand = (input: string): LineOut[] => {
   if (input === "") {
-    return [""];
+    return [{text: ""}];
   }
 
   const inputs = input.split(" ");
   if (!inputs[0] || !Object.keys(commands).includes(inputs[0])) {
-    return [`command: "${inputs[0]}" not found`];
+    return [{text: `command: "${inputs[0]}" not found`}];
   }
 
   return commands[inputs.shift()](inputs);
 };
+type TextLine = {text: string, class?: string, bold?: boolean};
+type LineOut = TextLine | JSX.Element;
+
+const isJsxElement = (value: LineOut): value is JSX.Element => value.hasOwnProperty('type');
 
 export const Terminal = () => {
   const [input, setInput] = useState<string>("");
-  const [output, setOutput] = useState<string[]>([]);
+  const [output, setOutput] = useState<LineOut[]>([]);
   const [commandExists, setCommandExists] = useState<boolean>(false);
 
   return (
@@ -65,9 +70,7 @@ export const Terminal = () => {
         <p className="text-info">
           Type "hello" into the terminal window and hit enter
         </p>
-        {output.map((txt, index) => (
-          <p key={`${txt}-${index}`}>{txt}</p>
-        ))}
+        {output.map((line, index) => isJsxElement(line) ? (<div key={`output-line-${index}`}>{line}</div>) : (<p key={`${line}-${index}`} className={line.class}>{line.text}</p>))}
         <br />
         <div className="terminal-control">
           <form
@@ -75,7 +78,7 @@ export const Terminal = () => {
             onSubmit={event => {
               event.preventDefault();
               const result = runCommand(input);
-              const command = `❯ ${input}`;
+              const command = {text: `❯ ${input}`, class: 'is-rainbow-green'};
               setOutput([...output, command, ...result]);
               setInput("");
             }}
