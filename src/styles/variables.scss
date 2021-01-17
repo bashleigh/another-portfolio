@@ -1,4 +1,18 @@
-$primary: #2B43FF;
-$body-background-color: #0F2C36;
+$primary-900: #0000cc;
+$primary-800: #031ddb;
+$primary-700: #182de6;
+$primary-600: #273af3;
+$primary-500: #2b44ff;
+$primary-400: #5464ff;
+$primary-300: #7883ff;
+$primary-200: #a2a6ff;
+$primary-100: #c9c9ff;
+$primary-50: #eaeaff;
+
+$primary: $primary-500;
+
+$hero-primary: darken(mix(#000000, $primary-700), 15%);
+
+$body-background-color: $primary-50;
 
 @import './../../node_modules/bulma/sass/utilities/initial-variables.sass';
