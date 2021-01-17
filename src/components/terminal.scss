@@ -12,6 +12,33 @@ $terminalExpand: #00DB47;
 $terminalExpandBorder: #0d791f;
 $terminalButtonSize: .75em;
 
+
+$rainbowRed: #FF0000;
+$rainbowOrange: #FF7F00;
+$rainbowYellow: #FFFF00;
+$rainbowGreen: #00FF00;
+$rainbowBlue: #0000FF;
+$rainbowViolet: #4B0082;
+
+.is-rainbow-red {
+  color: $rainbowRed;
+}
+.is-rainbow-orange {
+  color: $rainbowOrange;
+}
+.is-rainbow-yellow {
+  color: $rainbowYellow;
+}
+.is-rainbow-green {
+  color: $rainbowGreen;
+}
+.is-rainbow-blue {
+  color: $rainbowBlue;
+}
+.is-rainbow-violet {
+  color: $rainbowViolet;
+}
+
 #terminal {
   background: $terminalBackground;
   border-radius: $terminalBorder;

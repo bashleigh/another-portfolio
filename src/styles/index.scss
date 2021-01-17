@@ -1,11 +1,20 @@
 @import './variables.scss';
 @import './../../node_modules/bulma';
 
-
 .hero{
   &.is-primary {
     background-color: $hero-primary;
   }
 
   position: relative;
+}
+
+.section {
+  &.is-primary-900 {
+    background: $primary-900;
+
+    .title {
+      color: $white;
+    }
+  }
 }

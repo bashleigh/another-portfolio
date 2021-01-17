@@ -9,19 +9,17 @@ const commands: { [s: string]: (input: string[]) => string[] } = {
         "returns a greeting",
         "hello [name]",
         "",
-        'hello Bob: returns "Hello Bob',
+        'hello Bob: returns "Hello Bob"',
       ];
     }
     return [`Hello! ${input[0] || ""}`];
   },
-  // commands: (input: string[]) => [
-  //   'Commands available:',
-  //   '',
-  //   'hello',
-  //   'commands',
-  //   'about',
-  //   'contact',
-  // ],
+  commands: (input: string[]) => [
+    'Commands available:',
+    ' ',
+    'hello',
+    'commands',
+  ],
 };
 
 const runCommand = (input: string): string[] => {
@@ -52,16 +50,16 @@ export const Terminal = () => {
         </div>
       </header>
       <div className="terminal-body">
-        <p className="has-text-weight-bold">Hello! I'm Ashleigh</p>
+        <p className="has-text-weight-bold">Hello! I'm Ashleigh 🇬🇧</p>
         <br />
         <p>Here's some facts about me:</p>
         <ul>
-          <li>✅ Web Developer</li>
-          <li>✅ App Developer</li>
-          <li>✅ TypeScript Expert</li>
-          <li>✅ Backend Specialist</li>
-          <li>✅ EPOS Builder</li>
-          <li>✅ Football Fanatic (viva Biancazzurri!) </li>
+          <li className="is-rainbow-red">✅ Web Developer</li>
+          <li className="is-rainbow-orange">✅ App Developer</li>
+          <li className="is-rainbow-yellow">✅ TypeScript Expert</li>
+          <li className="is-rainbow-green">✅ Backend Specialist</li>
+          <li className="is-rainbow-blue">✅ EPOS Builder</li>
+          <li className="is-rainbow-violet">✅ Football Fanatic ⚽ (viva Biancazzurri!) </li>
         </ul>
         <br />
         <p className="text-info">
@@ -77,7 +75,8 @@ export const Terminal = () => {
             onSubmit={event => {
               event.preventDefault();
               const result = runCommand(input);
-              setOutput([...output, ...result]);
+              const command = `❯ ${input}`;
+              setOutput([...output, command, ...result]);
               setInput("");
             }}
             onClick={() => {
@@ -113,7 +112,7 @@ export const Terminal = () => {
       <nav className="terminal-tmux-bar">
         <div className="screen">0</div>
         <div className="bar">zsh</div>
-        <div className="battery">100%</div>
+        <div className="battery">&hearts; 100%</div>
         <div className="name">Ashleigh's Laptop</div>
       </nav>
     </div>
