@@ -1,3 +1,4 @@
+@import './../styles/variables.scss';
 $phoneWidth: 20em;
 $phoneHeight: 40em;
 $borderRadius: 2em;
@@ -48,8 +49,20 @@ $contentColor: #F0FFFF;
       align-items: center;
 
       .title {
-        font-size: 2.5em;
+        font-size: 3em;
         font-weight: bold;
+        margin-bottom: 0;
+        position: relative;
+
+        &:after {
+          position: absolute;
+          content: '';
+          background-color: $primary;
+          height: .15em;
+          width: 50%;
+          top: 1em;
+          left: 0;
+        }
       }
 
       .title, .subtitle {

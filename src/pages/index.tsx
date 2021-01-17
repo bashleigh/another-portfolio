@@ -1,7 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { Hero } from "../components";
-import "./index.scss";
+import "./../styles/index.scss";
 
 export default () => (
   <>

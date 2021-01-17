@@ -8,7 +8,7 @@ export const Phone = () => (
       <div className="phone-content">
         <h1 className="title">Hello There, Stranger!</h1>
         <Ashleigh />
-        <h2 className="subtitle">Let's build your dream!</h2>
+        <h2 className="subtitle">Let's build together...</h2>
       </div>
     </div>
   </div>
