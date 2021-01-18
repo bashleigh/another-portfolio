@@ -36,6 +36,28 @@ export default () => (
                 <li>Plubic Speaking</li>
               </ul>
             </div>
+            <h3 className="title is-4">Links</h3>
+
+            <ul className="mini-links">
+                <li>
+                  <a href="https://colchesterdigital.org.uk/">Colchester Digital</a>
+                </li>
+                <li>
+                  <a href="https://github.com/bashleigh">Github</a>
+                </li>
+                <li>
+                  <a href="https://stackoverflow.com/users/1844811/bashleigh">Stackoverflow</a>
+                </li>
+                <li>
+                  <a href="https://profile.codersrank.io/user/bashleigh/">Codersrank</a>
+                </li>
+                <li>
+                  <a href="https://www.instagram.com/bashleigh.sh/">Insta</a>
+                </li>
+                <li>
+                  <a href="https://www.facebook.com/ashleigh.simonelliWeb">Facebook Page</a>
+                </li>
+              </ul>
           </div>
         </div>
       </div>

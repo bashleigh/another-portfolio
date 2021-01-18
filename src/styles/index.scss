@@ -42,3 +42,13 @@
     }
   }
 }
+
+.mini-links {
+  display: flex;
+  flex-direction: row;
+
+  li {
+    padding: .5em;
+    text-align: center;
+  }
+}
