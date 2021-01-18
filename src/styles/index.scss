@@ -29,3 +29,11 @@
     }
   }
 }
+
+.button {
+  &.is-primary {
+    &:hover {
+      background: $primary-700;
+    }
+  }
+}

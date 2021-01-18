@@ -21,5 +21,11 @@
 
   .nav-item {
     padding: .5em;
+    color: $primary-500;
+
+    &:hover {
+      color: $primary-700;
+      text-decoration: underline;
+    }
   }
 }
