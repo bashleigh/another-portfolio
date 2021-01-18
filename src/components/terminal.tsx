@@ -1,48 +1,125 @@
 import React, { useState } from "react";
 import "./terminal.scss";
 
-const commands: { [s: string]: (input: string[]) => LineOut[] } = {
-  hello: (input: string[]) => {
+const facts = (
+  <>
+    <p className="has-text-weight-bold">Hello! I'm Ashleigh 🇬🇧</p>
+    <br />
+    <p>Here's some facts about me:</p>
+    <ul>
+      <li className="is-rainbow-red">✅ Web Developer</li>
+      <li className="is-rainbow-orange">✅ App Developer</li>
+      <li className="is-rainbow-yellow">✅ TypeScript Expert</li>
+      <li className="is-rainbow-green">✅ Backend Specialist</li>
+      <li className="is-rainbow-blue">✅ EPOS Builder</li>
+      <li className="is-rainbow-violet">
+        ✅ Football Fanatic ⚽ (viva Biancazzurri!){" "}
+      </li>
+    </ul>
+    <br />
+  </>
+);
+
+const commands: {
+  [s: string]: (values: {
+    input: string[];
+    output: LineOut[];
+    setOutput: (out: LineOut[]) => void;
+  }) => void;
+} = {
+  hello: ({ input, output, setOutput }) => {
     if (input[0] && input[0] === "--help") {
-      return [
-        {text: "Hello command"},
-        {text: "returns a greeting"},
-        {text: "hello [name]"},
-        {text: ""},
-        {text: 'hello Bob: returns "Hello Bob"'},
-      ];
+      setOutput([
+        ...output,
+        { text: "Hello command" },
+        { text: "returns a greeting" },
+        { text: "hello [name]" },
+        { text: "" },
+        { text: 'hello Bob: returns "Hello Bob"' },
+      ]);
     }
-    return [{text:`Hello! ${input[0] || ""}`}];
+    setOutput([...output, { text: `Hello! ${input[0] || ""}` }]);
   },
-  commands: (input: string[]) => [
-    { text: 'Commands available:', bold: true},
-    { text: ' '},
-    { text: 'hello'},
-    { text: 'commands'},
-  ],
-  echo: (input: string[]) => [{text: input.join(' ')}],
+  commands: ({ output, setOutput }) => {
+    setOutput([
+      ...output,
+      { text: "Commands available:", bold: true },
+      { text: " " },
+      ...Object.keys(commands).map(key => ({ text: key })),
+    ]);
+  },
+  echo: ({ input, output, setOutput }) =>
+    setOutput([...output, { text: input.join(" ") }]),
+  kill: ({ output, setOutput }) =>
+    setOutput([
+      ...output,
+      { text: "goodbye curel world! 💀", class: "is-rainbow-red" },
+    ]),
+  clear: ({ setOutput }) => {
+    setOutput([] as LineOut[]);
+  },
+  facts: ({ setOutput, output }) => {
+    setOutput([...output, facts]);
+  },
+  //   neofetch: () => [
+  // "               +",
+  // "               #",
+  // "              ###",
+  // "             #####            Arsh leignux",
+  // "             ######           ",
+  // "            ; #####;          ",
+  // "           +##.#####          ",
+  // "          +##########         ",
+  // "         #############;       ",
+  // "        ###############+     ",
+  // "       #######   #######      ",
+  // "     .######;     ;###;`\".      ",
+  // "    .#######;     ;#####.       ",
+  // "    #########.   .########`     ",
+  // "   ######'           '######    ",
+  // "  ;####                 ####;   ",
+  // "  ##'                     '##   ",
+  // " #'                         `#",
+  //   ].map(lin => <p>{lin}</p>),
 };
 
-const runCommand = (input: string): LineOut[] => {
+const runCommand = ({
+  input,
+  setOutput,
+  output,
+}: {
+  input: string;
+  setOutput: (lines: LineOut[]) => void;
+  output: LineOut[];
+}): void => {
   if (input === "") {
-    return [{text: ""}];
+    setOutput([...output, { text: "" }]);
   }
 
   const inputs = input.split(" ");
   if (!inputs[0] || !Object.keys(commands).includes(inputs[0])) {
-    return [{text: `command: "${inputs[0]}" not found`}];
+    setOutput([...output, { text: `command: "${inputs[0]}" not found` }]);
+    return;
   }
 
-  return commands[inputs.shift()](inputs);
+  output.push({ text: `❯ ${input}`, class: "is-rainbow-green" });
+
+  commands[inputs.shift()]({ input: inputs, setOutput, output });
 };
-type TextLine = {text: string, class?: string, bold?: boolean};
+type TextLine = { text: string; class?: string; bold?: boolean };
 type LineOut = TextLine | JSX.Element;
 
-const isJsxElement = (value: LineOut): value is JSX.Element => value.hasOwnProperty('type');
+const isJsxElement = (value: LineOut): value is JSX.Element =>
+  value.hasOwnProperty("type");
 
 export const Terminal = () => {
   const [input, setInput] = useState<string>("");
-  const [output, setOutput] = useState<LineOut[]>([]);
+  const [output, setOutput] = useState<LineOut[]>([
+    facts,
+    <p className="text-info">
+      Type "commands" into the terminal window and hit enter to see all commands
+    </p>,
+  ]);
   const [commandExists, setCommandExists] = useState<boolean>(false);
 
   return (
@@ -55,31 +132,27 @@ export const Terminal = () => {
         </div>
       </header>
       <div className="terminal-body">
-        <p className="has-text-weight-bold">Hello! I'm Ashleigh 🇬🇧</p>
-        <br />
-        <p>Here's some facts about me:</p>
-        <ul>
-          <li className="is-rainbow-red">✅ Web Developer</li>
-          <li className="is-rainbow-orange">✅ App Developer</li>
-          <li className="is-rainbow-yellow">✅ TypeScript Expert</li>
-          <li className="is-rainbow-green">✅ Backend Specialist</li>
-          <li className="is-rainbow-blue">✅ EPOS Builder</li>
-          <li className="is-rainbow-violet">✅ Football Fanatic ⚽ (viva Biancazzurri!) </li>
-        </ul>
-        <br />
-        <p className="text-info">
-          Type "hello" into the terminal window and hit enter
-        </p>
-        {output.map((line, index) => isJsxElement(line) ? (<div key={`output-line-${index}`}>{line}</div>) : (<p key={`${line}-${index}`} className={line.class}>{line.text}</p>))}
+        {output.map((line, index) =>
+          isJsxElement(line) ? (
+            <div key={`output-line-${index}`}>{line}</div>
+          ) : (
+            <p
+              key={`${line}-${index}`}
+              className={[line.class, line.bold ? "has-text-bold" : ""].join(
+                " "
+              )}
+            >
+              {line.text}
+            </p>
+          )
+        )}
         <br />
         <div className="terminal-control">
           <form
             className="terminal-input"
             onSubmit={event => {
               event.preventDefault();
-              const result = runCommand(input);
-              const command = {text: `❯ ${input}`, class: 'is-rainbow-green'};
-              setOutput([...output, command, ...result]);
+              runCommand({ input, output, setOutput });
               setInput("");
             }}
             onClick={() => {
