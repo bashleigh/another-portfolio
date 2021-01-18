@@ -21,15 +21,7 @@ type Slide = {
   image?: string;
 };
 
-const shuffle = arr =>
-  [...arr].reduceRight(
-    (res, _, __, s) => (
-      res.push(s.splice(0 | (Math.random() * s.length), 1)[0]), res
-    ),
-    []
-  );
-
-const slides: Slide[] = shuffle([
+const slides: Slide[] = [
   {
     status: ProjectStatus.ACTIVE,
     name: "Typeorm polymorphic",
@@ -117,7 +109,7 @@ const slides: Slide[] = shuffle([
     description: "A collection project",
     technologies: ["firebase", "firebase auth", "firebase store", "flutter"],
   },
-]);
+];
 
 const stringToHex = (string: string): string => {
   const indexes = "abcdefghijklmnopqrstuvwxyz".split("");
@@ -144,7 +136,7 @@ const Slide = (
         <span className={`status is-${props.status.replace(" ", "-")}`}></span>{" "}
         {props.status}
       </div>
-      {typeof props.image !== 'undefined' && (
+      {typeof props.image !== "undefined" && (
         <Img
           className="slide-image"
           fluid={props.image.childImageSharp.fluid}
