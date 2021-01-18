@@ -118,7 +118,9 @@ const stringToHex = (string: string): string => {
   return "#" + Math.floor(float * 16777215).toString(16);
 };
 
-const Slide = (props: Slide & { isActive: boolean; onClick: () => void }) => (
+const Slide = (props: Slide & { isActive: boolean; onClick: () => void }) => {
+  const [showDesc, setShowDesc] = useState<boolean>(false);
+  return (
   <div
     className={`slide ${props.isActive ? "is-active" : ""}`}
     onClick={props.onClick}
@@ -136,23 +138,30 @@ const Slide = (props: Slide & { isActive: boolean; onClick: () => void }) => (
           </a>
         )}
       </h4>
-      <p>{props.description}</p>
-      {props.technologies && (
-        <div className="tags">
-          {props.technologies.map(tech => (
-            <span
-            key={tech}
-              className="tag"
-              style={{ background: stringToHex(tech), color: "white" }}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-      )}
+      <a href="#" className="slider-description-toggle" onClick={event => {
+        event.preventDefault();
+        setShowDesc(!showDesc);
+      }}>{showDesc ? 'Hide' : 'Show'} description</a>
+      <div className={`slider-description${showDesc ? ' is-active' : ''}`}>
+        <p>{props.description}</p>
+        {props.technologies && (
+          <div className="tags">
+            {props.technologies.map(tech => (
+              <span
+              key={tech}
+                className="tag"
+                style={{ background: stringToHex(tech), color: "white" }}
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   </div>
 );
+            }
 
 export const Slider = () => {
   const [active, setActive] = useState<number>(0);
