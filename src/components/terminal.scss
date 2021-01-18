@@ -1,27 +1,5 @@
 @import './../styles/variables.scss';
 
-$terminalBackground: #0A1704;
-$terminalHeader: #000000;
-$terminalBorder: 1em;
-$terminalBar: #3D65D3;
-$terminalBarAccents: #F45BEE;
-$terminalText: #0D339D;
-$terminalClose: #FF4746;
-$terminalCloseBorder: #b81717;
-$terminalMinimise: #FFBE00;
-$terminalMinimiseBorder: #aa7813;
-$terminalExpand: #00DB47;
-$terminalExpandBorder: #0d791f;
-$terminalButtonSize: .75em;
-
-
-$rainbowRed: #FF0000;
-$rainbowOrange: #FF7F00;
-$rainbowYellow: #FFFF00;
-$rainbowGreen: #00FF00;
-$rainbowBlue: #0000FF;
-$rainbowViolet: #4B0082;
-
 .is-rainbow-red {
   color: $rainbowRed;
 }
@@ -45,7 +23,7 @@ $rainbowViolet: #4B0082;
   background: $terminalBackground;
   border-radius: $terminalBorder;
   box-shadow: 0 .5em 1em 1em rgba(0,0,0,.5);
-  font-family: Monaco;
+  font-family: monaco,Consolas,Lucida Console,monospace; 
   width: 40vw;
   max-width: 40vw;
 
@@ -181,7 +159,7 @@ $rainbowViolet: #4B0082;
           border: none;
           padding-top: 0;
           padding-left: 1em;
-          font-family: monaco;
+          font-family: monaco,Consolas,Lucida Console,monospace; 
           color: $terminalText;
           caret-color: transparent;
 

@@ -15,4 +15,28 @@ $hero-primary: darken(mix(#000000, $primary-700), 15%);
 
 $body-background-color: $primary-50;
 
+$terminalBackground: #0A1704;
+$terminalHeader: #000000;
+$terminalBorder: 1em;
+$terminalBar: #3D65D3;
+$terminalBarAccents: #F45BEE;
+$terminalText: #0D339D;
+$terminalClose: #FF4746;
+$terminalCloseBorder: #b81717;
+$terminalMinimise: #FFBE00;
+$terminalMinimiseBorder: #aa7813;
+$terminalExpand: #00DB47;
+$terminalExpandBorder: #0d791f;
+$terminalButtonSize: .75em;
+
+
+$rainbowRed: #FF0000;
+$rainbowOrange: #FF7F00;
+$rainbowYellow: #FFFF00;
+$rainbowGreen: #00FF00;
+$rainbowBlue: #0000FF;
+$rainbowViolet: #4B0082;
+
+@import url('http://fonts.cdnfonts.com/css/monaco');
+
 @import './../../node_modules/bulma/sass/utilities/initial-variables.sass';
