@@ -144,7 +144,7 @@ const Slide = (
         <span className={`status is-${props.status.replace(" ", "-")}`}></span>{" "}
         {props.status}
       </div>
-      {props.image && (
+      {typeof props.image !== 'undefined' && (
         <Img
           className="slide-image"
           fluid={props.image.childImageSharp.fluid}
