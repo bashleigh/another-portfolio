@@ -20,6 +20,7 @@
       width: 1em;
       position: relative;
       top: -.1em;
+      margin-right: .25em;
     }
   }
 
@@ -83,6 +84,7 @@
       opacity: .6;
       transition: opacity .5s ease;
       box-shadow: 0 0 .5em .5em rgba(0,0,0,.18);
+      cursor: pointer;
 
       .slide-status {
         position: absolute;
@@ -92,6 +94,7 @@
 
       &.is-active {
         opacity: 1;
+        cursor: inherit;
       }
 
       h4 {
