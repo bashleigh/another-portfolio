@@ -1,3 +1,54 @@
-#slider {
+@import './../styles/variables.scss';
 
+#slider {
+  background: $primary-900;
+  padding-top: 2em;
+  padding-bottom: 5em;
+  overflow: scroll;
+
+  .slide-holder {
+    display: flex;
+    flex-direction: row;
+
+    .slide {
+      background: $primary-100;
+      height: 30em;
+      width: 70vw;
+      margin: 0 2.5vw 0 2.5vw;
+      border-radius: 2em;
+      padding: 2em;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+
+      .slide-status {
+        position: absolute;
+        top: 2em;
+        left: 2em;
+
+        .status {
+          width: .75em;
+          height: .75em;
+          display: inline-block;
+          border-radius: 1em;
+
+          &.is-active {
+            background: $rainbowGreen;
+          }
+
+          &.is-on-hold {
+            background: $rainbowOrange;
+          }
+
+          &.is-ceased {
+            background: $rainbowRed;
+          }
+          &.is-planning {
+            background: $rainbowViolet;
+          }
+        }
+      }
+    }
+  }
 }
