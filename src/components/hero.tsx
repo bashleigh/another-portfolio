@@ -1,6 +1,7 @@
 import React from "react";
 import { Nav } from "./nav";
 import { Phone } from "./phone";
+import { RecruitmentNotifier } from "./recruitment";
 import { Terminal } from "./terminal";
 
 export const Hero = () => (
@@ -12,7 +13,10 @@ export const Hero = () => (
             <Phone />
           </div>
           <div className="column is-narrow">
-            <Terminal />
+            <div>
+              <RecruitmentNotifier />
+              <Terminal />
+            </div>
           </div>
         </div>
       </div>
