@@ -1,5 +1,58 @@
 @import './../styles/variables.scss';
 
+.slider-menu {
+  background: $primary-900;
+  position: relative;
+
+  .menu-title {
+    font-weight: bold;
+    background: $white;
+    border-radius: 1em;
+    padding: 1em;
+    display: inline-block;
+    cursor: pointer;
+      box-shadow: 0 0 .5em .5em rgba(0,0,0,.18);
+
+
+    .navbar-burger {
+      display: inline-block;
+      height: .5em;
+      width: 1em;
+      position: relative;
+      top: -.1em;
+    }
+  }
+
+  .slider-menu-content {
+    display: none;
+    flex-direction: column;
+    background: $white;
+    position: absolute;
+    padding: 1em;
+    border-radius: 0 2em 2em;
+    top: 100%;
+    left: 0%;
+    z-index: 999;
+    box-shadow: 0 .5em .5em .25em rgba(0,0,0,.18);
+
+    .menu-item {
+      .slide-status {
+        margin-right: .5em;
+      }
+    }
+
+  }
+
+  &.is-active {
+    .slider-menu-content {
+      display: inline-block;
+    }
+    .menu-title {
+      border-radius: 1em 1em 0 0;
+    }
+  }
+}
+
 #slider {
   background: $primary-900;
   padding-top: 2em;
@@ -24,6 +77,14 @@
       justify-content: flex-end;
       position: relative;
       opacity: .6;
+      transition: opacity .5s ease;
+      box-shadow: 0 0 .5em .5em rgba(0,0,0,.18);
+
+      .slide-status {
+        position: absolute;
+        top: 2em;
+        left: 2em;
+      }
 
       &.is-active {
         opacity: 1;
@@ -35,35 +96,30 @@
           font-weight: normal;
         }
       }
+    }
+  }
+}
+.slide-status {
+  .status {
+    width: .75em;
+    height: .75em;
+    display: inline-block;
+    border-radius: 1em;
 
-      .slide-status {
-        position: absolute;
-        top: 2em;
-        left: 2em;
+    &.is-active {
+      background: $rainbowGreen;
+    }
 
-        .status {
-          width: .75em;
-          height: .75em;
-          display: inline-block;
-          border-radius: 1em;
+    &.is-on-hold {
+      background: $rainbowOrange;
+    }
 
-          &.is-active {
-            background: $rainbowGreen;
-          }
+    &.is-ceased {
+      background: $rainbowRed;
+    }
 
-          &.is-on-hold {
-            background: $rainbowOrange;
-          }
-
-          &.is-ceased {
-            background: $rainbowRed;
-          }
-
-          &.is-planning {
-            background: $rainbowViolet;
-          }
-        }
-      }
+    &.is-planning {
+      background: $rainbowViolet;
     }
   }
 }

@@ -31,21 +31,21 @@ const slides: Slide[] = shuffle([
     name: "Typeorm polymorphic",
     description: "A polymorphic typescript repository package for typeorm",
     technologies: ["typeorm", "typescript", "mysql"],
-    link: 'https://github.com/bashleigh/typeorm-polymorphic',
+    link: "https://github.com/bashleigh/typeorm-polymorphic",
   },
   {
     status: ProjectStatus.ACTIVE,
     name: "nestjs-typeorm-paginate",
     description: "A pagination function for nestjs + typeorm",
     technologies: ["nestjs", "typeorm", "mysql", "typescript"],
-    link: 'https://github.com/nestjsx/nestjs-typeorm-paginate',
+    link: "https://github.com/nestjsx/nestjs-typeorm-paginate",
   },
   {
     status: ProjectStatus.ACTIVE,
     name: "nestjs-config",
     description: "A config package for nestjs based on laravel",
     technologies: ["nestjs", "typescript"],
-    link: 'https://github.com/nestjsx/nestjs-config',
+    link: "https://github.com/nestjsx/nestjs-config",
   },
   {
     status: ProjectStatus.CEASED,
@@ -95,24 +95,13 @@ const slides: Slide[] = shuffle([
     name: "Trino",
     description:
       "A very secret project of mine that will change the highstreet forever!",
-    technologies: [
-      "typescript",
-      "RTDB",
-      "sqlite",
-      "flutter",
-    ],
+    technologies: ["typescript", "RTDB", "sqlite", "flutter"],
   },
   {
     status: ProjectStatus.ACTIVE,
     name: "Whip Round",
-    description:
-      "A collection project",
-    technologies: [
-      "firebase",
-      "firebase auth",
-      "firebase store",
-      "flutter",
-    ],
+    description: "A collection project",
+    technologies: ["firebase", "firebase auth", "firebase store", "flutter"],
   },
 ]);
 
@@ -128,18 +117,24 @@ const stringToHex = (string: string): string => {
   return "#" + Math.floor(float * 16777215).toString(16);
 };
 
-const Slide = (props: Slide & {isActive: boolean, onClick: () => void}) => (
-  <div className={`slide ${props.isActive ? "is-active" : ''}`} onClick={props.onClick}>
+const Slide = (props: Slide & { isActive: boolean; onClick: () => void }) => (
+  <div
+    className={`slide ${props.isActive ? "is-active" : ""}`}
+    onClick={props.onClick}
+  >
     <div className="slide-status">
       <span className={`status is-${props.status.replace(" ", "-")}`}></span>{" "}
       {props.status}
     </div>
     <div className="content">
-      <h4 className="is-3">{props.name} {props.link && (
+      <h4 className="is-3">
+        {props.name}{" "}
+        {props.link && (
           <a target="_blank" href={props.link}>
             View
           </a>
-        )}</h4>
+        )}
+      </h4>
       <p>{props.description}</p>
       {props.technologies && (
         <div className="tags">
@@ -158,20 +153,92 @@ const Slide = (props: Slide & {isActive: boolean, onClick: () => void}) => (
 );
 
 export const Slider = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState<number>(0);
+  const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
 
   return (
-    <div id="slider">
-      <div
-        className="slide-holder"
-        style={{ width: `${75 * slides.length}vw`, marginLeft: `${active === 1 ? '-62.5' : -62.5 + (-75 * (active -1))}vw` }}
-      >
-        {slides.map((slide, index) => (
-          <Slide {...slide} isActive={index === active} onClick={() => {
-            setActive(index);
-          }} />
-        ))}
+    <>
+      <section id="my-work" className="section is-primary-900">
+        <div className="container">
+          <div className="content">
+            <h2 className="title is-1">My Work</h2>
+            <p className="has-text-white">
+              This is a list of my current and previous projects of work. Use
+              the menu below to see project titles and their statuses.
+            </p>
+          </div>
+          <div className={`slider-menu${isMenuActive ? " is-active" : ""}`}>
+            <div
+              className="menu-title"
+              onClick={event => {
+                setIsMenuActive(!isMenuActive);
+              }}
+            >
+              <span
+                role="button"
+                className="navbar-burger"
+                aria-label="menu"
+                aria-expanded="false"
+                data-target="navbarBasicExample"
+              >
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </span>{" "}
+              Menu
+            </div>
+            <div className="slider-menu-content">
+              <ul>
+                {slides.map((slide, index) => (
+                  <li key={`slide-menu-${index}`}>
+                    <a
+                      className="menu-item"
+                      href="#"
+                      onClick={event => {
+                        event.preventDefault();
+                        setActive(index);
+                        setIsMenuActive(!isMenuActive);
+                      }}
+                    >
+                      <span className="slide-status">
+                        <span
+                          className={`status is-${slide.status.replace(
+                            " ",
+                            "-"
+                          )}`}
+                        ></span>
+                      </span>
+
+                      {slide.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div id="slider">
+        <div
+          className="slide-holder"
+          style={{
+            width: `${75 * slides.length}vw`,
+            marginLeft: `${
+              active === 1 ? "-62.5" : -62.5 + -75 * (active - 1)
+            }vw`,
+          }}
+        >
+          {slides.map((slide, index) => (
+            <Slide
+              {...slide}
+              isActive={index === active}
+              onClick={() => {
+                setActive(index);
+              }}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
