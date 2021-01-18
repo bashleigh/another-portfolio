@@ -4,11 +4,13 @@
   background: $primary-900;
   padding-top: 2em;
   padding-bottom: 5em;
-  overflow: scroll;
+  overflow: hidden;
 
   .slide-holder {
     display: flex;
     flex-direction: row;
+    transition: all .5s ease;
+    margin-left: 0vw;
 
     .slide {
       background: $primary-100;
@@ -21,6 +23,11 @@
       flex-direction: column;
       justify-content: flex-end;
       position: relative;
+      opacity: .6;
+
+      &.is-active {
+        opacity: 1;
+      }
 
       h4 {
         a {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./slider.scss";
 
 enum ProjectStatus {
@@ -17,7 +17,15 @@ type Slide = {
   image?: string;
 };
 
-const slides: Slide[] = [
+const shuffle = arr =>
+  [...arr].reduceRight(
+    (res, _, __, s) => (
+      res.push(s.splice(0 | (Math.random() * s.length), 1)[0]), res
+    ),
+    []
+  );
+
+const slides: Slide[] = shuffle([
   {
     status: ProjectStatus.ACTIVE,
     name: "Typeorm polymorphic",
@@ -106,7 +114,7 @@ const slides: Slide[] = [
       "flutter",
     ],
   },
-];
+]);
 
 const stringToHex = (string: string): string => {
   const indexes = "abcdefghijklmnopqrstuvwxyz".split("");
@@ -120,16 +128,8 @@ const stringToHex = (string: string): string => {
   return "#" + Math.floor(float * 16777215).toString(16);
 };
 
-const shuffle = arr =>
-  [...arr].reduceRight(
-    (res, _, __, s) => (
-      res.push(s.splice(0 | (Math.random() * s.length), 1)[0]), res
-    ),
-    []
-  );
-
-const Slide = (props: Slide) => (
-  <div className="slide">
+const Slide = (props: Slide & {isActive: boolean, onClick: () => void}) => (
+  <div className={`slide ${props.isActive ? "is-active" : ''}`} onClick={props.onClick}>
     <div className="slide-status">
       <span className={`status is-${props.status.replace(" ", "-")}`}></span>{" "}
       {props.status}
@@ -158,14 +158,18 @@ const Slide = (props: Slide) => (
 );
 
 export const Slider = () => {
+  const [active, setActive] = useState(0);
+
   return (
     <div id="slider">
       <div
         className="slide-holder"
-        style={{ width: `${75 * slides.length}vw` }}
+        style={{ width: `${75 * slides.length}vw`, marginLeft: `${active === 1 ? '-62.5' : -62.5 + (-75 * (active -1))}vw` }}
       >
-        {shuffle(slides).map(slide => (
-          <Slide {...slide} />
+        {slides.map((slide, index) => (
+          <Slide {...slide} isActive={index === active} onClick={() => {
+            setActive(index);
+          }} />
         ))}
       </div>
     </div>
