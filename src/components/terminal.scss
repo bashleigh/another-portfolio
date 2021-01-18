@@ -52,6 +52,7 @@ $rainbowViolet: #4B0082;
   @media only screen and (max-width: $tablet) {
     width: auto;
     max-width: inherit;
+    background: lighten($terminalBackground, 10%);
   }
 
   .terminal-header {
@@ -188,13 +189,19 @@ $rainbowViolet: #4B0082;
             outline: none;
             box-shadow: none;
           }
+
+          &:focus {
+            & + .cursor {
+              display: inline-block;
+            }
+          }
         }
 
         .cursor {
+          display: none;
           background: $terminalText;
           width: .5em;
           height: 1.2em;
-          display: inline-block;
           animation: flash 1s infinite;
           position: absolute;
           top: .25em;
