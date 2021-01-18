@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import "./slider.scss";
 import { useSwipeable } from "react-swipeable";
+import Img from "gatsby-image";
+import { graphql, StaticQuery } from "gatsby";
 
 enum ProjectStatus {
   ACTIVE = "active",
   CEASED = "ceased",
   ONHOLD = "on hold",
   PLANNING = "planning",
+  COMPLETE = "complete",
 }
 
 type Slide = {
@@ -50,11 +53,20 @@ const slides: Slide[] = shuffle([
   },
   {
     status: ProjectStatus.CEASED,
-    name: "ford & sons meat shop",
+    name: "Ford & sons meat shop",
     description:
       "A quickly built click and collect website for my local butcher. Sadly the website was never published due to franchise issues. The good news however, is the site I built is still available if you wish to view it!",
     link: "https://adoring-villani-ca7b56.netlify.app/",
     technologies: ["gatsby", "typescript", "click & collect", "netlify"],
+    image: "fordandsons",
+  },
+  {
+    status: ProjectStatus.ACTIVE,
+    name: "Showelli Entertainment",
+    description: "My sister's dance agency website!",
+    link: "https://showelli.co.uk",
+    technologies: ["gatsby", "typescript", "netlify"],
+    image: "showelli",
   },
   {
     status: ProjectStatus.PLANNING,
@@ -90,6 +102,7 @@ const slides: Slide[] = shuffle([
       "react",
       "P2P marketplace",
     ],
+    image: "ruddr",
   },
   {
     status: ProjectStatus.PLANNING,
@@ -118,7 +131,9 @@ const stringToHex = (string: string): string => {
   return "#" + Math.floor(float * 16777215).toString(16);
 };
 
-const Slide = (props: Slide & { isActive: boolean; onClick: () => void }) => {
+const Slide = (
+  props: Slide & { isActive: boolean; onClick: () => void; image?: any }
+) => {
   const [showDesc, setShowDesc] = useState<boolean>(false);
   return (
     <div
@@ -129,6 +144,13 @@ const Slide = (props: Slide & { isActive: boolean; onClick: () => void }) => {
         <span className={`status is-${props.status.replace(" ", "-")}`}></span>{" "}
         {props.status}
       </div>
+      {props.image && (
+        <Img
+          className="slide-image"
+          fluid={props.image.childImageSharp.fluid}
+          alt={props.name}
+        />
+      )}
       <div className="content">
         <h4 className="is-3">
           {props.name}{" "}
@@ -179,89 +201,122 @@ export const Slider = () => {
   });
 
   return (
-    <>
-      <section id="my-work" className="section is-primary-900">
-        <div className="container">
-          <div className="content">
-            <h2 className="title is-1">My Work</h2>
-            <p className="has-text-white">
-              This is a list of my current and previous projects of work. Use
-              the menu below to see project titles and their statuses.
-            </p>
-          </div>
-          <div className={`slider-menu${isMenuActive ? " is-active" : ""}`}>
+    <StaticQuery
+      query={graphql`
+        query {
+          fordandsons: file(relativePath: { eq: "fordandsons.png" }) {
+            childImageSharp {
+              fluid(maxWidth: 1200) {
+                ...GatsbyImageSharpFluid_withWebp
+                ...GatsbyImageSharpFluidLimitPresentationSize
+              }
+            }
+          }
+          showelli: file(relativePath: { eq: "showelli.png" }) {
+            childImageSharp {
+              fluid(maxWidth: 1200) {
+                ...GatsbyImageSharpFluid_withWebp
+                ...GatsbyImageSharpFluidLimitPresentationSize
+              }
+            }
+          }
+          ruddr: file(relativePath: { eq: "ruddr.png" }) {
+            childImageSharp {
+              fluid(maxWidth: 1200) {
+                ...GatsbyImageSharpFluid_withWebp
+                ...GatsbyImageSharpFluidLimitPresentationSize
+              }
+            }
+          }
+        }
+      `}
+      render={data => (
+        <>
+          <section id="my-work" className="section is-primary-900">
+            <div className="container">
+              <div className="content">
+                <h2 className="title is-1">My Work</h2>
+                <p className="has-text-white">
+                  This is a list of my current and previous projects of work.
+                  Use the menu below to see project titles and their statuses.
+                </p>
+              </div>
+              <div className={`slider-menu${isMenuActive ? " is-active" : ""}`}>
+                <div
+                  className="menu-title"
+                  onClick={event => {
+                    setIsMenuActive(!isMenuActive);
+                  }}
+                >
+                  <span
+                    role="button"
+                    className="navbar-burger"
+                    aria-label="menu"
+                    aria-expanded="false"
+                    data-target="navbarBasicExample"
+                  >
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                  </span>
+                  Menu
+                </div>
+                <div className="slider-menu-content">
+                  <ul>
+                    {slides.map((slide, index) => (
+                      <li key={`slide-menu-${index}`}>
+                        <a
+                          className="menu-item"
+                          href="#"
+                          onClick={event => {
+                            event.preventDefault();
+                            setActive(index);
+                            setIsMenuActive(!isMenuActive);
+                          }}
+                        >
+                          <span className="slide-status">
+                            <span
+                              className={`status is-${slide.status.replace(
+                                " ",
+                                "-"
+                              )}`}
+                            ></span>
+                          </span>
+
+                          {slide.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div id="slider" {...swipeHandlers}>
             <div
-              className="menu-title"
-              onClick={event => {
-                setIsMenuActive(!isMenuActive);
+              className="slide-holder"
+              style={{
+                width: `${75 * slides.length}vw`,
+                marginLeft: `${
+                  active === 1 ? "-62.5" : -62.5 + -75 * (active - 1)
+                }vw`,
               }}
             >
-              <span
-                role="button"
-                className="navbar-burger"
-                aria-label="menu"
-                aria-expanded="false"
-                data-target="navbarBasicExample"
-              >
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-              </span>
-              Menu
-            </div>
-            <div className="slider-menu-content">
-              <ul>
-                {slides.map((slide, index) => (
-                  <li key={`slide-menu-${index}`}>
-                    <a
-                      className="menu-item"
-                      href="#"
-                      onClick={event => {
-                        event.preventDefault();
-                        setActive(index);
-                        setIsMenuActive(!isMenuActive);
-                      }}
-                    >
-                      <span className="slide-status">
-                        <span
-                          className={`status is-${slide.status.replace(
-                            " ",
-                            "-"
-                          )}`}
-                        ></span>
-                      </span>
-
-                      {slide.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              {slides.map((slide, index) => (
+                <Slide
+                  key={`slide-${index}-${slide.name}`}
+                  {...slide}
+                  image={data[slide.image]}
+                  isActive={index === active}
+                  onClick={() => {
+                    setActive(index);
+                  }}
+                />
+              ))}
             </div>
           </div>
-        </div>
-      </section>
-      <div id="slider" {...swipeHandlers}>
-        <div
-          className="slide-holder"
-          style={{
-            width: `${75 * slides.length}vw`,
-            marginLeft: `${
-              active === 1 ? "-62.5" : -62.5 + -75 * (active - 1)
-            }vw`,
-          }}
-        >
-          {slides.map((slide, index) => (
-            <Slide
-              key={`slide-${index}-${slide.name}`}
-              {...slide}
-              isActive={index === active}
-              onClick={() => {
-                setActive(index);
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </>
+        </>
+      )}
+    />
   );
 };

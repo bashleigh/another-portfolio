@@ -104,6 +104,27 @@
         }
       }
 
+      .slide-image {
+        position: absolute !important;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-radius: 2em;
+
+        & + .content {
+          z-index: 999;
+          background: rgba(0,0,0,.8);
+          padding: .5em;
+          color: $white;
+          border-radius: .5em;
+
+          h4 {
+            color: $white;
+          }
+        }
+      }
+
       .slider-description-toggle {
         display: none;
       }
