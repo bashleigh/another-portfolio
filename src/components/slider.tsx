@@ -66,6 +66,31 @@ const slides: Slide[] = [
       "google messaging",
     ],
   },
+  {
+    status: ProjectStatus.ONHOLD,
+    name: "Ruddr",
+    description:
+      "A PWA boat selling and buying marketplace platform. I'm planning on coming back to this and building a native app instead",
+    technologies: [
+      "typescript",
+      "AWS EC2",
+      "postgres",
+      "react",
+      "P2P marketplace",
+    ],
+  },
+  {
+    status: ProjectStatus.PLANNING,
+    name: "Trino",
+    description:
+      "A very secret project of mine that will change the highstreet forever!",
+    technologies: [
+      "typescript",
+      "RTDB",
+      "sqlite",
+      "flutter",
+    ],
+  },
 ];
 
 const stringToHex = (string: string): string => {
