@@ -69,6 +69,7 @@ const commands: {
     setOutput([
       ...output,
       { text: "goodbye curel world! 💀", class: "is-rainbow-red" },
+      <img src="https://media.giphy.com/media/uC8SQoaY5EHhC/giphy.gif"/>
     ]),
   clear: ({ setOutput }) => {
     setOutput([] as LineOut[]);
@@ -103,7 +104,7 @@ const commands: {
     }
   },
   git: ({ output, setOutput }) =>
-    setOutput([...output, { text: "Cannot fetch from root" }]),
+    setOutput([...output, { text: "Bit rude..." }]),
   ssh: ({ output, setOutput }) =>
     setOutput([
       ...output,
@@ -115,8 +116,19 @@ const commands: {
   hacker: ({ output, setOutput }) =>
     setOutput([
       ...output,
+      {text: "This is what my girlfriend says I look like. Don't know why, I don't code with bananas 🤷‍♀️"},
       <img src="https://media.giphy.com/media/YQitE4YNQNahy/giphy.gif" />,
     ]),
+    info: ({output, setOutput}) => {
+      setOutput([
+        <h1 className="title">Info</h1>,
+        <p>This little terminal window I built in a few hours (at 2am like a true programmer).</p>,
+        <p>Was pretty fun! Thinking of opening sourcing the terminal design and input, <a href="https://github.com/bashleigh/another-portfolio">click here to check out the repo if you want!</a></p>,
+        <p>To find out more about me, <a href="#about-me">Click here</a></p>,
+        <p>To view my current projects and work <a href="#my-work">Click here</a></p>,
+        <p>To get in concact <a href="#contact">Click here</a></p>,
+      ]);
+    },
   //   neofetch: () => [
   // "               +",
   // "               #",
@@ -154,6 +166,12 @@ const runCommand = ({
 
   const inputs = input.split(" ");
   if (!inputs[0] || !Object.keys(commands).includes(inputs[0])) {
+
+    if (!input[0] || input[0] === '') {
+      setOutput([...output, { text: `❯ ${input}`, class: "is-rainbow-green" }]);
+      return;
+    }
+
     setOutput([...output, { text: `command: "${inputs[0]}" not found` }]);
     return;
   }
