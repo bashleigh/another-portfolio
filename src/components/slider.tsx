@@ -132,8 +132,7 @@ const Slide = (
       className={`slide ${props.isActive ? "is-active" : ""}`}
       onClick={props.onClick}
     >
-      <div className="slide-status">
-        <span className={`status is-${props.status.replace(" ", "-")}`}></span>{" "}
+      <div className={`slide-status is-${props.status.replace(" ", "-")}`}>
         {props.status}
       </div>
       {typeof props.image !== "undefined" && (

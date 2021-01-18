@@ -90,6 +90,26 @@
         position: absolute;
         top: 2em;
         left: 2em;
+        z-index: 500;
+        border-radius: 1em;
+        padding: .25em 1em;
+        color: $white;
+
+        &.is-active {
+          background: $rainbowGreen;
+        }
+    
+        &.is-on-hold {
+          background: $rainbowOrange;
+        }
+    
+        &.is-ceased {
+          background: $rainbowRed;
+        }
+    
+        &.is-planning {
+          background: $rainbowViolet;
+        }
       }
 
       &.is-active {
