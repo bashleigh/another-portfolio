@@ -35,6 +35,10 @@
     z-index: 999;
     box-shadow: 0 .5em .5em .25em rgba(0,0,0,.18);
 
+    li {
+      padding: .5em 0em;
+    }
+
     .menu-item {
       .slide-status {
         margin-right: .5em;

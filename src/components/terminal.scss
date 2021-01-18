@@ -28,7 +28,7 @@
   max-width: 40vw;
 
   @media only screen and (max-width: $tablet) {
-    width: auto;
+    width: 100%;
     max-width: inherit;
     background: lighten($terminalBackground, 2%);
   }
@@ -94,6 +94,11 @@
 
     .text-info {
       color: $terminalBarAccents;
+    }
+
+    a {
+      color: $primary-300;
+      text-decoration: underline;
     }
   }
 
