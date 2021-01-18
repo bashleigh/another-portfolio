@@ -1,0 +1,11 @@
+$footballSize: 4em;
+
+#football {
+  background: url(http://upload.wikimedia.org/wikipedia/en/e/ec/Soccer_ball.svg);
+  background-size: $footballSize $footballSize;
+  height: $footballSize;
+  width: $footballSize;
+  position: absolute;
+  z-index: 999;
+  bottom: 0;
+}

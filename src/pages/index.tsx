@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Hero } from "../components";
+import { Hero, Football } from "../components";
 import "./../styles/index.scss";
 
 export default () => (
@@ -21,5 +21,6 @@ export default () => (
     <section className="section is-primary-900" id="#my-work">
       <h2 className="title has-text-centered">My Work</h2>
     </section>
+    <Football />
   </>
 );
