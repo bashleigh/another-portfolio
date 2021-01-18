@@ -6,7 +6,7 @@
 
   .menu-title {
     font-weight: bold;
-    background: $white;
+    background: $primary-50;
     border-radius: 1em;
     padding: 1em;
     display: inline-block;
@@ -26,7 +26,7 @@
   .slider-menu-content {
     display: none;
     flex-direction: column;
-    background: $white;
+    background: $primary-50;
     position: absolute;
     padding: 1em;
     border-radius: 0 2em 2em;

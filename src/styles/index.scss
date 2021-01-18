@@ -46,6 +46,7 @@
 .mini-links {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 
   li {
     padding: .5em;
