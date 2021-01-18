@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Football, Hero, Slider } from "../components";
+import { Football, Hero, Slider, Contact } from "../components";
 import "./../styles/index.scss";
 
 export default () => (
@@ -83,5 +83,6 @@ export default () => (
       </div>
     </section>
     <Slider />
+    <Contact />
   </>
 );
