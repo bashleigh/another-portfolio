@@ -61,6 +61,8 @@ const commands: {
   facts: ({ setOutput, output }) => {
     setOutput([...output, facts]);
   },
+  ls: ({output, setOutput}) => setOutput([...output, {text: '.'}, {text: '..'}]),
+  git: ({output, setOutput}) => setOutput([...output, {text: 'Cannot fetch from root'}]),
   //   neofetch: () => [
   // "               +",
   // "               #",

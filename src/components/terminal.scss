@@ -94,6 +94,8 @@ $rainbowViolet: #4B0082;
     padding: 1em;
     color: $terminalText;
     height: 50vh;
+    width: 40vw;
+    max-width: 40vw;
     min-height: 30em;
     overflow: hidden;
     display: flex;
