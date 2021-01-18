@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Hero, Football, Slider } from "../components";
+import { Football, Hero, Slider } from "../components";
 import "./../styles/index.scss";
 
 export default () => (
@@ -10,6 +10,7 @@ export default () => (
     </Helmet>
     <Hero />
     <section className="section" id="about-me">
+      <Football/>
       <div className="container">
         <div className="columns is-vcentered is-centered">
           <div className="column is-4">
@@ -33,7 +34,7 @@ export default () => (
                 <li>Integrations</li>
                 <li>Cloud platforms</li>
                 <li>Internet Of Things</li>
-                <li>Plubic Speaking</li>
+                <li>Public Speaking</li>
               </ul>
             </div>
             <h3 className="title is-4">Links</h3>
@@ -66,6 +67,5 @@ export default () => (
       <h2 className="title has-text-centered">My Work</h2>
     </section>
     <Slider />
-    <Football />
   </>
 );
