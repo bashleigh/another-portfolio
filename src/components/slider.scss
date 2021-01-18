@@ -22,6 +22,13 @@
       justify-content: flex-end;
       position: relative;
 
+      h4 {
+        a {
+          font-size: .6em;
+          font-weight: normal;
+        }
+      }
+
       .slide-status {
         position: absolute;
         top: 2em;
@@ -44,7 +51,7 @@
           &.is-ceased {
             background: $rainbowRed;
           }
-          
+
           &.is-planning {
             background: $rainbowViolet;
           }

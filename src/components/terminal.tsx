@@ -122,6 +122,7 @@ const commands: {
     info: ({output, setOutput}) => {
       setOutput([
         <h1 className="title">Info</h1>,
+        <h3 className="subtitle">Version 1.0.0</h3>,
         <p>This little terminal window I built in a few hours (at 2am like a true programmer).</p>,
         <p>Was pretty fun! Thinking of opening sourcing the terminal design and input, <a href="https://github.com/bashleigh/another-portfolio">click here to check out the repo if you want!</a></p>,
         <p>To find out more about me, <a href="#about-me">Click here</a></p>,

@@ -23,18 +23,21 @@ const slides: Slide[] = [
     name: "Typeorm polymorphic",
     description: "A polymorphic typescript repository package for typeorm",
     technologies: ["typeorm", "typescript", "mysql"],
+    link: 'https://github.com/bashleigh/typeorm-polymorphic',
   },
   {
     status: ProjectStatus.ACTIVE,
     name: "nestjs-typeorm-paginate",
     description: "A pagination function for nestjs + typeorm",
     technologies: ["nestjs", "typeorm", "mysql", "typescript"],
+    link: 'https://github.com/nestjsx/typeorm-paginate',
   },
   {
     status: ProjectStatus.ACTIVE,
     name: "nestjs-config",
     description: "A config package for nestjs based on laravel",
     technologies: ["nestjs", "typescript"],
+    link: 'https://github.com/bashleigh/nestjsx/nestjs-config',
   },
   {
     status: ProjectStatus.CEASED,
@@ -91,6 +94,18 @@ const slides: Slide[] = [
       "flutter",
     ],
   },
+  {
+    status: ProjectStatus.ACTIVE,
+    name: "Whip Round",
+    description:
+      "A collection project",
+    technologies: [
+      "firebase",
+      "firebase auth",
+      "firebase store",
+      "flutter",
+    ],
+  },
 ];
 
 const stringToHex = (string: string): string => {
@@ -120,15 +135,12 @@ const Slide = (props: Slide) => (
       {props.status}
     </div>
     <div className="content">
-      <h1>{props.name}</h1>
-      <p>{props.description}</p>
-      <p>
-        {props.link && (
+      <h4 className="is-3">{props.name} {props.link && (
           <a target="_blank" href={props.link}>
             View
           </a>
-        )}
-      </p>
+        )}</h4>
+      <p>{props.description}</p>
       {props.technologies && (
         <div className="tags">
           {props.technologies.map(tech => (
