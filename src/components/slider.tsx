@@ -38,14 +38,14 @@ const slides: Slide[] = shuffle([
     name: "nestjs-typeorm-paginate",
     description: "A pagination function for nestjs + typeorm",
     technologies: ["nestjs", "typeorm", "mysql", "typescript"],
-    link: 'https://github.com/nestjsx/typeorm-paginate',
+    link: 'https://github.com/nestjsx/nestjs-typeorm-paginate',
   },
   {
     status: ProjectStatus.ACTIVE,
     name: "nestjs-config",
     description: "A config package for nestjs based on laravel",
     technologies: ["nestjs", "typescript"],
-    link: 'https://github.com/bashleigh/nestjsx/nestjs-config',
+    link: 'https://github.com/nestjsx/nestjs-config',
   },
   {
     status: ProjectStatus.CEASED,
