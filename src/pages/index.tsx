@@ -52,7 +52,7 @@ export default () => (
 
             <ul className="mini-links">
               <li>
-                <a href="https://colchesterdigital.org.uk/">
+                <a href="https://colchesterdigital.org.uk/speakers/ashleigh-simonelli/">
                   Colchester Digital
                 </a>
               </li>
