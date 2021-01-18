@@ -63,6 +63,8 @@ const commands: {
   },
   ls: ({output, setOutput}) => setOutput([...output, {text: '.'}, {text: '..'}]),
   git: ({output, setOutput}) => setOutput([...output, {text: 'Cannot fetch from root'}]),
+  ssh: ({output, setOutput}) => setOutput([...output, {text: 'ermmmm.... don\'t think you can ssh into css I\'m afraid. I\'m just a pretty terminal window made out of HTML. Soz haxer, you canny hack meh 🙃'}]),
+  hacker: ({output, setOutput}) => setOutput([...output, <img src="https://media.giphy.com/media/YQitE4YNQNahy/giphy.gif"/>]),
   //   neofetch: () => [
   // "               +",
   // "               #",
