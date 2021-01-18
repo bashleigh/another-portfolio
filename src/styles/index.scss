@@ -10,6 +10,13 @@
     }
   }
 
+  .columns {
+    .column {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
   position: relative;
 }
 
