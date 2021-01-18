@@ -5,7 +5,7 @@
   &.is-primary {
     background-color: $hero-primary;
 
-    @media only screen and (min-width: $tablet) {
+    @media only screen and (max-width: $tablet) {
       background-color: $primary-700;
     }
   }
