@@ -13,7 +13,7 @@ export default () => (
       <div className="container">
         <div className="columns is-vcentered is-centered">
           <div className="column is-4">
-            <h1>g</h1>
+            <img src="https://instagram.flhr4-2.fna.fbcdn.net/v/t51.2885-15/e35/92828381_526969508007635_5711811657121496365_n.jpg?_nc_ht=instagram.flhr4-2.fna.fbcdn.net&_nc_cat=111&_nc_ohc=kXvzMKnJ7TUAX8y3ECU&tp=1&oh=50b52a2c0d17ee4d379b14607178ab14&oe=602F3DF4" title="Ashleigh Simonelli" alt="My Photo... ...guess it didn't load..."/>
           </div>
           <div className="column is-6">
             <div className="content">
