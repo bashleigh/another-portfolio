@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./slider.scss";
+import { useSwipeable } from 'react-swipeable';
 
 enum ProjectStatus {
   ACTIVE = "active",
@@ -140,6 +141,7 @@ const Slide = (props: Slide & { isActive: boolean; onClick: () => void }) => (
         <div className="tags">
           {props.technologies.map(tech => (
             <span
+            key={tech}
               className="tag"
               style={{ background: stringToHex(tech), color: "white" }}
             >
@@ -155,6 +157,11 @@ const Slide = (props: Slide & { isActive: boolean; onClick: () => void }) => (
 export const Slider = () => {
   const [active, setActive] = useState<number>(0);
   const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => active < (slides.length - 1) && setActive(active +1),
+    onSwipedRight: () => active > 0 && setActive(active -1),
+  });
 
   return (
     <>
@@ -184,7 +191,7 @@ export const Slider = () => {
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
-              </span>{" "}
+              </span>
               Menu
             </div>
             <div className="slider-menu-content">
@@ -218,7 +225,7 @@ export const Slider = () => {
           </div>
         </div>
       </section>
-      <div id="slider">
+      <div id="slider" {...swipeHandlers}>
         <div
           className="slide-holder"
           style={{
@@ -230,6 +237,7 @@ export const Slider = () => {
         >
           {slides.map((slide, index) => (
             <Slide
+            key={`slide-${index}-${slide.name}`}
               {...slide}
               isActive={index === active}
               onClick={() => {
