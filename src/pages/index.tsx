@@ -21,7 +21,7 @@ export default () => (
     <section className="section is-primary-900" id="#my-work">
       <h2 className="title has-text-centered">My Work</h2>
     </section>
-    <Slider/>
+    <Slider />
     <Football />
   </>
 );

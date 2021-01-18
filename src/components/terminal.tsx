@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./terminal.scss";
 
 const facts = (
@@ -19,6 +19,21 @@ const facts = (
     <br />
   </>
 );
+
+const getCommandOptions = (string: string): string[] => {
+  const options: string[] = [];
+  string.split(" ").forEach(st => {
+    if (st.includes("--")) {
+      options.push(st.replace("--", ""));
+    } else if (st.includes("-")) {
+      st.replace("-", "")
+        .split("")
+        .forEach(s => options.push(s));
+    }
+  });
+
+  return options;
+};
 
 const commands: {
   [s: string]: (values: {
@@ -61,8 +76,32 @@ const commands: {
   facts: ({ setOutput, output }) => {
     setOutput([...output, facts]);
   },
-  ls: ({ output, setOutput }) =>
-    setOutput([...output, { text: "." }, { text: ".." }]),
+  ls: ({ output, setOutput, input }) => {
+    const options = getCommandOptions(input.join(" "));
+
+    const results = ["/.", "/.."];
+    if (options.includes("a")) {
+      results.push(".cv.json");
+    }
+
+    return options.includes("l")
+      ? setOutput([...output, ...results.map(re => ({ text: re }))])
+      : setOutput([...output, { text: results.join(" ") }]);
+  },
+  cat: ({ output, setOutput, input }) => {
+    if (input[0] === ".cv.json") {
+      setOutput([
+        ...output,
+        { text: "you discovered my secret :O" },
+        <a
+          target="_blank"
+          href="https://gist.github.com/bashleigh/3bdd8052db7617a9ca3b31976a8cffa0"
+        >
+          View my CV
+        </a>,
+      ]);
+    }
+  },
   git: ({ output, setOutput }) =>
     setOutput([...output, { text: "Cannot fetch from root" }]),
   ssh: ({ output, setOutput }) =>
@@ -138,6 +177,12 @@ export const Terminal = () => {
     </p>,
   ]);
   const [commandExists, setCommandExists] = useState<boolean>(false);
+  const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
+  const [terminalHistoryPresses, setTerminalHistoryPresses] = useState<number>(
+    0
+  );
+
+  const inputElement = useRef();
 
   return (
     <div id="terminal">
@@ -148,7 +193,14 @@ export const Terminal = () => {
           <div className="terminal-button expand"></div>
         </div>
       </header>
-      <div className="terminal-body">
+      <div
+        className="terminal-body"
+        onClick={() => {
+          // TODO focus on input
+          // @ts-ignore
+          inputElement.current.focus();
+        }}
+      >
         {output.map((line, index) =>
           isJsxElement(line) ? (
             <div key={`output-line-${index}`}>{line}</div>
@@ -169,11 +221,9 @@ export const Terminal = () => {
             className="terminal-input"
             onSubmit={event => {
               event.preventDefault();
+              setTerminalHistory([...terminalHistory, input]);
               runCommand({ input, output, setOutput });
               setInput("");
-            }}
-            onClick={() => {
-              // TODO focus on input
             }}
           >
             <div className="field">
@@ -195,6 +245,13 @@ export const Terminal = () => {
                     setInput(input);
                   }}
                   value={input}
+                  ref={inputElement}
+                  onKeyUp={event => {
+                    if (event.key === "ArrowUp") {
+                      // TODO cycle through history
+                      setTerminalHistoryPresses(terminalHistoryPresses + 1);
+                    }
+                  }}
                 />
                 <span
                   className="cursor"
