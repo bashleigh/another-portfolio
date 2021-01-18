@@ -44,6 +44,8 @@ $rainbowViolet: #4B0082;
   border-radius: $terminalBorder;
   box-shadow: 0 .5em 1em 1em rgba(0,0,0,.5);
   font-family: Monaco;
+  width: 40vw;
+  max-width: 40vw;
 
   .terminal-header {
     background: $terminalHeader;
@@ -94,8 +96,6 @@ $rainbowViolet: #4B0082;
     padding: 1em;
     color: $terminalText;
     height: 50vh;
-    width: 40vw;
-    max-width: 40vw;
     min-height: 30em;
     overflow: hidden;
     display: flex;
