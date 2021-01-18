@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./slider.scss";
-import { useSwipeable } from 'react-swipeable';
+import { useSwipeable } from "react-swipeable";
 
 enum ProjectStatus {
   ACTIVE = "active",
@@ -121,55 +121,61 @@ const stringToHex = (string: string): string => {
 const Slide = (props: Slide & { isActive: boolean; onClick: () => void }) => {
   const [showDesc, setShowDesc] = useState<boolean>(false);
   return (
-  <div
-    className={`slide ${props.isActive ? "is-active" : ""}`}
-    onClick={props.onClick}
-  >
-    <div className="slide-status">
-      <span className={`status is-${props.status.replace(" ", "-")}`}></span>{" "}
-      {props.status}
-    </div>
-    <div className="content">
-      <h4 className="is-3">
-        {props.name}{" "}
-        {props.link && (
-          <a target="_blank" href={props.link}>
-            View
-          </a>
-        )}
-      </h4>
-      <a href="#" className="slider-description-toggle" onClick={event => {
-        event.preventDefault();
-        setShowDesc(!showDesc);
-      }}>{showDesc ? 'Hide' : 'Show'} description</a>
-      <div className={`slider-description${showDesc ? ' is-active' : ''}`}>
-        <p>{props.description}</p>
-        {props.technologies && (
-          <div className="tags">
-            {props.technologies.map(tech => (
-              <span
-              key={tech}
-                className="tag"
-                style={{ background: stringToHex(tech), color: "white" }}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        )}
+    <div
+      className={`slide ${props.isActive ? "is-active" : ""}`}
+      onClick={props.onClick}
+    >
+      <div className="slide-status">
+        <span className={`status is-${props.status.replace(" ", "-")}`}></span>{" "}
+        {props.status}
+      </div>
+      <div className="content">
+        <h4 className="is-3">
+          {props.name}{" "}
+          {props.link && (
+            <a target="_blank" href={props.link}>
+              View
+            </a>
+          )}
+        </h4>
+        <a
+          href="#"
+          className="slider-description-toggle"
+          onClick={event => {
+            event.preventDefault();
+            setShowDesc(!showDesc);
+          }}
+        >
+          {showDesc ? "Hide" : "Show"} description
+        </a>
+        <div className={`slider-description${showDesc ? " is-active" : ""}`}>
+          <p>{props.description}</p>
+          {props.technologies && (
+            <div className="tags">
+              {props.technologies.map(tech => (
+                <span
+                  key={tech}
+                  className="tag"
+                  style={{ background: stringToHex(tech), color: "white" }}
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
-            }
+  );
+};
 
 export const Slider = () => {
   const [active, setActive] = useState<number>(0);
   const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
 
   const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => active < (slides.length - 1) && setActive(active +1),
-    onSwipedRight: () => active > 0 && setActive(active -1),
+    onSwipedLeft: () => active < slides.length - 1 && setActive(active + 1),
+    onSwipedRight: () => active > 0 && setActive(active - 1),
   });
 
   return (
@@ -246,7 +252,7 @@ export const Slider = () => {
         >
           {slides.map((slide, index) => (
             <Slide
-            key={`slide-${index}-${slide.name}`}
+              key={`slide-${index}-${slide.name}`}
               {...slide}
               isActive={index === active}
               onClick={() => {
