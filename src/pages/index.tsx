@@ -16,9 +16,15 @@ export default () => (
             <h3 className="title is-1 has-text-primary">Let's Talk Business</h3>
             <h5 className="subtitle">What Can I Do For You?</h5>
             <div className="content">
-              <p>With roughly 10 years experience in the tech industry, I can help you achieve your business tech goals by implementing the correct solutions.</p>
+              <p>
+                With roughly 10 years experience in the tech industry, I can
+                help you achieve your business tech goals by implementing the
+                correct solutions.
+              </p>
               <p></p>
-              <button className="button is-primary is-rounded">Contact Me</button>
+              <button className="button is-primary is-rounded">
+                Contact Me
+              </button>
             </div>
           </div>
           <div className="column content">
@@ -119,38 +125,38 @@ export default () => (
         <div className="columns is-centered">
           <div className="column is-3">
             <div className="content">
-            <h2 className="title">Technologies I know</h2>
-            <h5 className="title is-5">Languages</h5>
-            <ul>
-              <li>TypeScript</li>
-              <li>JavaScript + node.js</li>
-              <li>PHP</li>
-              <li>CSS</li>
-              <li>SASS/SCSS</li>
+              <h2 className="title">Technologies I know</h2>
+              <h5 className="title is-5">Languages</h5>
+              <ul>
+                <li>TypeScript</li>
+                <li>JavaScript + node.js</li>
+                <li>PHP</li>
+                <li>CSS</li>
+                <li>SASS/SCSS</li>
               </ul>
               <h5 className="title is-5">Databases</h5>
               <ul>
-              <li>Postgres</li>
-              <li>MySQL</li>
-              <li>MongoDB</li>
-              <li>RTDB</li>
-              <li>DynamoDB</li>
-            </ul>
+                <li>Postgres</li>
+                <li>MySQL</li>
+                <li>MongoDB</li>
+                <li>RTDB</li>
+                <li>DynamoDB</li>
+              </ul>
             </div>
           </div>
           <div className="column is-3">
             <div className="content">
-            <h5 className="title is-5">Frameworks</h5>
+              <h5 className="title is-5">Frameworks</h5>
               <ul>
-              <li>NestJS</li>
-              <li>React</li>
-              <li>React Native</li>
-              <li>Express.js</li>
-              <li>Laravel</li>
-              <li>Kraken</li>
-              <li>Flutter</li>
-              <li>Next</li>
-              <li>Nuxt</li>
+                <li>NestJS</li>
+                <li>React</li>
+                <li>React Native</li>
+                <li>Express.js</li>
+                <li>Laravel</li>
+                <li>Kraken</li>
+                <li>Flutter</li>
+                <li>Next</li>
+                <li>Nuxt</li>
               </ul>
             </div>
           </div>

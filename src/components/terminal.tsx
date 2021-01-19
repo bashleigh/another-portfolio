@@ -46,7 +46,7 @@ const commands: {
     if (input[0] && input[0] === "--help") {
       setOutput([
         ...output,
-        { text: "Hello command", bold: true, },
+        { text: "Hello command", bold: true },
         { text: "returns a greeting" },
         { text: "hello [name]" },
         { text: "" },
@@ -126,7 +126,11 @@ const commands: {
     setOutput([
       <h1 className="title is-rainbow-text">Info</h1>,
       <h3 className="subtitle">Version 1.0.0</h3>,
-      {text: "This little terminal window I built in a few hours (at 2am like a true programmer", class: 'is-rainbow-red'},
+      {
+        text:
+          "This little terminal window I built in a few hours (at 2am like a true programmer",
+        class: "is-rainbow-red",
+      },
       <p className="is-rainbow-orange">
         Was pretty fun! Thinking of opening sourcing the terminal design and
         input,
@@ -137,10 +141,10 @@ const commands: {
       <p className="is-rainbow-yellow">
         To find out more about me, <a href="#about-me">Click here</a>
       </p>,
-      <p  className="is-rainbow-green">
+      <p className="is-rainbow-green">
         To view my current projects and work <a href="#my-work">Click here</a>
       </p>,
-      <p  className="is-rainbow-blue">
+      <p className="is-rainbow-blue">
         To get in concact <a href="#contact">Click here</a>
       </p>,
     ]);
