@@ -73,6 +73,16 @@
   animation: rainbowBackground 5s infinite;
 }
 
+.columns {
+  .column {
+    &.has-text-right {
+      @media only screen and (max-width: $tablet) {
+        text-align: left !important;
+      }
+    }
+  }
+}
+
 @keyframes rainbowText {
   0% {
     color: $rainbowRed;
