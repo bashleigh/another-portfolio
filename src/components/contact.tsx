@@ -3,8 +3,33 @@ import "./contact.scss";
 
 export let openContact;
 
+type Message = {
+  body: string | JSX.Element;
+  from: "user" | "bot";
+};
+
 export const Contact = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      body: "Not quite ready to take messages yet!",
+      from: "bot",
+    },
+    {
+      body: (
+        <img
+          className="message-bubble"
+          src="https://media.giphy.com/media/PiQejEf31116URju4V/giphy.gif"
+        />
+      ),
+      from: "bot",
+    },
+    {
+      body: "I'm working on it! :d come back in a few day!",
+      from: "bot",
+    },
+  ]);
 
   openContact = () => setIsActive(!isActive);
 
@@ -36,36 +61,75 @@ export const Contact = () => {
         </div>
         <div className="contact-body">
           <div className="contact-body-messages">
-            <div className="message-input is-bot">
-              <div className="message-avatar"></div>
-              <div className="message-stack">
-                <div className="message-bubble">
-                  Not quite ready to take messages yet!
+            {messages
+              .reduceRight<{ from: string; messages: Message[] }[]>(
+                (blocks, message) => {
+                  if (blocks.length === 0) {
+                    blocks.push({
+                      from: message.from,
+                      messages: [message],
+                    });
+                    return blocks;
+                  }
+
+                  if (blocks[blocks.length - 1].from === message.from) {
+                    blocks[blocks.length - 1].messages.unshift(message);
+                  } else {
+                    blocks.push({
+                      from: message.from,
+                      messages: [message],
+                    });
+                  }
+
+                  return blocks;
+                },
+                []
+              )
+              .map((block, index) => (
+                <div
+                  className={`message-input is-${block.from}`}
+                  key={`message-${index}`}
+                >
+                  <div className="message-avatar"></div>
+                  <div className="message-stack">
+                    {block.messages.map((message, messageIndex) =>
+                      typeof message.body === "string" ? (
+                        <div
+                          key={`bubble-${messageIndex}-${index}`}
+                          className="message-bubble"
+                        >
+                          {message.body}
+                        </div>
+                      ) : (
+                        message.body
+                      )
+                    )}
+                  </div>
                 </div>
-                <img className="message-bubble" src="https://media.giphy.com/media/PiQejEf31116URju4V/giphy.gif" />
-                <div className="message-bubble">
-                  I'm working on it! :d come back in a few day!
-                </div>
-              </div>
-            </div>
-            {/* <div className="message-input is-user">
-              <div className="message-avatar"></div>
-              <div className="message-stack">
-                <div className="message-bubble">
-                  this is a test message for padding
-                </div>
-                <div className="message-bubble">
-                  this is a test message for padding this is a test message for
-                  padding
-                </div>
-              </div>
-            </div> */}
+              ))}
           </div>
         </div>
-        <div className="contact-input">
-          <textarea />
+        <form
+          className="contact-input"
+          onSubmit={event => {
+            event.preventDefault();
+            setMessages([
+              ...messages,
+              {
+                from: "user",
+                body: message,
+              },
+            ]);
+          }}
+        >
+          <textarea
+            value={message}
+            onChange={event => {
+              setMessage(event.target.value);
+            }}
+          />
           <button className="button is-primary is-rounded">Send</button>
-        </div>
+        </form>
       </div>
     </>
   );

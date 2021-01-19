@@ -86,11 +86,12 @@ $contactBackground: #2f3346;
   .contact-body {
     flex-grow: 10;
     overflow-y: scroll;
+    display: flex;
+    justify-content: stretch;
 
     .contact-body-messages {
       display: flex;
       flex-direction: column-reverse;
-      height: 100%;
     }
 
     .message-avatar {

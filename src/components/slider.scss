@@ -147,6 +147,10 @@
 
       .slider-description-toggle {
         display: none;
+
+        &:active {
+          color: $primary;
+        }
       }
 
       @media only screen and (max-width: $tablet) {
