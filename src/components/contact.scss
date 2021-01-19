@@ -1,6 +1,6 @@
 @import './../styles/variables.scss';
 
-$contactBackground: #2f3346;
+$contactBackground: rgba(47, 51, 70, 1);
 
 .overlay {
   position: fixed;
@@ -28,12 +28,12 @@ $contactBackground: #2f3346;
   background: $white;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 3em 3em rgba(0,0,0,.5);
   transition: right .5s ease;
   display: flex;
 
   &.is-active {
     right: 0em;
+    box-shadow: 0 0 3em 3em rgba(0,0,0,.5);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -49,6 +49,7 @@ $contactBackground: #2f3346;
 
   @media only screen and (max-width: $tablet) {
     width: 100%;
+    right: -100%;
   }
 
   .contact-header {
@@ -57,11 +58,16 @@ $contactBackground: #2f3346;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    background: $white;
+
+    @media (prefers-color-scheme: dark) {
+      background: $contactBackground;
+    }
 
     &:after {
-      background: -webkit-linear-gradient($white, transparent);
+      background: -webkit-linear-gradient($white, rgba(255,255,255,0));
       @media (prefers-color-scheme: dark) {
-        background: -webkit-linear-gradient($contactBackground, transparent);
+        background: -webkit-linear-gradient($contactBackground, rgba(47, 51, 70, 0));
       }
       content: '';
       position: absolute;
@@ -125,8 +131,12 @@ $contactBackground: #2f3346;
 
         .message-bubble {
           background: grey;
-          &:last-child {
+          border-radius: .5em 0 0 .5em;
+          &:first-child {
             border-radius: .5em .5em 0 .5em;
+          }
+          &:last-child {
+            border-radius: .5em 0 .5em .5em;
           }
         }
       }
@@ -138,9 +148,13 @@ $contactBackground: #2f3346;
 
         .message-bubble {
           background: $primary;
+          border-radius: 0 .5em .5em 0;
 
-          &:last-child {
+          &:first-child {
             border-radius: .5em .5em .5em 0;
+          }
+          &:last-child {
+            border-radius: 0 .5em .5em .5em;
           }
         }
       }
