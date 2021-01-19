@@ -65,9 +65,12 @@
   position: relative;
 }
 
-
 .is-rainbow-text {
   animation: rainbowText 5s infinite;
+}
+
+.has-rainbow-background {
+  animation: rainbowBackground 5s infinite;
 }
 
 @keyframes rainbowText {
@@ -91,5 +94,36 @@
   }
   100% {
     color: $rainbowRed;
+  }
+}
+
+@keyframes rainbowBackground {
+  0% {
+    background: $rainbowRed;
+    border-color: $rainbowRed;
+  }
+  14% {
+    background: $rainbowOrange;
+    border-color: $rainbowOrange;
+  }
+  32% {
+    background: $rainbowYellow;
+    border-color: $rainbowYellow;
+  }
+  46% {
+    background: $rainbowGreen;
+    border-color: $rainbowGreen;
+  }
+  72% {
+    background: $rainbowBlue;
+    border-color: $rainbowBlue;
+  }
+  85% {
+    background: $rainbowViolet;
+    border-color: $rainbowViolet;
+  }
+  100% {
+    background: $rainbowRed;
+    border-color: $rainbowRed;
   }
 }
