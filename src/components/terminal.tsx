@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import "./terminal.scss";
+import { openContact } from "./contact";
 
 const facts = (
   <>
@@ -148,6 +149,17 @@ const commands: {
         To get in concact <a href="#contact">Click here</a>
       </p>,
     ]);
+  },
+  contact: ({ output, setOutput }) => {
+    setOutput([
+      ...output,
+      {
+        text: "Opening contact window on port 3000...",
+        class: "is-rainbow-green",
+      },
+    ]);
+
+    setTimeout(() => openContact(), 1500);
   },
   //   neofetch: () => [
   // "               +",

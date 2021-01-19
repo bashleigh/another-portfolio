@@ -31,6 +31,7 @@
     width: 100%;
     max-width: inherit;
     background: lighten($terminalBackground, 2%);
+    // display: none;
   }
 
   .terminal-header {
