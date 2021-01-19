@@ -29,8 +29,15 @@
     }
   }
 
-  &#about-me {
+  &.is-primary-100 {
+    background: $primary-100;
+  }
+
+  &#business {
     padding-top: 10em;
+
+  }
+  &#about-me {
     padding-bottom: 10em;
   }
 }
@@ -56,4 +63,33 @@
 
 #about-me {
   position: relative;
+}
+
+
+.is-rainbow-text {
+  animation: rainbowText 5s infinite;
+}
+
+@keyframes rainbowText {
+  0% {
+    color: $rainbowRed;
+  }
+  15% {
+    color: $rainbowOrange;
+  }
+  30% {
+    color: $rainbowYellow;
+  }
+  45% {
+    color: $rainbowGreen;
+  }
+  60% {
+    color: $rainbowBlue;
+  }
+  75% {
+    color: $rainbowViolet;
+  }
+  100% {
+    color: $rainbowRed;
+  }
 }

@@ -9,6 +9,7 @@ export const Phone = () => (
         <h1 className="title">Hello There, Stranger!</h1>
         <Ashleigh className="bounce" />
         <h2 className="subtitle">Let's build together...</h2>
+        <button className="button is-primary is-rounded">Let's Talk</button>
       </div>
     </div>
   </div>

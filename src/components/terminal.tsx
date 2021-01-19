@@ -124,7 +124,7 @@ const commands: {
     ]),
   info: ({ output, setOutput }) => {
     setOutput([
-      <h1 className="title">Info</h1>,
+      <h1 className="title is-rainbow-text">Info</h1>,
       <h3 className="subtitle">Version 1.0.0</h3>,
       {text: "This little terminal window I built in a few hours (at 2am like a true programmer", class: 'is-rainbow-red'},
       <p className="is-rainbow-orange">
