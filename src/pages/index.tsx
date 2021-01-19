@@ -40,7 +40,7 @@ export default () => (
                 <li>Quirky designs</li>
                 <li>Backend solutions</li>
                 <li>Automation</li>
-                <li>Putting peronality into services</li>
+                <li>Putting personality into services</li>
                 <li>PWAs (progressive web apps)</li>
                 <li>Complete solutions, front to back</li>
                 <li>Integrations</li>
