@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Football, Hero, Slider, Contact } from "../components";
+import { Football, Hero, Slider, Contact, openContact } from "../components";
 import "./../styles/index.scss";
 
 export default () => (
@@ -22,7 +22,12 @@ export default () => (
                 correct solutions.
               </p>
               <p></p>
-              <button className="button is-primary is-rounded">
+              <button
+                className="button is-primary is-rounded"
+                onClick={() => {
+                  openContact();
+                }}
+              >
                 Contact Me
               </button>
             </div>

@@ -23,17 +23,17 @@ $contactBackground: #2f3346;
   bottom: 0;
   top: 0;
   width: 30em;
-  right: 0;
+  right: -30em;
   z-index: 999;
   background: $white;
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 3em 3em rgba(0,0,0,.5);
-
-  display: none;
+  transition: right .5s ease;
+  display: flex;
 
   &.is-active {
-    display: block;
+    right: 0em;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -70,10 +70,21 @@ $contactBackground: #2f3346;
       left: 0;
       right: 0;
     }
+
+    .close-button {
+      a {
+        font-size: 2em;
+        color: $primary;
+
+        @media (prefers-color-scheme: dark) {
+          color: $white;
+        }
+      }
+    }
   }
 
   .contact-body {
-    flex: 10;
+    flex-grow: 10;
     overflow-y: scroll;
 
     .contact-body-messages {
@@ -98,18 +109,45 @@ $contactBackground: #2f3346;
       align-items: flex-end;
       color: $white;
 
+      .message-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
       &.is-bot {
+        flex-direction: row-reverse;
+
+        .message-stack {
+          align-items: flex-end;
+        }
+
         .message-bubble {
           background: grey;
+          &:last-child {
+            border-radius: .5em .5em 0 .5em;
+          }
         }
       }
 
       &.is-user {
-        flex-direction: row-reverse;
+        .message-stack {
+          align-items: flex-start;
+        }
+
         .message-bubble {
           background: $primary;
+
+          &:last-child {
+            border-radius: .5em .5em .5em 0;
+          }
         }
       }
+    }
+
+    img.message-bubble {
+      background: none !important;
+      padding: 0;
     }
 
     .message-bubble {
@@ -142,6 +180,7 @@ $contactBackground: #2f3346;
 
     .button {
       margin: .5em;
+      align-self: center;
     }
   }
 }
