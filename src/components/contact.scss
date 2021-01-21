@@ -30,6 +30,7 @@ $contactBackground: rgba(47, 51, 70, 1);
   flex-direction: column;
   transition: right .5s ease;
   display: flex;
+  border-left: 1px solid darken($white, 10%);
 
   &.is-active {
     right: 0em;
@@ -38,6 +39,7 @@ $contactBackground: rgba(47, 51, 70, 1);
 
   @media (prefers-color-scheme: dark) {
     background: $contactBackground;
+  border-left: 1px solid lighten($contactBackground, 10%);
     .title {
       color: $primary-50;
     }
