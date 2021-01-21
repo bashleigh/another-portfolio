@@ -1,4 +1,19 @@
-import { Slide, ProjectStatus } from "./slider";
+export enum ProjectStatus {
+  ACTIVE = "active",
+  CEASED = "ceased",
+  ONHOLD = "on hold",
+  PLANNING = "planning",
+  COMPLETE = "complete",
+}
+
+export type Slide = {
+  status: ProjectStatus;
+  name: string;
+  description: string;
+  link?: string;
+  technologies?: string[];
+  image?: string;
+};
 
 export const slides: Slide[] = [
   {
@@ -53,6 +68,7 @@ export const slides: Slide[] = [
       "sqlite",
       "google messaging",
     ],
+    image: "pospal",
   },
   {
     status: ProjectStatus.PLANNING,

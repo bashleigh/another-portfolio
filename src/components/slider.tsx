@@ -3,24 +3,7 @@ import "./slider.scss";
 import { useSwipeable } from "react-swipeable";
 import Img from "gatsby-image";
 import { graphql, StaticQuery } from "gatsby";
-import { slides } from "./slides";
-
-export enum ProjectStatus {
-  ACTIVE = "active",
-  CEASED = "ceased",
-  ONHOLD = "on hold",
-  PLANNING = "planning",
-  COMPLETE = "complete",
-}
-
-export type Slide = {
-  status: ProjectStatus;
-  name: string;
-  description: string;
-  link?: string;
-  technologies?: string[];
-  image?: string;
-};
+import { slides, Slide as SlideType } from "./slides";
 
 const stringToHex = (string: string): string => {
   const indexes = "abcdefghijklmnopqrstuvwxyz".split("");
@@ -35,7 +18,7 @@ const stringToHex = (string: string): string => {
 };
 
 const Slide = (
-  props: Slide & { isActive: boolean; onClick: () => void; image?: any }
+  props: SlideType & { isActive: boolean; onClick: () => void; image?: any }
 ) => {
   const [showDesc, setShowDesc] = useState<boolean>(false);
   return (
@@ -131,6 +114,14 @@ export const Slider = () => {
           ruddr: file(relativePath: { eq: "ruddr.png" }) {
             childImageSharp {
               fluid(maxWidth: 1200) {
+                ...GatsbyImageSharpFluid_withWebp
+                ...GatsbyImageSharpFluidLimitPresentationSize
+              }
+            }
+          }
+          pospal: file(relativePath: { eq: "pospal.png" }) {
+            childImageSharp {
+              fluid(maxWidth: 1900) {
                 ...GatsbyImageSharpFluid_withWebp
                 ...GatsbyImageSharpFluidLimitPresentationSize
               }
