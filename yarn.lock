@@ -6032,6 +6032,13 @@ gatsby-plugin-page-creator@^2.8.1:
     globby "^11.0.1"
     lodash "^4.17.20"
 
+gatsby-plugin-react-helmet@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-react-helmet/-/gatsby-plugin-react-helmet-3.9.0.tgz#62dbbc15145004b3ce9d55d9f620726f1900bd7c"
+  integrity sha512-u9KAVomMMYvX5swwMF2ToyyVWwwduLMuRggeydYGVae9IOz9pRK4QZYpN303tWeuOSKNSAOVo4tcSQ40//jgVg==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+
 gatsby-plugin-react-svg@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-react-svg/-/gatsby-plugin-react-svg-3.0.0.tgz#67984bf350bce0532bef965fab094b0b461cdf68"

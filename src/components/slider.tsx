@@ -145,14 +145,14 @@ const Slide = (
       <div className="content">
         <div className="level">
           <div className="level-left">
-          <h4 className="is-3">
-          {props.name}{" "}
-          {props.link && (
-            <a target="_blank" href={props.link}>
-              View
-            </a>
-          )}
-        </h4>
+            <h4 className="is-3">
+              {props.name}{" "}
+              {props.link && (
+                <a target="_blank" href={props.link}>
+                  View
+                </a>
+              )}
+            </h4>
           </div>
           <div className="level-right">
             <a
@@ -166,7 +166,7 @@ const Slide = (
               {showDesc ? "Hide" : "Show"} description
             </a>
           </div>
-        </div>        
+        </div>
         <div className={`slider-description${showDesc ? " is-active" : ""}`}>
           <p>{props.description}</p>
           {props.technologies && (
