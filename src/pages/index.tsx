@@ -7,6 +7,14 @@ export default () => (
   <>
     <Helmet>
       <title>Ashleigh Simonelli - Code Expert</title>
+      <meta
+        name="description"
+        content="A Polyglot software engineer/programmer from Essex, just outside of London. Specialising in backend automation, SaaS platform building, MVP builds, apps, PWAs and many, many more. I will help define the tech of your business efficiently, radically and most importantly rapidly."
+      />
+      <meta
+        name="keywords"
+        content="web developer, web designer, software engineer, freelancer, programmer, platform builder, MVP specialist, automation, tech, Essex, London, contractor, consultant, SaaS builder, backend specialist, TypeScript, node.js, AMQP, TCP, HTTP, websockets, flutter, mobile, react, ios, android, AWS, gcloud, mentor, docker, k8s, kubernetes, lambda, functions, PWAs, architect"
+      />
     </Helmet>
     <Hero />
     <section className="section" id="business">

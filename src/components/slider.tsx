@@ -167,7 +167,7 @@ const Slide = (
             <div className="tags">
               {props.technologies.map(tech => (
                 <span
-                  key={tech}
+                  key={`tech-tag-${props.name}-${tech}`}
                   className="tag"
                   style={{ background: stringToHex(tech), color: "white" }}
                 >
