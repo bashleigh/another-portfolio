@@ -143,7 +143,9 @@ const Slide = (
         />
       )}
       <div className="content">
-        <h4 className="is-3">
+        <div className="level">
+          <div className="level-left">
+          <h4 className="is-3">
           {props.name}{" "}
           {props.link && (
             <a target="_blank" href={props.link}>
@@ -151,16 +153,20 @@ const Slide = (
             </a>
           )}
         </h4>
-        <a
-          href="#"
-          className="slider-description-toggle"
-          onClick={event => {
-            event.preventDefault();
-            setShowDesc(!showDesc);
-          }}
-        >
-          {showDesc ? "Hide" : "Show"} description
-        </a>
+          </div>
+          <div className="level-right">
+            <a
+              href="#"
+              className="slider-description-toggle"
+              onClick={event => {
+                event.preventDefault();
+                setShowDesc(!showDesc);
+              }}
+            >
+              {showDesc ? "Hide" : "Show"} description
+            </a>
+          </div>
+        </div>        
         <div className={`slider-description${showDesc ? " is-active" : ""}`}>
           <p>{props.description}</p>
           {props.technologies && (

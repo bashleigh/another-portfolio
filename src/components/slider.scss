@@ -117,10 +117,12 @@
         cursor: inherit;
       }
 
-      h4 {
-        a {
-          font-size: .6em;
-          font-weight: normal;
+      a {
+        font-size: .6em;
+        font-weight: normal;
+        color: $primary-200;
+        &:hover, &:active, &:focus {
+          color: $white;
         }
       }
 
