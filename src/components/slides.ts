@@ -17,6 +17,14 @@ export type Slide = {
 
 export const slides: Slide[] = [
   {
+    status: ProjectStatus.ACTIVE,
+    name: "LineUp",
+    description: "A football team line up builder for your social media!",
+    technologies: ["typescript", "gatsby", "football", "image rendering"],
+    image: "lineup",
+    link: "https://clever-visvesvaraya-0c4dc3.netlify.app/",
+  },
+  {
     status: ProjectStatus.ONHOLD,
     name: "Ruddr",
     description:

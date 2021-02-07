@@ -103,6 +103,14 @@ export const Slider = () => {
               }
             }
           }
+          lineup: file(relativePath: { eq: "lineup.png" }) {
+            childImageSharp {
+              fluid(maxWidth: 1200) {
+                ...GatsbyImageSharpFluid_withWebp
+                ...GatsbyImageSharpFluidLimitPresentationSize
+              }
+            }
+          }
           showelli: file(relativePath: { eq: "showelli.png" }) {
             childImageSharp {
               fluid(maxWidth: 1200) {
