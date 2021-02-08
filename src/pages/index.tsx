@@ -47,7 +47,7 @@ export default () => (
               <li>Design Prototyping</li>
               <li>Workflow Design</li>
               <li>Automation Design and Impelmentation</li>
-              <li>Arhitecture Design and Implementation</li>
+              <li>Architecture Design and Implementation</li>
               <li>Open Source Collaboration</li>
               <li>Technical Consultant</li>
               <li>Technical Advice</li>
