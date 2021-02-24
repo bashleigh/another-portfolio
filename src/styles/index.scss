@@ -8,6 +8,10 @@
     @media only screen and (max-width: $tablet) {
       background-color: $primary-700;
     }
+
+    .navbar .nav-item:not(.button) {
+      color: $primary !important;
+    }
   }
 
   .columns {
