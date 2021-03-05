@@ -134,8 +134,11 @@ const commands: {
       },
       <p className="is-rainbow-orange">
         Was pretty fun! Thinking of opening sourcing the terminal design and
-        input,{' '}
-        <a target="_blank" href="https://github.com/bashleigh/another-portfolio">
+        input,{" "}
+        <a
+          target="_blank"
+          href="https://github.com/bashleigh/another-portfolio"
+        >
           click here to check out the repo if you want!
         </a>
       </p>,
@@ -146,7 +149,10 @@ const commands: {
         To view my current projects and work <a href="#my-work">Click here</a>
       </p>,
       <p className="is-rainbow-blue">
-        To get in concact <a href="" onClick={openContact()}>Click here</a>
+        To get in concact{" "}
+        <a href="" onClick={openContact()}>
+          Click here
+        </a>
       </p>,
     ]);
   },

@@ -30,7 +30,17 @@ export const Contact = () => {
       from: "bot",
     },
     {
-      body: <p className="message-bubble">You can contact me via <a href='https://www.facebook.com/ashleigh.simonelliWeb'>Facebook</a> or <a href='https://www.linkedin.com/in/ashleigh-simonelli-01b5a1b6/'>Linkedin</a> for now.</p>,
+      body: (
+        <p className="message-bubble">
+          You can contact me via{" "}
+          <a href="https://www.facebook.com/ashleigh.simonelliWeb">Facebook</a>{" "}
+          or{" "}
+          <a href="https://www.linkedin.com/in/ashleigh-simonelli-01b5a1b6/">
+            Linkedin
+          </a>{" "}
+          for now.
+        </p>
+      ),
       from: "bot",
     },
   ]);

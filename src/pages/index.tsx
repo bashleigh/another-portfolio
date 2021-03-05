@@ -2,10 +2,10 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { Football, Hero, Slider, Contact, openContact } from "../components";
 import "./../styles/index.scss";
-import Img from 'gatsby-image';
-import {graphql} from 'gatsby';
+import Img from "gatsby-image";
+import { graphql } from "gatsby";
 
-export default ({data}) => (
+export default ({ data }) => (
   <>
     <Helmet>
       <title>Ashleigh Simonelli - Code Expert</title>
@@ -65,8 +65,9 @@ export default ({data}) => (
       <div className="container">
         <div className="columns is-vcentered is-centered">
           <div className="column is-4">
-            <Img fluid={data.me.childImageSharp.fluid}
-	      title="Ashleigh Simonelli"
+            <Img
+              fluid={data.me.childImageSharp.fluid}
+              title="Ashleigh Simonelli"
               alt="My Photo... ...guess it didn't load..."
             />
           </div>
@@ -186,10 +187,9 @@ export default ({data}) => (
   </>
 );
 
-
 export const query = graphql`
   query {
-    me: file(relativePath: {eq: "me.jpg"}) {
+    me: file(relativePath: { eq: "me.jpg" }) {
       childImageSharp {
         fluid(maxWidth: 500) {
           ...GatsbyImageSharpFluid_withWebp
@@ -199,4 +199,3 @@ export const query = graphql`
     }
   }
 `;
-

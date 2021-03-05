@@ -19,7 +19,8 @@ export const slides: Slide[] = [
   {
     status: ProjectStatus.ACTIVE,
     name: "LineUp",
-    description: "A football team line up builder for your social media! Customise your players, subs, colours, player highlight and even add your club's badge!",
+    description:
+      "A football team line up builder for your social media! Customise your players, subs, colours, player highlight and even add your club's badge!",
     technologies: ["typescript", "gatsby", "football", "image rendering"],
     image: "lineup",
     link: "https://clever-visvesvaraya-0c4dc3.netlify.app/",
