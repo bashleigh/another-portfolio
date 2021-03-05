@@ -135,7 +135,7 @@ const commands: {
       <p className="is-rainbow-orange">
         Was pretty fun! Thinking of opening sourcing the terminal design and
         input,
-        <a href="https://github.com/bashleigh/another-portfolio">
+        <a target="_blank" href="https://github.com/bashleigh/another-portfolio">
           click here to check out the repo if you want!
         </a>
       </p>,
