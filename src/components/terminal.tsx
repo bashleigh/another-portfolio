@@ -146,7 +146,7 @@ const commands: {
         To view my current projects and work <a href="#my-work">Click here</a>
       </p>,
       <p className="is-rainbow-blue">
-        To get in concact <a href="#contact">Click here</a>
+        To get in concact <a href="" onClick={openContact()}>Click here</a>
       </p>,
     ]);
   },
