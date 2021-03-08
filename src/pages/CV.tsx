@@ -50,7 +50,7 @@ const generateToken = (name: string = "stranger") => {
 };
 
 // @ts-ignore
-window && window.generateToken = generateToken;
+if (window) window.generateToken = generateToken;
 
 const validateToken = (
   token?: string | null
