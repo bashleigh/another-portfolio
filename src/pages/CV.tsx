@@ -3,8 +3,8 @@ import { Octokit } from "@octokit/core";
 import "./cv.scss";
 import { Helmet } from "react-helmet";
 import Highlighter from "react-highlight-words";
-import {shleemy} from 'shleemy';
-import {Link} from 'gatsby';
+import { shleemy } from "shleemy";
+import { Link } from "gatsby";
 
 type AshleighCV = {
   access: boolean;
@@ -52,7 +52,7 @@ const generateToken = (name: string = "stranger") => {
 };
 
 // @ts-ignore
-if (typeof window !== 'undefined') window.generateToken = generateToken;
+if (typeof window !== "undefined") window.generateToken = generateToken;
 
 const validateToken = (
   token?: string | null
@@ -144,9 +144,19 @@ const TokenRequired = ({
                     </div>
                   </div>
                 </form>
-                <br/>
+                <br />
                 <h4 className="title is-4">Would you like access?</h4>
-                <p>Please get in contact with me via <a href="https://www.linkedin.com/in/ashleigh-simonelli-01b5a1b6/">Linkedin</a> or <a href="https://www.facebook.com/ashleigh.simonelliWeb">Facebook</a>.</p>
+                <p>
+                  Please get in contact with me via{" "}
+                  <a href="https://www.linkedin.com/in/ashleigh-simonelli-01b5a1b6/">
+                    Linkedin
+                  </a>{" "}
+                  or{" "}
+                  <a href="https://www.facebook.com/ashleigh.simonelliWeb">
+                    Facebook
+                  </a>
+                  .
+                </p>
               </div>
             </div>
           </div>
@@ -215,14 +225,13 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
       <header>
         <nav className="navbar">
           <div className="container">
-            <Link to="/" className="navbar-item">View Site</Link>
+            <Link to="/" className="navbar-item">
+              View Site
+            </Link>
             <div className="navbar-item">👋 Hello! {payload.name}</div>
             <div className="navbar-item">Ashleigh Simonelli's CV</div>
             <div className="navbar-end">
-              <a
-                href={`tel:${data.mobile_number}`}
-                className="navbar-item"
-              >
+              <a href={`tel:${data.mobile_number}`} className="navbar-item">
                 {data.mobile_number}
               </a>
               <a
@@ -251,20 +260,22 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
               >
                 View on Gist
               </a>
-              {window && window.navigator && typeof window.navigator === "function" && (
-                <a
-                  href="#"
-                  onClick={event => {
-                    event.preventDefault();
+              {window &&
+                window.navigator &&
+                typeof window.navigator === "function" && (
+                  <a
+                    href="#"
+                    onClick={event => {
+                      event.preventDefault();
 
-                    window.navigator.share({
-                      text: "Ashleigh Simonelli's CV",
-                    });
-                  }}
-                >
-                  Share
-                </a>
-              )}
+                      window.navigator.share({
+                        text: "Ashleigh Simonelli's CV",
+                      });
+                    }}
+                  >
+                    Share
+                  </a>
+                )}
             </div>
             <div className="box-header">
               <img src={data.avatar_url} />
@@ -296,25 +307,25 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                       </div>
                       <div className="column">
                         <div className="content">
-                        <h3 className="title is-5">
-                      {data.employment_history[key].position}
-                    </h3>
-                    <h6 className="subtitle is-6">{key}</h6>
-                    <h5 className="subtitle is-7">
-                      {Object.values(data.employment_history[key].dates).join(
-                        " - "
-                      )}
-                    </h5>
-                    <div className="content">
-                      {data.employment_history[key].description.map(
-                        description => (
-                          <p key={description}>{description}</p>
-                        )
-                      )}
-                    </div>
+                          <h3 className="title is-5">
+                            {data.employment_history[key].position}
+                          </h3>
+                          <h6 className="subtitle is-6">{key}</h6>
+                          <h5 className="subtitle is-7">
+                            {Object.values(
+                              data.employment_history[key].dates
+                            ).join(" - ")}
+                          </h5>
+                          <div className="content">
+                            {data.employment_history[key].description.map(
+                              description => (
+                                <p key={description}>{description}</p>
+                              )
+                            )}
+                          </div>
                         </div>
                       </div>
-                  </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -326,7 +337,8 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <h4 className="title is-4">Keywords and Buzzwords</h4>
                   <p>
                     This is a list of keywords and buzzwords of softwares I use,
-                    have used or am familiar with. This list is likely not 100% complete
+                    have used or am familiar with. This list is likely not 100%
+                    complete
                   </p>
                 </div>
                 <div className="column is-6">
@@ -361,9 +373,9 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   </form>
                 </div>
               </div>
-              <br/>
-              <br/>
-              <br/>
+              <br />
+              <br />
+              <br />
               <div className="columns is-multiline">
                 <div className="column is-3">
                   <div className="content">
@@ -424,7 +436,8 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                                 />
                               </li>
                             ))}
-                            {typeof data.frameworks[key] === 'object' && !Array.isArray(data.frameworks[key]) &&
+                          {typeof data.frameworks[key] === "object" &&
+                            !Array.isArray(data.frameworks[key]) &&
                             Object.keys(data.frameworks[key]).map(innerKey => (
                               <li>
                                 <Highlighter
@@ -539,7 +552,11 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
 };
 
 export default () => {
-  const urlParams = new URLSearchParams(typeof document !== 'undefined' ? document.location.search.substring(1) : undefined);
+  const urlParams = new URLSearchParams(
+    typeof document !== "undefined"
+      ? document.location.search.substring(1)
+      : undefined
+  );
   const existingToken = urlParams.get("token");
 
   const result = validateToken(existingToken);
