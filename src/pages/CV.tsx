@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Octokit } from "@octokit/core";
 import "./cv.scss";
 import { Helmet } from "react-helmet";
+import Highlighter from "react-highlight-words";
 
 type AshleighCV = {
   access: boolean;
@@ -157,6 +158,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
   const [data, setData] = useState<undefined | CVData>(undefined);
   const [error, setError] = useState<undefined | string>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+  const [keywords, setKeywords] = useState<string[]>([]);
 
   const octo = new Octokit();
 
@@ -289,14 +291,47 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
           </section>
           <hr />
           <section className="section">
-            <h4 className="title is-4">Keywords and Buzzwords</h4>
+            <div className="columns">
+              <div className="column is-6">
+                <h4 className="title is-4">Keywords and Buzzwords</h4>
+                <p>This is a list of keywords and buzzwords of softwares I use, have used or am familiar with.</p>
+              </div>
+              <div className="column is-6">
+                <label className="label">Highlight keywords</label>
+                <p className="help">Enter your keywords to be highlighted; separated by comma</p>
+                <form>
+                  <div className="field has-addons">
+                    <div className="control is-expanded">
+                      <input name="keywords"
+                        className="input"
+                        value={keywords.join(', ')}
+                        onChange={event => {
+                          setKeywords([
+                            ...event.target.value.split(', ').map(word => word.trim()),
+                          ]);
+                        }}
+                      />
+                    </div>
+                    <div className="control">
+                      <input className="button is-primary" type="submit" value="Search"/>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
             <div className="columns is-multiline">
               <div className="column is-3">
                 <div className="content">
                   <h4 className="title is-4">Contributing to</h4>
                   <ul>
                     {data.currently_contributing_to.map(contributing => (
-                      <li key={contributing}>{contributing}</li>
+                      <li key={contributing}>
+                      <Highlighter 
+                            caseSensitive={false}
+                            highlightClassName="selected-word" 
+                            searchWords={keywords} 
+                            textToHighlight={contributing}/>
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -307,7 +342,11 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <ul>
                     {Object.keys(data.languages).map(key => (
                       <li key={`language-${key}`}>
-                        {key}: {data.languages[key]}
+                        <Highlighter 
+                            caseSensitive={false}
+                            highlightClassName="selected-word" 
+                            searchWords={keywords} 
+                            textToHighlight={`${key}: ${data.languages[key]}`}/>
                       </li>
                     ))}
                   </ul>
@@ -318,11 +357,19 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <h4 className="title is-4">Frameworks</h4>
                   {Object.keys(data.frameworks).map(key => (
                     <div key={`framework-${key}`}>
-                      <h5 className="subtitle">{key}</h5>
+                      <h5 className="subtitle"><Highlighter 
+                            caseSensitive={false}
+                            highlightClassName="selected-word" 
+                            searchWords={keywords} 
+                            textToHighlight={key}/></h5>
                       <ul>
                         {Array.isArray(data.frameworks[key]) &&
                           data.frameworks[key].map(framework => (
-                            <li>{framework}</li>
+                            <li><Highlighter 
+                            caseSensitive={false}
+                            highlightClassName="selected-word" 
+                            searchWords={keywords} 
+                            textToHighlight={framework}/></li>
                           ))}
                       </ul>
                     </div>
@@ -334,7 +381,12 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <h4 className="title is-4">Tools</h4>
                   <ul>
                     {data.tools.map(tool => (
-                      <li key={`tools-${tool}`}>{tool}</li>
+                      <li key={`tools-${tool}`}>
+                      <Highlighter 
+                            caseSensitive={false}
+                            highlightClassName="selected-word" 
+                            searchWords={keywords} 
+                            textToHighlight={tool}/></li>
                     ))}
                   </ul>
                 </div>
@@ -344,7 +396,11 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <h4 className="title is-4">Protocols and Methods</h4>
                   <ul>
                     {data.protocols_and_methods.map(protocol => (
-                      <li key={`protocols-${protocol}`}>{protocol}</li>
+                      <li key={`protocols-${protocol}`}><Highlighter 
+                      caseSensitive={false}
+                      highlightClassName="selected-word" 
+                      searchWords={keywords} 
+                      textToHighlight={protocol}/></li>
                     ))}
                   </ul>
                 </div>
@@ -354,7 +410,11 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <h4 className="title is-4">Operating Systems</h4>
                   <ul>
                     {data.operating_systems.map(os => (
-                      <li key={`OS-${os}`}>{os}</li>
+                      <li key={`OS-${os}`}><Highlighter 
+                      caseSensitive={false}
+                      highlightClassName="selected-word" 
+                      searchWords={keywords} 
+                      textToHighlight={os}/></li>
                     ))}
                   </ul>
                 </div>
@@ -365,8 +425,11 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <ul>
                     {Object.keys(data.platforms).map(key => (
                       <li key={`platform-${key}`}>
-                        {key} {data.platforms[key]}
-                      </li>
+                        <Highlighter 
+                            caseSensitive={false}
+                            highlightClassName="selected-word" 
+                            searchWords={keywords} 
+                            textToHighlight={`${key} ${data.platforms[key]}`}/></li>
                     ))}
                   </ul>
                 </div>
