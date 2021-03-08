@@ -16,7 +16,7 @@ type CVData = {
   dob: string;
   avatar_url: string;
   email_address: string;
-  mobile: string;
+  mobile_number: string;
   postal_region: string;
   description: string[];
   achievements: string[];
@@ -104,10 +104,10 @@ const TokenRequired = ({
       <Helmet>
         <title>Ashleigh Simonelli's CV | Please enter a valid token</title>
       </Helmet>
-      <section className="section">
-        <div className="container">
+      <section className="hero is-fullheight">
+        <div className="hero-body">
           <div className="columns">
-            <div className="column is-6 is-offset-3">
+            <div className="column is-8 is-offset-2">
               <div className="box">
                 <h2 className="title">Ashleigh's CV</h2>
                 <p>
@@ -141,6 +141,9 @@ const TokenRequired = ({
                     </div>
                   </div>
                 </form>
+                <br/>
+                <h4 className="title is-4">Would you like access?</h4>
+                <p>Please get in contact with me via <a href="https://www.linkedin.com/in/ashleigh-simonelli-01b5a1b6/">Linkedin</a> or <a href="https://www.facebook.com/ashleigh.simonelliWeb">Facebook</a>.</p>
               </div>
             </div>
           </div>
@@ -212,6 +215,12 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
             <div className="navbar-item">👋 Hello! {payload.name}</div>
             <div className="navbar-item">Ashleigh Simonelli's CV</div>
             <div className="navbar-end">
+              <a
+                href={`tel:${data.mobile_number}`}
+                className="navbar-item"
+              >
+                {data.mobile_number}
+              </a>
               <a
                 href="https://www.linkedin.com/in/ashleigh-simonelli-01b5a1b6/"
                 className="navbar-item"
@@ -311,7 +320,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <p className="help">
                     Enter your keywords to be highlighted; separated by comma
                   </p>
-                  <form>
+                  <form onSubmit={event => event.preventDefault()}>
                     <div className="field has-addons">
                       <div className="control is-expanded">
                         <input
