@@ -275,9 +275,9 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
             </div>
             <section className="section" id="achievements">
               <div className="content">
-                <h4 className="title is-4">Achievements</h4>
+                <h4 className="title is-3">Achievements</h4>
                 <ul>
-                  {data.achievements.map(achievement => (
+                  {data.achievements.reverse().map(achievement => (
                     <li key={achievement}>{achievement}</li>
                   ))}
                 </ul>
@@ -361,6 +361,9 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   </form>
                 </div>
               </div>
+              <br/>
+              <br/>
+              <br/>
               <div className="columns is-multiline">
                 <div className="column is-3">
                   <div className="content">
