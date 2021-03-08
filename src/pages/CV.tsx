@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Octokit } from "@octokit/core";
 import "./cv.scss";
+import { Helmet } from "react-helmet";
 
 type AshleighCV = {
   access: boolean;
@@ -98,6 +99,10 @@ const TokenRequired = ({
   };
 
   return (
+    <>
+    <Helmet>
+      <title>Ashleigh Simonelli's CV | Please enter a valid token</title>
+    </Helmet>
     <section className="section">
       <div className="container">
         <div className="columns">
@@ -134,6 +139,7 @@ const TokenRequired = ({
         </div>
       </div>
     </section>
+    </>
   );
 };
 
@@ -191,6 +197,9 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
     <div className="notification is-danger">{error}</div>
   ) : (
     <>
+    <Helmet>
+      <title>Ashleigh Simonelli's CV</title>
+    </Helmet>
     <header>
       <nav className="navbar">
         <div className="container">
