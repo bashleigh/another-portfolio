@@ -76,7 +76,7 @@ $linearWidth: .5em;
   &:after {
     content: '';
     position: absolute;
-    top: 2em;
+    top: 2.2em;
     left: 0 - $linearWidth / 4;
     width: $linearWidth + ($linearWidth / 2);
     height: $linearWidth + ($linearWidth / 2);
@@ -84,5 +84,12 @@ $linearWidth: .5em;
     border-radius: 100%;
     background: $primary-500;
     display: block;
+  }
+}
+
+#achievements {
+  ul li {
+    list-style: "🏆";
+    padding-left: 1em;
   }
 }

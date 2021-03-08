@@ -19,7 +19,7 @@
   align-items: center;
   box-shadow: 0 .2em .5em .5em rgba(0,0,0,.2);
 
-  .nav-item {
+  .nav-item:not(.button) {
     padding: .5em;
     color: $primary-500;
 

@@ -4,6 +4,7 @@ import "./cv.scss";
 import { Helmet } from "react-helmet";
 import Highlighter from "react-highlight-words";
 import {shleemy} from 'shleemy';
+import {Link} from 'gatsby';
 
 type AshleighCV = {
   access: boolean;
@@ -213,6 +214,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
       <header>
         <nav className="navbar">
           <div className="container">
+            <Link to="/" className="navbar-item">View Site</Link>
             <div className="navbar-item">👋 Hello! {payload.name}</div>
             <div className="navbar-item">Ashleigh Simonelli's CV</div>
             <div className="navbar-end">
@@ -270,7 +272,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                 <p key={description}>{description}</p>
               ))}
             </div>
-            <section className="section">
+            <section className="section" id="achievements">
               <div className="content">
                 <h4 className="title is-4">Achievements</h4>
                 <ul>
@@ -415,6 +417,17 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                                   highlightClassName="selected-word"
                                   searchWords={keywords}
                                   textToHighlight={framework}
+                                />
+                              </li>
+                            ))}
+                            {typeof data.frameworks[key] === 'object' && !Array.isArray(data.frameworks[key]) &&
+                            Object.keys(data.frameworks[key]).map(innerKey => (
+                              <li>
+                                <Highlighter
+                                  caseSensitive={false}
+                                  highlightClassName="selected-word"
+                                  searchWords={keywords}
+                                  textToHighlight={`${innerKey} ${data.frameworks[key][innerKey]}`}
                                 />
                               </li>
                             ))}
