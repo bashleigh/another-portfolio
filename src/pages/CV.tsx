@@ -50,7 +50,7 @@ const generateToken = (name: string = "stranger") => {
 };
 
 // @ts-ignore
-if (window) window.generateToken = generateToken;
+if (typeof window !== 'undefined') window.generateToken = generateToken;
 
 const validateToken = (
   token?: string | null
@@ -505,7 +505,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
 };
 
 export default () => {
-  const urlParams = new URLSearchParams(document.location.search.substring(1));
+  const urlParams = new URLSearchParams(typeof document !== 'undefined' ? document.location.search.substring(1) : undefined);
   const existingToken = urlParams.get("token");
 
   const result = validateToken(existingToken);
