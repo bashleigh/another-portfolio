@@ -466,7 +466,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <div className="content">
                     <h4 className="title is-4">Frameworks</h4>
                     {Object.keys(data.frameworks).map(key => (
-                      <div key={`framework-${key}`}>
+                      <div className="content" key={`framework-${key}`}>
                         <h5 className="subtitle">
                           <Highlighter
                             caseSensitive={false}
