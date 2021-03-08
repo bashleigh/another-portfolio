@@ -39,6 +39,7 @@ type CVData = {
       description: string[];
     };
   };
+  clouds: string[];
 };
 
 const generateToken = (name: string = "stranger") => {
@@ -498,6 +499,23 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                             highlightClassName="selected-word"
                             searchWords={keywords}
                             textToHighlight={`${key} ${data.platforms[key]}`}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <div className="column is-3">
+                  <div className="content">
+                    <h4 className="title is-4">Clouds</h4>
+                    <ul>
+                      {data.clouds.map(cloud => (
+                        <li key={`clouds-${cloud}`}>
+                          <Highlighter
+                            caseSensitive={false}
+                            highlightClassName="selected-word"
+                            searchWords={keywords}
+                            textToHighlight={cloud}
                           />
                         </li>
                       ))}
