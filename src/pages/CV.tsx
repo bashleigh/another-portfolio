@@ -210,6 +210,10 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
           Ashleigh Simonelli's CV
         </div>
         <div className="navbar-end">
+          <a href="https://www.linkedin.com/in/ashleigh-simonelli-01b5a1b6/" className="navbar-item">
+            Linkedin
+          </a>
+          <a href="https://github.com/bashleigh/" className="navbar-item">GitHub</a>
           {/* <a className="navbar-item" href="">Share</a> */}
         </div>
         </div>
