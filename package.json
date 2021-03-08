@@ -29,6 +29,7 @@
     "react-helmet": "^6.1.0",
     "react-highlight-words": "^0.17.0",
     "react-swipeable": "^6.0.1",
+    "shleemy": "^1.2.2",
     "typescript": "^4.1.3"
   },
   "scripts": {

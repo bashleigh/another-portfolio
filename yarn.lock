@@ -11904,6 +11904,11 @@ shell-quote@1.6.1:
     array-reduce "~0.0.0"
     jsonify "~0.0.0"
 
+shleemy@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/shleemy/-/shleemy-1.2.2.tgz#a4779d004e45846ce79f2f358447a1b3d863d04c"
+  integrity sha512-w6/eQeTCTIqla+r9cxGK+fC10jv9JotaUWZsw2O/ncqkq6thcZMNI4S73dtoG4SXsYEaWJI3uzBRgEHt+rY6Vg==
+
 side-channel@^1.0.2, side-channel@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/side-channel/-/side-channel-1.0.4.tgz#efce5c8fdc104ee751b25c58d4290011fa5ea2cf"

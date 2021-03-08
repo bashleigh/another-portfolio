@@ -3,6 +3,7 @@ import { Octokit } from "@octokit/core";
 import "./cv.scss";
 import { Helmet } from "react-helmet";
 import Highlighter from "react-highlight-words";
+import {shleemy} from 'shleemy';
 
 type AshleighCV = {
   access: boolean;
@@ -49,7 +50,7 @@ const generateToken = (name: string = "stranger") => {
 };
 
 // @ts-ignore
-window.generateToken = generateToken;
+window && window.generateToken = generateToken;
 
 const validateToken = (
   token?: string | null
@@ -247,7 +248,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
               >
                 View on Gist
               </a>
-              {window.navigator && typeof window.navigator === "function" && (
+              {window && window.navigator && typeof window.navigator === "function" && (
                 <a
                   href="#"
                   onClick={event => {
@@ -282,14 +283,21 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
             <hr />
 
             <section className="section">
-              <div className="employment history">
+              <div className="">
                 <h3 className="title is-3">Employment History</h3>
                 {Object.keys(data.employment_history).map(key => (
-                  <div key={`employment-${key}`}>
-                    <h3 className="title is-5">
-                      {key} - {data.employment_history[key].position}
+                  <div className="employment-history" key={`employment-${key}`}>
+                    <div className="columns">
+                      <div className="column is-1 is-desktop-only">
+                        <div className="linear"></div>
+                      </div>
+                      <div className="column">
+                        <div className="content">
+                        <h3 className="title is-5">
+                      {data.employment_history[key].position}
                     </h3>
-                    <h5 className="subtitle">
+                    <h6 className="subtitle is-6">{key}</h6>
+                    <h5 className="subtitle is-7">
                       {Object.values(data.employment_history[key].dates).join(
                         " - "
                       )}
@@ -301,6 +309,9 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                         )
                       )}
                     </div>
+                        </div>
+                      </div>
+                  </div>
                   </div>
                 ))}
               </div>
@@ -482,7 +493,10 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                 </div>
               </div>
             </section>
-            <div className="box-footer"></div>
+            <div className="box-footer">
+              <hr />
+              Last Modified {`${shleemy(data.updated_at)}`}
+            </div>
           </div>
         </div>
       </section>
