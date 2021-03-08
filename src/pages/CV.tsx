@@ -92,12 +92,21 @@ const TokenRequired = ({
       return;
     }
 
+    history.pushState(undefined, 'Ashleigh\'s CV', `?token=${token}`);
+
     setPayload(result.payload);
   };
 
   return (
     <section className="section">
-      <form onSubmit={onSubmit}>
+      <div className="container">
+        <div className="columns">
+          <div className="column is-6 is-offset-3">
+            <div className="box">
+            <h2 className="title">Ashleigh's CV</h2>
+            <p>Please enter the token you was provided with to view my CV. Why do you need a token? My CV holds personal information I wish to control.</p>
+            <br/>
+          <form onSubmit={onSubmit}>
         {error && <div className="notification is-danger">{error}</div>}
         <label className="label">Token</label>
         <div className="field has-addons">
@@ -120,9 +129,23 @@ const TokenRequired = ({
           </div>
         </div>
       </form>
+          </div>
+        </div>
+        </div>
+      </div>
     </section>
   );
 };
+
+const Loader = () => (
+  <div className="hero is-fullheight">
+    <div className="hero-body">
+    <div className="loader">
+
+    </div>
+    </div>
+  </div>
+);
 
 export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
   const [data, setData] = useState<undefined | CVData>(undefined);
@@ -161,12 +184,28 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
 
     fetchData();
   }, []);
-
+  
   return loading ? (
-    <div className="">Loading</div>
+    <Loader/>
   ) : !data || error ? (
     <div className="notification is-danger">{error}</div>
   ) : (
+    <>
+    <header>
+      <nav className="navbar">
+        <div className="container">
+        <div className="navbar-item">
+        👋   Hello! {payload.name}
+        </div>
+        <div className="navbar-item">
+          Ashleigh Simonelli's CV
+        </div>
+        <div className="navbar-end">
+          {/* <a className="navbar-item" href="">Share</a> */}
+        </div>
+        </div>
+      </nav>
+    </header>
     <section className="section">
       <div className="container">
         <div className="box">
@@ -175,9 +214,22 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
               href={
                 "https://gist.github.com/bashleigh/3bdd8052db7617a9ca3b31976a8cffa0"
               }
+              target="_blank"
             >
-              View Raw
+              View on Gist
             </a>
+            {window.navigator && typeof window.navigator === 'function' && <a
+              href="#"
+              onClick={event => {
+                event.preventDefault();
+
+                window.navigator.share({
+                  text: "Ashleigh Simonelli's CV",
+                });
+              }}
+            >
+              Share
+            </a>}
           </div>
           <div className="box-header">
             <img src={data.avatar_url} />
@@ -223,7 +275,6 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
             </div>
           </section>
           <hr />
-
           <section className="section">
             <h4 className="title is-4">Keywords and Buzzwords</h4>
             <div className="columns is-multiline">
@@ -313,6 +364,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

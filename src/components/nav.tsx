@@ -4,7 +4,7 @@ import { openContact } from "./contact";
 
 export const Nav = () => (
   <div className="navbar-container">
-    <nav className="navbar">
+    <nav className="navbar is-main">
       <a className="nav-item" href="#about-me">
         About Me
       </a>

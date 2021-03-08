@@ -1,9 +1,24 @@
+@import './../styles/variables.scss';
+
 .box-header {
   text-align: center;
   padding: 2em;
-  
+
   img {
     border-radius: 100%;
+    max-width: 10em;
+    margin-bottom: 1em;
+    box-shadow: 0 0 .5em rgba(0,0,0,.4);
+  }
+}
 
+.hero-body {
+  justify-content: center;
+
+  .loader {
+    border-left-color: $primary;
+    border-bottom-color: $primary;
+    height: 5em;
+    width: 5em;
   }
 }
