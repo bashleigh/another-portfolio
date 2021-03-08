@@ -325,7 +325,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                       </p>
                     </div>
                     {Object.keys(data.ratings).map(key => (
-                      <div className="columns">
+                      <div className="columns is-vcentered">
                         <div className="column is-3">
                           <label className="label">{key}</label>
                         </div>
