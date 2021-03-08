@@ -283,12 +283,12 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
             <hr />
 
             <section className="section">
-              <div className="">
+              <div id="employment">
                 <h3 className="title is-3">Employment History</h3>
                 {Object.keys(data.employment_history).map(key => (
                   <div className="employment-history" key={`employment-${key}`}>
                     <div className="columns">
-                      <div className="column is-1 is-desktop-only">
+                      <div className="column is-linear-container">
                         <div className="linear"></div>
                       </div>
                       <div className="column">

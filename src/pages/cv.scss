@@ -1,5 +1,7 @@
 @import './../styles/variables.scss';
 
+$linearWidth: .5em;
+
 .box-header {
   text-align: center;
   padding: 2em;
@@ -26,4 +28,60 @@
 .selected-words {
   background: $primary-100;
   border-radius: .2em;
+}
+
+.column.is-linear-container {
+  max-width: 3em;
+  display: none !important;
+  justify-content: center;
+
+  @media only screen and (min-width: $desktop) {
+    display: flex !important;
+  }
+}
+
+#employment {
+  .employment-history{
+    &:first-of-type {
+      .linear {
+        border-radius: 1em 1em 0 0;
+      }
+    }
+
+    &:last-of-type {
+      .linear {
+        border-radius: 0 0 1em 1em;
+      }
+    }
+  }
+}
+
+.employment-history {
+  .content {
+    padding: 2em .5em;
+
+    & > .content {
+      padding: 1em 0;
+    }
+  }
+}
+
+.linear {
+  background: $primary;
+  height: 105%;
+  width: $linearWidth;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 2em;
+    left: 0 - $linearWidth / 4;
+    width: $linearWidth + ($linearWidth / 2);
+    height: $linearWidth + ($linearWidth / 2);
+    border: $linearWidth / 4 solid white;
+    border-radius: 100%;
+    background: $primary;
+    display: block;
+  }
 }
