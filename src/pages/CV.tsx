@@ -40,6 +40,7 @@ type CVData = {
     };
   };
   clouds: string[];
+  ratings: {[s: string]: number};
 };
 
 const generateToken = (name: string = "stranger") => {
@@ -251,8 +252,9 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
       <section className="section">
         <div className="container">
           <div className="box">
-            <div>
-              <a
+          <div className="level">
+            <div className="level-item">
+            <a
                 href={
                   "https://gist.github.com/bashleigh/3bdd8052db7617a9ca3b31976a8cffa0"
                 }
@@ -260,10 +262,12 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
               >
                 View on Gist
               </a>
-              {window &&
+            </div>
+            {window &&
                 window.navigator &&
                 typeof window.navigator === "function" && (
-                  <a
+                  <div className="level-item">
+                    <a
                     href="#"
                     onClick={event => {
                       event.preventDefault();
@@ -275,7 +279,19 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   >
                     Share
                   </a>
+                  </div>
                 )}
+                  <div className="level-item">
+                    <Link to="#achievements">Achievements</Link>
+                  </div>
+                  <div className="level-item">
+                    <Link to="#skills">Skill Ratings</Link>
+                  </div>
+                  <div className="level-item">
+                    <Link to="#employment">Employment History</Link>
+                  </div>
+                </div>
+            <div>
             </div>
             <div className="box-header">
               <img src={data.avatar_url} />
@@ -295,6 +311,31 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
               </div>
             </section>
             <hr />
+
+            <section className="section" id="skills">
+              <div className="container">
+                <div className="columns">
+                  <div className="column is-6 is-offset-3">
+                  <h4 className="title is-3">Skill Ratings</h4>
+
+<div className="content">
+<p>This is a list of skill ratings that I would rate myself. We can never be perfect and we can always learn something new so I've not set anything at 10!</p>
+
+</div>
+                {Object.keys(data.ratings).map((key) => (
+                  <div className="columns"><div className="column is-3">
+                    <label className="label">{key}</label>
+                    </div>
+                    <div className="column">
+                    {data.ratings[key]}/10
+                      <progress className="progress is-primary" value={data.ratings[key]} max={10}>{data.ratings[key]}</progress></div>
+                      </div>
+                ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+            <hr/>
 
             <section className="section">
               <div id="employment">
