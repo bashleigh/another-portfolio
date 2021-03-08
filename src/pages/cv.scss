@@ -50,6 +50,7 @@ $linearWidth: .5em;
 
     &:last-of-type {
       .linear {
+        height: 100%;
         border-radius: 0 0 1em 1em;
       }
     }
@@ -68,7 +69,7 @@ $linearWidth: .5em;
 
 .linear {
   background: $primary;
-  height: 105%;
+  height: 106%;
   width: $linearWidth;
   position: relative;
 
