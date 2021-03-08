@@ -68,7 +68,7 @@ $linearWidth: .5em;
 }
 
 .linear {
-  background: $primary;
+  background: $primary-300;
   height: 106%;
   width: $linearWidth;
   position: relative;
@@ -82,7 +82,7 @@ $linearWidth: .5em;
     height: $linearWidth + ($linearWidth / 2);
     border: $linearWidth / 4 solid white;
     border-radius: 100%;
-    background: $primary;
+    background: $primary-500;
     display: block;
   }
 }

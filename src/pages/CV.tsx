@@ -323,7 +323,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                   <h4 className="title is-4">Keywords and Buzzwords</h4>
                   <p>
                     This is a list of keywords and buzzwords of softwares I use,
-                    have used or am familiar with.
+                    have used or am familiar with. This list is likely not 100% complete
                   </p>
                 </div>
                 <div className="column is-6">
