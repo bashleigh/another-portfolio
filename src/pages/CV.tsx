@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet";
 import Highlighter from "react-highlight-words";
 import { shleemy } from "shleemy";
 import { Link } from "gatsby";
+import ReactToPdf from 'react-to-pdf';
 
 type AshleighCV = {
   access: boolean;
@@ -175,7 +176,9 @@ const Loader = () => (
   </div>
 );
 
-export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
+const ref = React.createRef<any>();
+
+const ViewCV = ({ payload }: { payload: AshleighCV}) => {
   const [data, setData] = useState<undefined | CVData>(undefined);
   const [error, setError] = useState<undefined | string>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
@@ -244,6 +247,15 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
               <a href="https://github.com/bashleigh/" className="navbar-item">
                 GitHub
               </a>
+              {/* <ReactToPdf targetRef={ref} filename="ashleigh-simonelli.pdf" scale={0.8}>
+                  {({toPdf, targetRef}) => (
+                      <a className="navbar-item" onClick={event => {
+                        event.preventDefault();
+                        console.log('ref', targetRef);
+                        toPdf(targetRef);
+                      }}>Download</a>
+                  )}
+              </ReactToPdf> */}
               {/* <a className="navbar-item" href="">Share</a> */}
             </div>
           </div>
@@ -251,7 +263,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
       </header>
       <section className="section">
         <div className="container">
-          <div className="box">
+          <div className="box" ref={ref}>
             <div className="level">
               <div className="level-item">
                 <a
@@ -611,6 +623,7 @@ export default () => {
   const existingToken = urlParams.get("token");
 
   const result = validateToken(existingToken);
+  const ref = React.createRef<any>();
 
   const [payload, setPayload] = useState<undefined | AshleighCV>(
     result.valid ? result.payload : undefined
