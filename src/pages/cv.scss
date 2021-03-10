@@ -93,3 +93,22 @@ $linearWidth: .5em;
     padding-left: 1em;
   }
 }
+
+#projects {
+  .level-item {
+    margin-left: 1em;
+    @media only screen and (max-width: $tablet) {
+      margin-left: inherit;
+    }
+
+    a {
+      color: $primary;
+      font-size: .8em;
+      text-decoration: underline;
+
+      &:hover, &:focus, &:active {
+        text-decoration: none;
+      }
+    }
+  }
+}

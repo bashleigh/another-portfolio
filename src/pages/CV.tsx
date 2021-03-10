@@ -41,11 +41,11 @@ type CVData = {
   };
   projects: {
     [s: string]: {
-      started: string,
+      started: string;
       description: string[];
       link?: string;
     };
-  }
+  };
   clouds: string[];
   ratings: { [s: string]: number };
 };
@@ -295,6 +295,9 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                 <Link to="#skills">Skill Ratings</Link>
               </div>
               <div className="level-item">
+                <Link to="#projects">Recent Projects</Link>
+              </div>
+              <div className="level-item">
                 <Link to="#employment">Employment History</Link>
               </div>
             </div>
@@ -356,16 +359,42 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
             <section className="section">
               <div id="projects">
                 <h3 className="title is-3">Recent Projects</h3>
-                {Object.keys(data.projects).map(key => (<div key={`project=${key}`}>
-                  <h3 className="title is-3">{key}</h3>
-                  <h5 className="subtitle">{data.projects[key].started}</h5>
-                  {data.projects[key].link && <a href={data.projects[key].link} className="subtitle">{data.projects[key].started}</a>}
-                  <div className="content">
-                    {data.projects[key].description.map((description) => <p key={description}>{description}</p>)}
+                {Object.keys(data.projects).map(key => (
+                  <div key={`project=${key}`}>
+                    <div className="level">
+                      <div className="level-left">
+                        <div className="">
+                          <div>
+                            <h3 className="title is-4">{key}</h3>
+                            <h5 className="subtitle is-6">
+                              Started {data.projects[key].started}
+                            </h5>
+                          </div>
+                        </div>
+                        <div className="level-item">
+                          {data.projects[key].link && (
+                            <a
+                              target="_blank"
+                              href={data.projects[key].link}
+                              className="subtitle"
+                            >
+                              View Project
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="content">
+                      {data.projects[key].description.map(description => (
+                        <p key={description}>{description}</p>
+                      ))}
+                    </div>
+                    <br />
                   </div>
-                </div>))}
-             </div>
+                ))}
+              </div>
             </section>
+            <hr />
             <section className="section">
               <div id="employment">
                 <h3 className="title is-3">Employment History</h3>
