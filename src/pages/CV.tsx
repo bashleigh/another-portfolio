@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Octokit } from "@octokit/core";
 import "./cv.scss";
 import { Helmet } from "react-helmet";
@@ -8,6 +8,7 @@ import { Link } from "gatsby";
 
 type AshleighCV = {
   access: boolean;
+  hidden?: boolean;
   name: string;
 };
 
@@ -50,10 +51,11 @@ type CVData = {
   ratings: { [s: string]: number };
 };
 
-const generateToken = (name: string = "stranger") => {
+const generateToken = (name: string = "stranger", hidden?: boolean) => {
   return btoa(
     JSON.stringify({
       name: name || "stranger",
+      hidden: hidden || false,
       access: true,
     })
   );
@@ -182,11 +184,173 @@ const Loader = () => (
   </div>
 );
 
+const CVTokenGeneratorModal = ({
+  isOpen,
+  setModalOpen,
+}: {
+  isOpen: boolean;
+  setModalOpen: (open: boolean) => void;
+}) => {
+  const [name, setName] = useState<string>("");
+  const [anonymous, setAnonymous] = useState<boolean>(false);
+  const [token, setToken] = useState<string>("");
+  const [copySuccess, setcopySuccess] = useState<boolean | undefined>(
+    undefined
+  );
+
+  let copyRef = useRef(null);
+
+  return (
+    <div className={`modal${isOpen ? ` is-active` : ""}`}>
+      <div
+        className="modal-background"
+        onClick={event => {
+          event.preventDefault();
+          setModalOpen(false);
+        }}
+      ></div>
+      <button
+        className="modal-close is-large"
+        aria-label="close"
+        onClick={event => {
+          event.preventDefault();
+          setModalOpen(false);
+        }}
+      ></button>
+      <div className="modal-card">
+        <header className="modal-card-head">
+          <p className="modal-card-title">Share CV Link Generator</p>
+          <button
+            className="delete"
+            aria-label="close"
+            onClick={event => {
+              event.preventDefault();
+              setModalOpen(false);
+            }}
+          ></button>
+        </header>
+        <div className="modal-card-body">
+          <form
+            onSubmit={event => {
+              event.preventDefault();
+              const token = generateToken(name, anonymous);
+
+              setToken(token);
+            }}
+          >
+            <div className="field">
+              <div className="control">
+                <label className="label">Recipient's name</label>
+                <label className="help">
+                  The Person or company you're sending my CV to
+                </label>
+                <input
+                  name="name"
+                  type="text"
+                  className="input"
+                  value={name}
+                  onChange={event => {
+                    setName(event.target.value);
+                  }}
+                />
+              </div>
+            </div>
+            <div className="field">
+              <div className="control">
+                <label className="chekbox">
+                  <input
+                    type="checkbox"
+                    checked={anonymous}
+                    onChange={event => {
+                      setAnonymous(event.target.checked);
+                    }}
+                  />{" "}
+                  Anonymous Candidate
+                </label>
+                <label className="help">
+                  Hide my name and contact details from your client
+                </label>
+              </div>
+            </div>
+            <div className="field">
+              <div className="control">
+                <input
+                  name="submit"
+                  type="submit"
+                  className="button is-primary"
+                  value="Generate Link"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <footer className="modal-card-foot">
+          <div className="field has-addons">
+            <div className="control is-expanded">
+              <input
+                onClick={() => {
+                  if (copyRef.current && token) {
+                    try {
+                      copyRef.current.select();
+                      const successful = document.execCommand("copy");
+                      setcopySuccess(successful);
+                    } catch (err) {
+                      setcopySuccess(false);
+                    }
+                  }
+                }}
+                ref={copyRef}
+                name="link"
+                value={`https://ashleighsimonelli.co.uk/CV/?token=${token}`}
+                className="input"
+                readOnly
+                // disabled={true}
+              />
+            </div>
+            <div className="control">
+              <button
+                className={`button is-${
+                  typeof copySuccess === "undefined"
+                    ? "primary"
+                    : copySuccess
+                    ? "success"
+                    : "danger"
+                }`}
+                disabled={!token}
+                onClick={event => {
+                  event.preventDefault();
+                  if (copyRef.current && token) {
+                    try {
+                      copyRef.current.select();
+                      const successful = document.execCommand("copy");
+                      setcopySuccess(successful);
+                    } catch (err) {
+                      setcopySuccess(false);
+                    }
+                  }
+                }}
+              >
+                {typeof copySuccess === "undefined"
+                  ? "Copy to Clipboard"
+                  : copySuccess
+                  ? "Copied"
+                  : "Failed"}
+              </button>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+};
+
 export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
   const [data, setData] = useState<undefined | CVData>(undefined);
   const [error, setError] = useState<undefined | string>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [keywords, setKeywords] = useState<string[]>([]);
+  const { hidden } = payload;
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const octo = new Octokit();
 
@@ -221,6 +385,8 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
     fetchData();
   }, []);
 
+  const name = hidden ? "Candidate" : "Ashleigh Simonelli";
+
   return loading ? (
     <Loader />
   ) : !data || error ? (
@@ -228,31 +394,50 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
   ) : (
     <>
       <Helmet>
-        <title>Ashleigh Simonelli's CV</title>
+        <title>{name}'s CV</title>
       </Helmet>
+      {!hidden && (
+        <CVTokenGeneratorModal isOpen={modalOpen} setModalOpen={setModalOpen} />
+      )}
       <header>
         <nav className="navbar">
           <div className="container">
-            <Link to="/" className="navbar-item">
-              View Site
-            </Link>
             <div className="navbar-item">👋 Hello! {payload.name}</div>
-            <div className="navbar-item">Ashleigh Simonelli's CV</div>
-            <div className="navbar-end">
-              <a href={`tel:${data.mobile_number}`} className="navbar-item">
-                {data.mobile_number}
-              </a>
+            {!hidden && (
+              <Link to="/" className="navbar-item">
+                View Site
+              </Link>
+            )}
+            {!hidden && (
               <a
-                href="https://www.linkedin.com/in/ashleigh-simonelli-01b5a1b6/"
                 className="navbar-item"
+                href="#"
+                onClick={event => {
+                  event.preventDefault();
+                  setModalOpen(true);
+                }}
               >
-                Linkedin
+                Share
               </a>
-              <a href="https://github.com/bashleigh/" className="navbar-item">
-                GitHub
-              </a>
-              {/* <a className="navbar-item" href="">Share</a> */}
-            </div>
+            )}
+            <div className="navbar-item">{name}'s CV</div>
+            {!hidden && (
+              <div className="navbar-end">
+                <a href={`tel:${data.mobile_number}`} className="navbar-item">
+                  {data.mobile_number}
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/ashleigh-simonelli-01b5a1b6/"
+                  className="navbar-item"
+                >
+                  Linkedin
+                </a>
+                <a href="https://github.com/bashleigh/" className="navbar-item">
+                  GitHub
+                </a>
+                {/* <a className="navbar-item" href="">Share</a> */}
+              </div>
+            )}
           </div>
         </nav>
       </header>
@@ -261,31 +446,35 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
           <div className="box">
             <div className="level">
               <div className="level-item">
-                <a
-                  href={
-                    "https://gist.github.com/bashleigh/3bdd8052db7617a9ca3b31976a8cffa0"
-                  }
-                  target="_blank"
-                >
-                  View on Gist
-                </a>
+                {!hidden && (
+                  <a
+                    href={
+                      "https://gist.github.com/bashleigh/3bdd8052db7617a9ca3b31976a8cffa0"
+                    }
+                    target="_blank"
+                  >
+                    View on Gist
+                  </a>
+                )}
               </div>
               {window &&
                 window.navigator &&
                 typeof window.navigator === "function" && (
                   <div className="level-item">
-                    <a
-                      href="#"
-                      onClick={event => {
-                        event.preventDefault();
+                    {!hidden && (
+                      <a
+                        href="#"
+                        onClick={event => {
+                          event.preventDefault();
 
-                        window.navigator.share({
-                          text: "Ashleigh Simonelli's CV",
-                        });
-                      }}
-                    >
-                      Share
-                    </a>
+                          window.navigator.share({
+                            text: "Ashleigh Simonelli's CV",
+                          });
+                        }}
+                      >
+                        Share
+                      </a>
+                    )}
                   </div>
                 )}
               <div className="level-item">
@@ -304,7 +493,11 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
             <div></div>
             <div className="box-header">
               <img src={data.avatar_url} />
-              <h1 className="title">{data.name}</h1>
+              {!hidden ? (
+                <h1 className="title">{data.name}</h1>
+              ) : (
+                <h1 className="title">The Best Candidate</h1>
+              )}
               {data.description.map(description => (
                 <p key={description}>{description}</p>
               ))}
