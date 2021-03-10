@@ -39,6 +39,13 @@ type CVData = {
       description: string[];
     };
   };
+  projects: {
+    [s: string]: {
+      started: string,
+      description: string[];
+      link?: string;
+    };
+  }
   clouds: string[];
   ratings: { [s: string]: number };
 };
@@ -346,7 +353,19 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
               </div>
             </section>
             <hr />
-
+            <section className="section">
+              <div id="projects">
+                <h3 className="title is-3">Recent Projects</h3>
+                {Object.keys(data.projects).map(key => (<div key={`project=${key}`}>
+                  <h3 className="title is-3">{key}</h3>
+                  <h5 className="subtitle">{data.projects[key].started}</h5>
+                  {data.projects[key].link && <a href={data.projects[key].link} className="subtitle">{data.projects[key].started}</a>}
+                  <div className="content">
+                    {data.projects[key].description.map((description) => <p key={description}>{description}</p>)}
+                  </div>
+                </div>))}
+             </div>
+            </section>
             <section className="section">
               <div id="employment">
                 <h3 className="title is-3">Employment History</h3>
