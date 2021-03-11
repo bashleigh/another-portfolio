@@ -150,7 +150,7 @@ const commands: {
       </p>,
       <p className="is-rainbow-blue">
         To get in concact{" "}
-        <a href="" onClick={openContact()}>
+        <a href="#" onClick={() => openContact()}>
           Click here
         </a>
       </p>,
