@@ -496,7 +496,9 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
               {!hidden ? (
                 <h1 className="title">{data.name}</h1>
               ) : (
-                <h1 className="title">The Best Candidate</h1>
+                <><h1 className="title">The Best Candidate</h1>
+                <h2 className="subtitle">The recruiter supplied this CV with contact details removed</h2>
+                </>
               )}
               {data.description.map(description => (
                 <p key={description}>{description}</p>
