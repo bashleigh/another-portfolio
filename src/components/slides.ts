@@ -17,6 +17,30 @@ export type Slide = {
 
 export const slides: Slide[] = [
   {
+    status: ProjectStatus.PLANNING,
+    name: "PosPal",
+    description:
+      "A mobile first, next generation EPOS system for sole traders and small retailers",
+    technologies: [
+      "typescript",
+      "gcloud",
+      "google functions",
+      "mysql",
+      "react",
+      "flutter",
+      "barcodes",
+      "printers",
+      "bluetooth",
+      "payment gateways",
+      "pub/sub",
+      "RTDB",
+      "sqlite",
+      "google messaging",
+    ],
+    image: "pospal",
+    link: "https://pospal.io",
+  },
+  {
     status: ProjectStatus.ACTIVE,
     name: "LineUp",
     description:
@@ -55,30 +79,6 @@ export const slides: Slide[] = [
     link: "https://showelli.co.uk",
     technologies: ["gatsby", "typescript", "netlify"],
     image: "showelli",
-  },
-  {
-    status: ProjectStatus.PLANNING,
-    name: "PosPal",
-    description:
-      "A mobile only, next generation EPOS system for sole traders and small retailers",
-    technologies: [
-      "typescript",
-      "gcloud",
-      "google functions",
-      "mysql",
-      "react",
-      "flutter",
-      "barcodes",
-      "printers",
-      "bluetooth",
-      "payment gateways",
-      "pub/sub",
-      "RTDB",
-      "sqlite",
-      "google messaging",
-    ],
-    image: "pospal",
-    link: "https://pospal.io",
   },
   {
     status: ProjectStatus.PLANNING,
