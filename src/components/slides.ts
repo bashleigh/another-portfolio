@@ -78,6 +78,7 @@ export const slides: Slide[] = [
       "google messaging",
     ],
     image: "pospal",
+    link: "https://pospal.io",
   },
   {
     status: ProjectStatus.PLANNING,
