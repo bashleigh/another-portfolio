@@ -4,6 +4,7 @@ export enum ProjectStatus {
   ONHOLD = "on hold",
   PLANNING = "planning",
   COMPLETE = "complete",
+  DEVELOPMENT = "development",
 }
 
 export type Slide = {
@@ -17,7 +18,7 @@ export type Slide = {
 
 export const slides: Slide[] = [
   {
-    status: ProjectStatus.PLANNING,
+    status: ProjectStatus.DEVELOPMENT,
     name: "PosPal",
     description:
       "A mobile first, next generation EPOS system for sole traders and small retailers",

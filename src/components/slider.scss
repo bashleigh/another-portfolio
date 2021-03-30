@@ -110,6 +110,10 @@
         &.is-planning {
           background: $rainbowViolet;
         }
+
+        &.is-development {
+          background: $rainbowBlue;
+        }
       }
 
       &.is-active {
