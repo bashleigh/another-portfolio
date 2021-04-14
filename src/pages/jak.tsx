@@ -42,7 +42,7 @@ export default ({ data }) => (
               </small>
             </div>
             <div className="content">
-              <p>He's been a great recrutier for me and secured me a job at Reapit! I built this page just for him to show you how he can be beneficial for other devs!</p>
+              <p>He's been a great recruiter for me and secured me a job at Reapit! I built this page just for him to show you how he can be beneficial for other devs!</p>
               <p>Jak is very friendly. Him and I have become fairly close friends over the course of the month we've been talking to each other trying to find myself a React/TypeScript job.</p>
             </div>
             <div className="tags">
@@ -133,7 +133,6 @@ export default ({ data }) => (
     </section>
   </>
 );
-
 
 export const query = graphql`
   query {
