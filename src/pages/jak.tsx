@@ -4,8 +4,8 @@ import "./../styles/index.scss";
 import Img from "gatsby-image";
 import { graphql, Link } from "gatsby";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faStar } from '@fortawesome/free-solid-svg-icons';
-import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faArrowLeft, faPhone, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faLinkedin, faReact } from '@fortawesome/free-brands-svg-icons';
 
 export default ({ data }) => (
   <>
@@ -94,7 +94,7 @@ export default ({ data }) => (
       </div>
     </section>
     <section className="section is-dark">
-      <div className="columns is-centered">
+      <div className="columns is-vcentered is-centered">
         <div className="column is-4">
           <h5 className="title">Don't take his advice on the grand national</h5>
           <h6 className="subtitle">I lost £1 betting on a horse he recommended!</h6>
@@ -105,15 +105,29 @@ export default ({ data }) => (
               title="Mr Malarkey Grand National"
               alt="Grand National, mr Malarkey did not finish"
             />
-            <small>Mr Malarkey did not finish</small>
+            <small>Mr Malarkey did not finish... ...thanks Jak!</small>
         </div>
       </div>
     </section>
     <section className="hero is-primary is-large">
       <div className="hero-body">
         <div className="container">
-          <h5 className="title">This page isn't about Jak</h5>
-          <h6 className="subtitle">It's about what he can do for you!</h6>
+          <div className="columns is-vecentered">
+            <div className="column is-4 has-text-centered">
+              <FontAwesomeIcon icon={faReact} size={"10x"} spin={true} />
+            </div>
+            <div className="column">
+              <h5 className="title is-1">This page isn't about Jak</h5>
+              <h6 className="subtitle">It's about what he can do for you!</h6>
+              <div className="content">
+                <p>I guarantee you he'll find you a really great job and he'll put you first before the employeers!</p>
+              </div>
+              <div className="buttons">
+                <a className="button" href="https://www.linkedin.com/in/jak-heer-b17bb4120/"><FontAwesomeIcon className="ico" icon={faLinkedin}/> Linkedin</a>
+                <a className="button" href="https://www.linkedin.com/in/jak-heer-b17bb4120/"><FontAwesomeIcon className="ico" icon={faPhone}/> Call him</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -5,7 +5,7 @@ import { RecruitmentNotifier } from "./recruitment";
 import { Terminal } from "./terminal";
 
 export const Hero = () => (
-  <div className="hero is-fullheight is-primary">
+  <div id="main" className="hero is-fullheight is-primary">
     <div className="hero-body">
       <div className="container">
         <div className="columns is-centered is-vcentered">

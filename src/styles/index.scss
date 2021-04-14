@@ -1,7 +1,7 @@
 @import './variables.scss';
 @import './../../node_modules/bulma';
 
-.hero{
+#main.hero {
   &.is-primary {
     background-color: $hero-primary;
 
