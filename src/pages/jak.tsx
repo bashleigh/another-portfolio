@@ -124,7 +124,7 @@ export default ({ data }) => (
               </div>
               <div className="buttons">
                 <a className="button" href="https://www.linkedin.com/in/jak-heer-b17bb4120/"><FontAwesomeIcon className="ico" icon={faLinkedin}/> Linkedin</a>
-                <a className="button" href="tel:02033998333"><FontAwesomeIcon className="ico" icon={faPhone}/> Call him</a>
+                <a className="button" href="tel:07398946254"><FontAwesomeIcon className="ico" icon={faPhone}/> Call him</a>
               </div>
             </div>
           </div>
