@@ -116,3 +116,25 @@ $linearWidth: .5em;
 .modal-card-foot {
   display: block !important;
 }
+
+.columns.is-reversed {
+  flex-direction: row-reverse;
+}
+
+.section {
+  &.is-dark {
+    background: $primary-100;
+  }
+}
+
+.img {
+  &.is-rounded {
+    border-radius: 100%;
+  }
+}
+
+.tags, .button {
+  .ico {
+    margin-right: .2em;
+  }
+}

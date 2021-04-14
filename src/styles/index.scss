@@ -1,7 +1,7 @@
 @import './variables.scss';
 @import './../../node_modules/bulma';
 
-.hero{
+#main.hero {
   &.is-primary {
     background-color: $hero-primary;
 
@@ -140,4 +140,21 @@
     background: $rainbowRed;
     border-color: $rainbowRed;
   }
+}
+
+.star-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1em;
+  margin-top: -.75em;
+  align-items: center;
+
+  small {
+    font-size: .8em;
+  }
+}
+
+.stars {
+  color: $gold;
+  margin-right: .25em;
 }
