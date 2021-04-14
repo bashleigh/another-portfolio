@@ -141,3 +141,20 @@
     border-color: $rainbowRed;
   }
 }
+
+.star-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1em;
+  margin-top: -.75em;
+  align-items: center;
+
+  small {
+    font-size: .8em;
+  }
+}
+
+.stars {
+  color: $gold;
+  margin-right: .25em;
+}

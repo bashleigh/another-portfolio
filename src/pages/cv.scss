@@ -131,9 +131,10 @@ $linearWidth: .5em;
   &.is-rounded {
     border-radius: 100%;
   }
+}
 
-  + .tags {
-    margin-top: .5em;
-    justify-content: center;
+.tags {
+  .ico {
+    margin-right: .2em;
   }
 }

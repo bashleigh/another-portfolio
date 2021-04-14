@@ -2,7 +2,10 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import "./../styles/index.scss";
 import Img from "gatsby-image";
-import { graphql } from "gatsby";
+import { graphql, Link } from "gatsby";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 export default ({ data }) => (
   <>
@@ -18,15 +21,33 @@ export default ({ data }) => (
       />
     </Helmet>
     <section className="section">
+      <Link to="/"><FontAwesomeIcon icon={faArrowLeft}/> Back to me - because that's what you came here for...</Link>
+    </section>
+    <section className="section">
       <div className="columns is-vcentered is-centered is-reversed">
         <div className="column is-4">
           <div className="content">
-            <h1 className="title">This is Jak</h1>
+            <h1 className="title has-text-primary is-1">This is Jak</h1>
             <h3 className="subtitle">A recruiter for The React Hub</h3>
+            <div className="star-container">
+              <div className="stars">
+                <FontAwesomeIcon icon={faStar}/>
+                <FontAwesomeIcon icon={faStar}/>
+                <FontAwesomeIcon icon={faStar}/>
+                <FontAwesomeIcon icon={faStar}/>
+                <FontAwesomeIcon icon={faStar}/>
+              </div>
+              <small className="">
+                - Ashleigh's review
+              </small>
+            </div>
             <div className="content">
               <p>He's been a great recrutier for me and secured me a job at Reapit! I built this page just for him to show you how he can be beneficial for other devs!</p>
               <p>Jak is very friendly. Him and I have become fairly close friends over the course of the month we've been talking to each other trying to find myself a React/TypeScript job.</p>
-              <h4 className="title">Below are some things I've found out about Jak</h4>
+            </div>
+            <div className="tags">
+              <a className="tag" href="https://www.linkedin.com/in/jak-heer-b17bb4120/"><FontAwesomeIcon className="ico" icon={faLinkedin}/> Linkedin</a>
+              <a className="tag" href="https://thereacthub.com/reach-us.php">The React Hub</a>
             </div>
           </div>
         </div>
@@ -37,12 +58,9 @@ export default ({ data }) => (
             title="Jak Heer"
             alt="Jak Heer's photo"
           />
-          <div className="tags">
-            <a className="tag" href="https://www.linkedin.com/in/jak-heer-b17bb4120/">Linkedin</a>
-            <a className="tag" href="https://thereacthub.com/reach-us.php">The React Hub</a>
-          </div>
         </div>
       </div>
+      <h4 className="title has-text-centered">Below are some things I've found out about Jak</h4>
     </section>
     <section className="section is-dark">
       <div className="columns is-vcentered is-centered">
@@ -63,7 +81,7 @@ export default ({ data }) => (
       <div className="columns is-reversed is-vcentered is-centered">
         <div className="column is-4">
           <h5 className="title">He sprained his ankle the first day back at football</h5>
-          <h6 className="subtitle"></h6>
+          <h6 className="subtitle">Might be a bit dramatic</h6>
         </div>
         <div className="column is-4">
           <Img
