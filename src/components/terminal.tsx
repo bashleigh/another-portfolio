@@ -14,7 +14,7 @@ const facts = (
       <li className="is-rainbow-green">✅ Backend Specialist</li>
       <li className="is-rainbow-blue">✅ EPOS Builder</li>
       <li className="is-rainbow-violet">
-        ✅ Football Fanatic ⚽ (viva Biancazzurri!){" "}
+        ✅ Football Fanatic ⚽ (forza Biancazzurri!){" "}
       </li>
     </ul>
     <br />
