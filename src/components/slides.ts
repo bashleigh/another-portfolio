@@ -73,14 +73,14 @@ export const slides: Slide[] = [
     technologies: ["gatsby", "typescript", "click & collect", "netlify"],
     image: "fordandsons",
   },
-  {
-    status: ProjectStatus.ACTIVE,
-    name: "Showelli Entertainment",
-    description: "My sister's dance agency website!",
-    link: "https://showelli.co.uk",
-    technologies: ["gatsby", "typescript", "netlify"],
-    image: "showelli",
-  },
+  // {
+  //   status: ProjectStatus.ACTIVE,
+  //   name: "Showelli Entertainment",
+  //   description: "My sister's dance agency website!",
+  //   link: "https://showelli.co.uk",
+  //   technologies: ["gatsby", "typescript", "netlify"],
+  //   image: "showelli",
+  // },
   {
     status: ProjectStatus.PLANNING,
     name: "Trino",
