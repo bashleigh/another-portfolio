@@ -48,7 +48,7 @@ export default ({ data }) => (
               <li>Mentorship</li>
               <li>Design Prototyping</li>
               <li>Workflow Design</li>
-              <li>Automation Design and Impelmentation</li>
+              <li>Automation Design and Implementation</li>
               <li>Architecture Design and Implementation</li>
               <li>Open Source Collaboration</li>
               <li>Technical Consultant</li>
