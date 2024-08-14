@@ -69,7 +69,7 @@ const commands: {
   kill: ({ output, setOutput }) =>
     setOutput([
       ...output,
-      { text: "goodbye curel world! 💀", class: "is-rainbow-red" },
+      { text: "goodbye cruel world! 💀", class: "is-rainbow-red" },
       <img src="https://media.giphy.com/media/uC8SQoaY5EHhC/giphy.gif" />,
     ]),
   clear: ({ setOutput }) => {
