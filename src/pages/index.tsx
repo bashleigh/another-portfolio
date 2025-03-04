@@ -1,13 +1,11 @@
 import React from "react";
-import { Helmet } from "react-helmet";
-import { Football, Hero, Slider, Contact, openContact } from "../components";
+// import { Helmet } from "react-helmet";
+// import { Football, Hero, Slider, Contact, openContact } from "../components";
 import "./../styles/index.scss";
-import Img from "gatsby-image";
-import { graphql } from "gatsby";
 
-export default ({ data }) => (
+export default () => (
   <>
-    <Helmet>
+    {/* <Helmet>
       <title>Ashleigh Simonelli - Code Expert</title>
       <meta
         name="description"
@@ -183,19 +181,7 @@ export default ({ data }) => (
         </div>
       </div>
     </section>
-    <Contact />
+    <Contact />*/}
+    <h1>hello</h1>
   </>
-);
-
-export const query = graphql`
-  query {
-    me: file(relativePath: { eq: "me.jpeg" }) {
-      childImageSharp {
-        fluid(maxWidth: 500) {
-          ...GatsbyImageSharpFluid_withWebp
-          ...GatsbyImageSharpFluidLimitPresentationSize
-        }
-      }
-    }
-  }
-`;
+)
