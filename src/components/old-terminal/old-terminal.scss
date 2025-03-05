@@ -1,0 +1,113 @@
+#old-terminal {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  font-family: "Silkscreen", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+
+  .monitor-image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -10;
+  }
+
+  .boot-screen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 80vw;
+    height: 70vh;
+    color: #00FF00;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+
+    .title {
+      color: #00FF00;
+      font-family: 'Silkscreen';
+    }
+  }
+
+  .screen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    width: 80vw;
+    height: 70vh;
+    overflow-y: scroll;
+    color: #00FF00;
+    display: flex;
+    flex-direction: column-reverse;
+
+    .cursor {
+      display: none;
+      width: 10px;
+      height: 16px;
+      background-color: #00FF00;
+      animation: blinker 1s linear infinite;
+      position: absolute;
+      bottom: 2px;
+    }
+
+    .text-input {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    input {
+      display: inline-block;
+      width: auto;
+      background: none;
+      border: none;
+      outline: none;
+      color: #00FF00;
+      caret-color: transparent;
+      font-family: "Silkscreen";
+      width: 100%;
+
+      &:hover, &:active, &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      &:focus {
+        & + .cursor {
+          display: inline-block;
+        }
+      }
+    }
+
+    .content {
+      p {
+        margin-bottom: .5rem;
+      }
+    }
+  }
+}
+
+@keyframes blinker {
+  49% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0
+  }
+  71% {
+    opacity: 1;
+  }
+}

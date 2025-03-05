@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import "./slider.scss";
-import { useSwipeable } from "react-swipeable";
-import Img from "gatsby-image";
-import { graphql, StaticQuery } from "gatsby";
-import { slides, Slide as SlideType } from "./slides";
+import React, { useState } from "react"
+import "./slider.scss"
+import { useSwipeable } from "react-swipeable"
+import Img from "gatsby-image"
+import { graphql, StaticQuery } from "gatsby"
+import { slides, Slide as SlideType } from "./slides"
 
 const stringToHex = (string: string): string => {
-  const indexes = "abcdefghijklmnopqrstuvwxyz".split("");
+  const indexes = "abcdefghijklmnopqrstuvwxyz".split("")
   const r = string.split("").reduce((num, char) => {
-    num = num + indexes.indexOf(char);
+    num = num + indexes.indexOf(char)
 
-    return num;
-  }, 0);
+    return num
+  }, 0)
 
-  const float = parseFloat("0." + (r * r * 1000).toString().replace(/^0/, ""));
-  return "#" + Math.floor(float * 16777215).toString(16);
-};
+  const float = parseFloat("0." + (r * r * 1000).toString().replace(/^0/, ""))
+  return "#" + Math.floor(float * 16777215).toString(16)
+}
 
 const Slide = (
-  props: SlideType & { isActive: boolean; onClick: () => void; image?: any }
+  props: SlideType & { isActive: boolean; onClick: () => void; image?: any },
 ) => {
-  const [showDesc, setShowDesc] = useState<boolean>(false);
+  const [showDesc, setShowDesc] = useState<boolean>(false)
   return (
     <div
       className={`slide ${props.isActive ? "is-active" : ""}`}
@@ -53,8 +53,8 @@ const Slide = (
               href="#"
               className="slider-description-toggle"
               onClick={event => {
-                event.preventDefault();
-                setShowDesc(!showDesc);
+                event.preventDefault()
+                setShowDesc(!showDesc)
               }}
             >
               {showDesc ? "Hide" : "Show"} description
@@ -79,17 +79,17 @@ const Slide = (
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const Slider = () => {
-  const [active, setActive] = useState<number>(0);
-  const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
+  const [active, setActive] = useState<number>(0)
+  const [isMenuActive, setIsMenuActive] = useState<boolean>(false)
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => active < slides.length - 1 && setActive(active + 1),
     onSwipedRight: () => active > 0 && setActive(active - 1),
-  });
+  })
 
   return (
     <StaticQuery
@@ -152,7 +152,7 @@ export const Slider = () => {
                 <div
                   className="menu-title"
                   onClick={event => {
-                    setIsMenuActive(!isMenuActive);
+                    setIsMenuActive(!isMenuActive)
                   }}
                 >
                   <span
@@ -176,16 +176,16 @@ export const Slider = () => {
                           className="menu-item"
                           href="#"
                           onClick={event => {
-                            event.preventDefault();
-                            setActive(index);
-                            setIsMenuActive(!isMenuActive);
+                            event.preventDefault()
+                            setActive(index)
+                            setIsMenuActive(!isMenuActive)
                           }}
                         >
                           <span className="slide-status">
                             <span
                               className={`status is-${slide.status.replace(
                                 " ",
-                                "-"
+                                "-",
                               )}`}
                             ></span>
                           </span>
@@ -216,7 +216,7 @@ export const Slider = () => {
                   image={data[slide.image]}
                   isActive={index === active}
                   onClick={() => {
-                    setActive(index);
+                    setActive(index)
                   }}
                 />
               ))}
@@ -225,5 +225,5 @@ export const Slider = () => {
         </>
       )}
     />
-  );
-};
+  )
+}

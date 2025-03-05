@@ -1,8 +1,8 @@
-import React from "react";
-import { Nav } from "./nav";
-import { Phone } from "./phone";
-import { RecruitmentNotifier } from "./recruitment";
-import { Terminal } from "./terminal";
+import React from "react"
+import { Nav } from "./nav"
+import { Phone } from "./phone"
+import { RecruitmentNotifier } from "./recruitment"
+import { Terminal } from "./terminal"
 
 export const Hero = () => (
   <div id="main" className="hero is-fullheight is-primary">
@@ -23,4 +23,4 @@ export const Hero = () => (
     </div>
     <Nav />
   </div>
-);
+)

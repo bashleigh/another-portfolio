@@ -1,6 +1,6 @@
-import React from "react";
-import "./nav.scss";
-import { openContact } from "./contact";
+import React from "react"
+import "./nav.scss"
+import { openContact } from "./contact"
 
 export const Nav = () => (
   <div className="navbar-container">
@@ -15,12 +15,12 @@ export const Nav = () => (
         className="nav-item button is-primary is-rounded"
         href="#contact"
         onClick={event => {
-          event.preventDefault();
-          openContact();
+          event.preventDefault()
+          openContact()
         }}
       >
         Contact Me
       </a>
     </nav>
   </div>
-);
+)

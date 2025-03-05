@@ -1,7 +1,7 @@
-import React from "react";
-import Ashleigh from "../images/ashleigh.svg";
-import "./phone.scss";
-import { openContact } from "./contact";
+import React from "react"
+import Ashleigh from "../images/ashleigh.svg"
+import "./phone.scss"
+import { openContact } from "./contact"
 
 export const Phone = () => (
   <div id="phone">
@@ -13,7 +13,7 @@ export const Phone = () => (
         <button
           className="button has-rainbow-background has-text-white is-rounded"
           onClick={() => {
-            openContact();
+            openContact()
           }}
         >
           Let's Talk
@@ -21,4 +21,4 @@ export const Phone = () => (
       </div>
     </div>
   </div>
-);
+)

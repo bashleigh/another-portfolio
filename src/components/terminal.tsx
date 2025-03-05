@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
-import "./terminal.scss";
-import { openContact } from "./contact";
+import React, { useRef, useState } from "react"
+import "./terminal.scss"
+import { openContact } from "./contact"
 
 const facts = (
   <>
@@ -19,29 +19,29 @@ const facts = (
     </ul>
     <br />
   </>
-);
+)
 
 const getCommandOptions = (string: string): string[] => {
-  const options: string[] = [];
+  const options: string[] = []
   string.split(" ").forEach(st => {
     if (st.includes("--")) {
-      options.push(st.replace("--", ""));
+      options.push(st.replace("--", ""))
     } else if (st.includes("-")) {
       st.replace("-", "")
         .split("")
-        .forEach(s => options.push(s));
+        .forEach(s => options.push(s))
     }
-  });
+  })
 
-  return options;
-};
+  return options
+}
 
 const commands: {
   [s: string]: (values: {
-    input: string[];
-    output: LineOut[];
-    setOutput: (out: LineOut[]) => void;
-  }) => void;
+    input: string[]
+    output: LineOut[]
+    setOutput: (out: LineOut[]) => void
+  }) => void
 } = {
   hello: ({ input, output, setOutput }) => {
     if (input[0] && input[0] === "--help") {
@@ -52,9 +52,9 @@ const commands: {
         { text: "hello [name]" },
         { text: "" },
         { text: 'hello Bob: returns "Hello Bob"' },
-      ]);
+      ])
     }
-    setOutput([...output, { text: `Hello! ${input[0] || ""}` }]);
+    setOutput([...output, { text: `Hello! ${input[0] || ""}` }])
   },
   commands: ({ output, setOutput }) => {
     setOutput([
@@ -62,7 +62,7 @@ const commands: {
       { text: "Commands available:", bold: true },
       { text: " " },
       ...Object.keys(commands).map(key => ({ text: key })),
-    ]);
+    ])
   },
   echo: ({ input, output, setOutput }) =>
     setOutput([...output, { text: input.join(" ") }]),
@@ -73,22 +73,22 @@ const commands: {
       <img src="https://media.giphy.com/media/uC8SQoaY5EHhC/giphy.gif" />,
     ]),
   clear: ({ setOutput }) => {
-    setOutput([] as LineOut[]);
+    setOutput([] as LineOut[])
   },
   facts: ({ setOutput, output }) => {
-    setOutput([...output, facts]);
+    setOutput([...output, facts])
   },
   ls: ({ output, setOutput, input }) => {
-    const options = getCommandOptions(input.join(" "));
+    const options = getCommandOptions(input.join(" "))
 
-    const results = ["/.", "/.."];
+    const results = ["/.", "/.."]
     if (options.includes("a")) {
-      results.push(".cv.json");
+      results.push(".cv.json")
     }
 
     return options.includes("l")
       ? setOutput([...output, ...results.map(re => ({ text: re }))])
-      : setOutput([...output, { text: results.join(" ") }]);
+      : setOutput([...output, { text: results.join(" ") }])
   },
   cat: ({ output, setOutput, input }) => {
     if (input[0] === ".cv.json") {
@@ -101,7 +101,7 @@ const commands: {
         >
           View my CV
         </a>,
-      ]);
+      ])
     }
   },
   git: ({ output, setOutput }) =>
@@ -110,16 +110,14 @@ const commands: {
     setOutput([
       ...output,
       {
-        text:
-          "ermmmm.... don't think you can ssh into css I'm afraid. I'm just a pretty terminal window made out of HTML. Soz haxer, you canny hack meh 🙃",
+        text: "ermmmm.... don't think you can ssh into css I'm afraid. I'm just a pretty terminal window made out of HTML. Soz haxer, you canny hack meh 🙃",
       },
     ]),
   hacker: ({ output, setOutput }) =>
     setOutput([
       ...output,
       {
-        text:
-          "This is what my girlfriend says I look like. Don't know why, I don't code with bananas 🤷‍♀️",
+        text: "This is what my girlfriend says I look like. Don't know why, I don't code with bananas 🤷‍♀️",
       },
       <img src="https://media.giphy.com/media/YQitE4YNQNahy/giphy.gif" />,
     ]),
@@ -128,8 +126,7 @@ const commands: {
       <h1 className="title is-rainbow-text">Info</h1>,
       <h3 className="subtitle">Version 1.0.0</h3>,
       {
-        text:
-          "This little terminal window I built in a few hours (at 2am like a true programmer)",
+        text: "This little terminal window I built in a few hours (at 2am like a true programmer)",
         class: "is-rainbow-red",
       },
       <p className="is-rainbow-orange">
@@ -154,7 +151,7 @@ const commands: {
           Click here
         </a>
       </p>,
-    ]);
+    ])
   },
   contact: ({ output, setOutput }) => {
     setOutput([
@@ -163,9 +160,9 @@ const commands: {
         text: "Opening contact window on port 3000...",
         class: "is-rainbow-green",
       },
-    ]);
+    ])
 
-    setTimeout(() => openContact(), 1500);
+    setTimeout(() => openContact(), 1500)
   },
   //   neofetch: () => [
   // "               +",
@@ -187,57 +184,56 @@ const commands: {
   // "  ##'                     '##   ",
   // " #'                         `#",
   //   ].map(lin => <p>{lin}</p>),
-};
+}
 
 const runCommand = ({
   input,
   setOutput,
   output,
 }: {
-  input: string;
-  setOutput: (lines: LineOut[]) => void;
-  output: LineOut[];
+  input: string
+  setOutput: (lines: LineOut[]) => void
+  output: LineOut[]
 }): void => {
   if (input === "") {
-    setOutput([...output, { text: "" }]);
+    setOutput([...output, { text: "" }])
   }
 
-  const inputs = input.split(" ");
+  const inputs = input.split(" ")
   if (!inputs[0] || !Object.keys(commands).includes(inputs[0])) {
     if (!input[0] || input[0] === "") {
-      setOutput([...output, { text: `❯ ${input}`, class: "is-rainbow-green" }]);
-      return;
+      setOutput([...output, { text: `❯ ${input}`, class: "is-rainbow-green" }])
+      return
     }
 
-    setOutput([...output, { text: `command: "${inputs[0]}" not found` }]);
-    return;
+    setOutput([...output, { text: `command: "${inputs[0]}" not found` }])
+    return
   }
 
-  output.push({ text: `❯ ${input}`, class: "is-rainbow-green" });
+  output.push({ text: `❯ ${input}`, class: "is-rainbow-green" })
 
-  commands[inputs.shift()]({ input: inputs, setOutput, output });
-};
-type TextLine = { text: string; class?: string; bold?: boolean };
-type LineOut = TextLine | JSX.Element;
+  commands[inputs.shift()]({ input: inputs, setOutput, output })
+}
+type TextLine = { text: string; class?: string; bold?: boolean }
+type LineOut = TextLine | JSX.Element
 
 const isJsxElement = (value: LineOut): value is JSX.Element =>
-  value.hasOwnProperty("type");
+  value.hasOwnProperty("type")
 
 export const Terminal = () => {
-  const [input, setInput] = useState<string>("");
+  const [input, setInput] = useState<string>("")
   const [output, setOutput] = useState<LineOut[]>([
     facts,
     <p className="text-info">
       Type "commands" into the terminal window and hit enter to see all commands
     </p>,
-  ]);
-  const [commandExists, setCommandExists] = useState<boolean>(false);
-  const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
-  const [terminalHistoryPresses, setTerminalHistoryPresses] = useState<number>(
-    0
-  );
+  ])
+  const [commandExists, setCommandExists] = useState<boolean>(false)
+  const [terminalHistory, setTerminalHistory] = useState<string[]>([])
+  const [terminalHistoryPresses, setTerminalHistoryPresses] =
+    useState<number>(0)
 
-  const inputElement = useRef();
+  const inputElement = useRef()
 
   return (
     <div id="terminal">
@@ -253,7 +249,7 @@ export const Terminal = () => {
         onClick={() => {
           // TODO focus on input
           // @ts-ignore
-          inputElement.current.focus();
+          inputElement.current.focus()
         }}
       >
         {output.map((line, index) =>
@@ -263,22 +259,22 @@ export const Terminal = () => {
             <p
               key={`${line}-${index}`}
               className={[line.class, line.bold ? "has-text-bold" : ""].join(
-                " "
+                " ",
               )}
             >
               {line.text}
             </p>
-          )
+          ),
         )}
         <br />
         <div className="terminal-control">
           <form
             className="terminal-input"
             onSubmit={event => {
-              event.preventDefault();
-              setTerminalHistory([...terminalHistory, input]);
-              runCommand({ input, output, setOutput });
-              setInput("");
+              event.preventDefault()
+              setTerminalHistory([...terminalHistory, input])
+              runCommand({ input, output, setOutput })
+              setInput("")
             }}
           >
             <div className="field">
@@ -294,17 +290,17 @@ export const Terminal = () => {
                   autoComplete="off"
                   autoFocus={true}
                   onChange={event => {
-                    const input = event.target.value;
-                    const command = input.split(" ").shift();
-                    setCommandExists(Object.keys(commands).includes(command));
-                    setInput(input);
+                    const input = event.target.value
+                    const command = input.split(" ").shift()
+                    setCommandExists(Object.keys(commands).includes(command))
+                    setInput(input)
                   }}
                   value={input}
                   ref={inputElement}
                   onKeyUp={event => {
                     if (event.key === "ArrowUp") {
                       // TODO cycle through history
-                      setTerminalHistoryPresses(terminalHistoryPresses + 1);
+                      setTerminalHistoryPresses(terminalHistoryPresses + 1)
                     }
                   }}
                 />
@@ -324,5 +320,5 @@ export const Terminal = () => {
         <div className="name">Ashleigh's Laptop</div>
       </nav>
     </div>
-  );
-};
+  )
+}

@@ -1,5 +1,5 @@
-let token;
+let token
 
-const fetchToken = async () => {};
+const fetchToken = async () => {}
 
-export const contactWit = (message: string) => {};
+export const contactWit = (message: string) => {}

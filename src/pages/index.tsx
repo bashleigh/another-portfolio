@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 // import { Helmet } from "react-helmet";
 // import { Football, Hero, Slider, Contact, openContact } from "../components";
-import "./../styles/index.scss";
+import "./../styles/index.scss"
 
 export default () => (
   <>

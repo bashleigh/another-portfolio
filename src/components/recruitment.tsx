@@ -1,6 +1,6 @@
-import React from "react";
+import React from "react"
 
-import "./recruitment.scss";
+import "./recruitment.scss"
 
 export const RecruitmentNotifier = () => (
   <div className="recruitment-notifier">
@@ -8,4 +8,4 @@ export const RecruitmentNotifier = () => (
     <span className="notification-status"></span>
     Still Not Looking
   </div>
-);
+)

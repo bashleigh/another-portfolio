@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import "./contact.scss";
+import React, { useState } from "react"
+import "./contact.scss"
 
-export let openContact;
+export let openContact
 
 type Message = {
-  body: string | JSX.Element;
-  from: "user" | "bot";
-};
+  body: string | JSX.Element
+  from: "user" | "bot"
+}
 
 export const Contact = () => {
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [isActive, setIsActive] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>("")
   const [messages, setMessages] = useState<Message[]>([
     {
       body: "Not quite ready to take messages yet!",
@@ -43,16 +43,16 @@ export const Contact = () => {
       ),
       from: "bot",
     },
-  ]);
+  ])
 
-  openContact = () => setIsActive(!isActive);
+  openContact = () => setIsActive(!isActive)
 
   return (
     <>
       <div
         className={`overlay${isActive ? " is-active" : ""}`}
         onClick={() => {
-          setIsActive(!isActive);
+          setIsActive(!isActive)
         }}
       ></div>
       <div id="contact" className={isActive ? "is-active" : ""}>
@@ -65,8 +65,8 @@ export const Contact = () => {
             <a
               href="#"
               onClick={event => {
-                event.preventDefault();
-                setIsActive(!isActive);
+                event.preventDefault()
+                setIsActive(!isActive)
               }}
             >
               &times;
@@ -82,22 +82,22 @@ export const Contact = () => {
                     blocks.push({
                       from: message.from,
                       messages: [message],
-                    });
-                    return blocks;
+                    })
+                    return blocks
                   }
 
                   if (blocks[blocks.length - 1].from === message.from) {
-                    blocks[blocks.length - 1].messages.unshift(message);
+                    blocks[blocks.length - 1].messages.unshift(message)
                   } else {
                     blocks.push({
                       from: message.from,
                       messages: [message],
-                    });
+                    })
                   }
 
-                  return blocks;
+                  return blocks
                 },
-                []
+                [],
               )
               .map((block, index) => (
                 <div
@@ -116,7 +116,7 @@ export const Contact = () => {
                         </div>
                       ) : (
                         message.body
-                      )
+                      ),
                     )}
                   </div>
                 </div>
@@ -126,25 +126,25 @@ export const Contact = () => {
         <form
           className="contact-input"
           onSubmit={event => {
-            event.preventDefault();
+            event.preventDefault()
             setMessages([
               ...messages,
               {
                 from: "user",
                 body: message,
               },
-            ]);
+            ])
           }}
         >
           <textarea
             value={message}
             onChange={event => {
-              setMessage(event.target.value);
+              setMessage(event.target.value)
             }}
           />
           <button className="button is-primary is-rounded">Send</button>
         </form>
       </div>
     </>
-  );
-};
+  )
+}

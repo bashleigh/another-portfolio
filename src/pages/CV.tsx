@@ -1,55 +1,55 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Octokit } from "@octokit/core";
-import "./cv.scss";
-import { Helmet } from "react-helmet";
-import Highlighter from "react-highlight-words";
-import { shleemy } from "shleemy";
-import { Link } from "gatsby";
+import React, { useEffect, useRef, useState } from "react"
+import { Octokit } from "@octokit/core"
+import "./cv.scss"
+import { Helmet } from "react-helmet"
+import Highlighter from "react-highlight-words"
+import { shleemy } from "shleemy"
+import { Link } from "gatsby"
 
 type AshleighCV = {
-  access: boolean;
-  hidden?: boolean;
-  name: string;
-};
+  access: boolean
+  hidden?: boolean
+  name: string
+}
 
 type CVData = {
-  updated_at: string;
-  url: string;
-  name: string;
-  dob: string;
-  avatar_url: string;
-  email_address: string;
-  mobile_number: string;
-  postal_region: string;
-  description: string[];
-  achievements: string[];
-  currently_contributing_to: string[];
-  languages: { [s: string]: string };
-  frameworks: { [s: string]: string[] };
-  protocols_and_methods: string[];
-  operating_systems: string[];
-  platforms: { [s: string]: string };
-  tools: string[];
+  updated_at: string
+  url: string
+  name: string
+  dob: string
+  avatar_url: string
+  email_address: string
+  mobile_number: string
+  postal_region: string
+  description: string[]
+  achievements: string[]
+  currently_contributing_to: string[]
+  languages: { [s: string]: string }
+  frameworks: { [s: string]: string[] }
+  protocols_and_methods: string[]
+  operating_systems: string[]
+  platforms: { [s: string]: string }
+  tools: string[]
   employment_history: {
     [s: string]: {
       dates: {
-        start: string;
-        finish: string;
-      };
-      position: string;
-      description: string[];
-    };
-  };
+        start: string
+        finish: string
+      }
+      position: string
+      description: string[]
+    }
+  }
   projects: {
     [s: string]: {
-      started: string;
-      description: string[];
-      link?: string;
-    };
-  };
-  clouds: string[];
-  ratings: { [s: string]: number };
-};
+      started: string
+      description: string[]
+      link?: string
+    }
+  }
+  clouds: string[]
+  ratings: { [s: string]: number }
+}
 
 const generateToken = (name: string = "stranger", hidden?: boolean) => {
   return btoa(
@@ -57,21 +57,21 @@ const generateToken = (name: string = "stranger", hidden?: boolean) => {
       name: name || "stranger",
       hidden: hidden || false,
       access: true,
-    })
-  );
-};
+    }),
+  )
+}
 
 // @ts-ignore
-if (typeof window !== "undefined") window.generateToken = generateToken;
+if (typeof window !== "undefined") window.generateToken = generateToken
 
 const validateToken = (
-  token?: string | null
+  token?: string | null,
 ): { valid: true; payload: AshleighCV } | { valid: false; reason: string } => {
   if (token === "" || typeof token === "undefined" || token === null) {
-    return { valid: false, reason: "Invalid token" };
+    return { valid: false, reason: "Invalid token" }
   }
   try {
-    const payload = JSON.parse(atob(token));
+    const payload = JSON.parse(atob(token))
 
     if (
       typeof payload !== "object" ||
@@ -79,38 +79,38 @@ const validateToken = (
       !payload.access ||
       !payload.name
     ) {
-      return { valid: false, reason: "Invalid Token" };
+      return { valid: false, reason: "Invalid Token" }
     }
 
-    return { valid: true, payload };
+    return { valid: true, payload }
   } catch {
-    return { valid: false, reason: "Failed to validate token" };
+    return { valid: false, reason: "Failed to validate token" }
   }
-};
+}
 
 const TokenRequired = ({
   setPayload,
 }: {
-  setPayload: (payload: AshleighCV) => void;
+  setPayload: (payload: AshleighCV) => void
 }) => {
-  const [token, setTokenValue] = useState<string>("");
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [token, setTokenValue] = useState<string>("")
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const onSubmit = event => {
-    event.preventDefault();
-    setError(undefined);
-    const result = validateToken(token);
+    event.preventDefault()
+    setError(undefined)
+    const result = validateToken(token)
 
     if (!result.valid) {
       /** @ts-ignore */
-      setError(result.reason);
-      return;
+      setError(result.reason)
+      return
     }
 
-    history.pushState(undefined, "Ashleigh's CV", `?token=${token}`);
+    history.pushState(undefined, "Ashleigh's CV", `?token=${token}`)
 
-    setPayload(result.payload);
-  };
+    setPayload(result.payload)
+  }
 
   return (
     <>
@@ -173,8 +173,8 @@ const TokenRequired = ({
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
 const Loader = () => (
   <div className="hero is-fullheight">
@@ -182,39 +182,37 @@ const Loader = () => (
       <div className="loader"></div>
     </div>
   </div>
-);
+)
 
 const CVTokenGeneratorModal = ({
   isOpen,
   setModalOpen,
 }: {
-  isOpen: boolean;
-  setModalOpen: (open: boolean) => void;
+  isOpen: boolean
+  setModalOpen: (open: boolean) => void
 }) => {
-  const [name, setName] = useState<string>("");
-  const [anonymous, setAnonymous] = useState<boolean>(false);
-  const [token, setToken] = useState<string>("");
-  const [copySuccess, setcopySuccess] = useState<boolean | undefined>(
-    undefined
-  );
+  const [name, setName] = useState<string>("")
+  const [anonymous, setAnonymous] = useState<boolean>(false)
+  const [token, setToken] = useState<string>("")
+  const [copySuccess, setcopySuccess] = useState<boolean | undefined>(undefined)
 
-  let copyRef = useRef(null);
+  let copyRef = useRef(null)
 
   return (
     <div className={`modal${isOpen ? ` is-active` : ""}`}>
       <div
         className="modal-background"
         onClick={event => {
-          event.preventDefault();
-          setModalOpen(false);
+          event.preventDefault()
+          setModalOpen(false)
         }}
       ></div>
       <button
         className="modal-close is-large"
         aria-label="close"
         onClick={event => {
-          event.preventDefault();
-          setModalOpen(false);
+          event.preventDefault()
+          setModalOpen(false)
         }}
       ></button>
       <div className="modal-card">
@@ -224,18 +222,18 @@ const CVTokenGeneratorModal = ({
             className="delete"
             aria-label="close"
             onClick={event => {
-              event.preventDefault();
-              setModalOpen(false);
+              event.preventDefault()
+              setModalOpen(false)
             }}
           ></button>
         </header>
         <div className="modal-card-body">
           <form
             onSubmit={event => {
-              event.preventDefault();
-              const token = generateToken(name, anonymous);
+              event.preventDefault()
+              const token = generateToken(name, anonymous)
 
-              setToken(token);
+              setToken(token)
             }}
           >
             <div className="field">
@@ -250,7 +248,7 @@ const CVTokenGeneratorModal = ({
                   className="input"
                   value={name}
                   onChange={event => {
-                    setName(event.target.value);
+                    setName(event.target.value)
                   }}
                 />
               </div>
@@ -262,7 +260,7 @@ const CVTokenGeneratorModal = ({
                     type="checkbox"
                     checked={anonymous}
                     onChange={event => {
-                      setAnonymous(event.target.checked);
+                      setAnonymous(event.target.checked)
                     }}
                   />{" "}
                   Anonymous Candidate
@@ -291,11 +289,11 @@ const CVTokenGeneratorModal = ({
                 onClick={() => {
                   if (copyRef.current && token) {
                     try {
-                      copyRef.current.select();
-                      const successful = document.execCommand("copy");
-                      setcopySuccess(successful);
+                      copyRef.current.select()
+                      const successful = document.execCommand("copy")
+                      setcopySuccess(successful)
                     } catch (err) {
-                      setcopySuccess(false);
+                      setcopySuccess(false)
                     }
                   }
                 }}
@@ -313,19 +311,19 @@ const CVTokenGeneratorModal = ({
                   typeof copySuccess === "undefined"
                     ? "primary"
                     : copySuccess
-                    ? "success"
-                    : "danger"
+                      ? "success"
+                      : "danger"
                 }`}
                 disabled={!token}
                 onClick={event => {
-                  event.preventDefault();
+                  event.preventDefault()
                   if (copyRef.current && token) {
                     try {
-                      copyRef.current.select();
-                      const successful = document.execCommand("copy");
-                      setcopySuccess(successful);
+                      copyRef.current.select()
+                      const successful = document.execCommand("copy")
+                      setcopySuccess(successful)
                     } catch (err) {
-                      setcopySuccess(false);
+                      setcopySuccess(false)
                     }
                   }
                 }}
@@ -333,59 +331,59 @@ const CVTokenGeneratorModal = ({
                 {typeof copySuccess === "undefined"
                   ? "Copy to Clipboard"
                   : copySuccess
-                  ? "Copied"
-                  : "Failed"}
+                    ? "Copied"
+                    : "Failed"}
               </button>
             </div>
           </div>
         </footer>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
-  const [data, setData] = useState<undefined | CVData>(undefined);
-  const [error, setError] = useState<undefined | string>(undefined);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [keywords, setKeywords] = useState<string[]>([]);
-  const { hidden } = payload;
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [data, setData] = useState<undefined | CVData>(undefined)
+  const [error, setError] = useState<undefined | string>(undefined)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [keywords, setKeywords] = useState<string[]>([])
+  const { hidden } = payload
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
-  const octo = new Octokit();
+  const octo = new Octokit()
 
-  const gistId = "3bdd8052db7617a9ca3b31976a8cffa0";
+  const gistId = "3bdd8052db7617a9ca3b31976a8cffa0"
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      setError(undefined);
+      setLoading(true)
+      setError(undefined)
 
       const result = await octo.request(`GET /gists/${gistId}`, {
         gist_id: gistId,
-      });
+      })
 
-      setLoading(false);
+      setLoading(false)
 
       if (result.status !== 200) {
-        setError("Problem fetching data");
+        setError("Problem fetching data")
 
-        return;
+        return
       }
 
-      const cv = JSON.parse(result.data.files["cv.json"].content);
+      const cv = JSON.parse(result.data.files["cv.json"].content)
 
       setData({
         ...cv,
         avatar_url: result.data.owner.avatar_url,
         updated_at: result.data.updated_at,
-      });
-    };
+      })
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
-  const name = hidden ? "Candidate" : "Ashleigh Simonelli";
+  const name = hidden ? "Candidate" : "Ashleigh Simonelli"
 
   return loading ? (
     <Loader />
@@ -413,8 +411,8 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                 className="navbar-item"
                 href="#"
                 onClick={event => {
-                  event.preventDefault();
-                  setModalOpen(true);
+                  event.preventDefault()
+                  setModalOpen(true)
                 }}
               >
                 Share
@@ -465,11 +463,11 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                       <a
                         href="#"
                         onClick={event => {
-                          event.preventDefault();
+                          event.preventDefault()
 
                           window.navigator.share({
                             text: "Ashleigh Simonelli's CV",
-                          });
+                          })
                         }}
                       >
                         Share
@@ -496,8 +494,11 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
               {!hidden ? (
                 <h1 className="title">{data.name}</h1>
               ) : (
-                <><h1 className="title">The Best Candidate</h1>
-                <h2 className="subtitle">The recruiter supplied this CV with contact details removed</h2>
+                <>
+                  <h1 className="title">The Best Candidate</h1>
+                  <h2 className="subtitle">
+                    The recruiter supplied this CV with contact details removed
+                  </h2>
                 </>
               )}
               {data.description.map(description => (
@@ -607,14 +608,14 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                           <h6 className="subtitle is-6">{key}</h6>
                           <h5 className="subtitle is-7">
                             {Object.values(
-                              data.employment_history[key].dates
+                              data.employment_history[key].dates,
                             ).join(" - ")}
                           </h5>
                           <div className="content">
                             {data.employment_history[key].description.map(
                               description => (
                                 <p key={description}>{description}</p>
-                              )
+                              ),
                             )}
                           </div>
                         </div>
@@ -652,7 +653,7 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
                               ...event.target.value
                                 .split(", ")
                                 .map(word => word.trim()),
-                            ]);
+                            ])
                           }}
                         />
                       </div>
@@ -842,26 +843,26 @@ export const ViewCV = ({ payload }: { payload: AshleighCV }) => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
 export default () => {
   const urlParams = new URLSearchParams(
     typeof document !== "undefined"
       ? document.location.search.substring(1)
-      : undefined
-  );
-  const existingToken = urlParams.get("token");
+      : undefined,
+  )
+  const existingToken = urlParams.get("token")
 
-  const result = validateToken(existingToken);
+  const result = validateToken(existingToken)
 
   const [payload, setPayload] = useState<undefined | AshleighCV>(
-    result.valid ? result.payload : undefined
-  );
+    result.valid ? result.payload : undefined,
+  )
 
   return payload ? (
     <ViewCV payload={payload} />
   ) : (
     <TokenRequired setPayload={setPayload} />
-  );
-};
+  )
+}

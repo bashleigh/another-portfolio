@@ -8,13 +8,13 @@ export enum ProjectStatus {
 }
 
 export type Slide = {
-  status: ProjectStatus;
-  name: string;
-  description: string;
-  link?: string;
-  technologies?: string[];
-  image?: string;
-};
+  status: ProjectStatus
+  name: string
+  description: string
+  link?: string
+  technologies?: string[]
+  image?: string
+}
 
 export const slides: Slide[] = [
   {
@@ -115,4 +115,4 @@ export const slides: Slide[] = [
     technologies: ["nestjs", "typescript"],
     link: "https://github.com/nestjsx/nestjs-config",
   },
-];
+]

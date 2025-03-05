@@ -1,0 +1,53 @@
+.workplace {
+  .workplace-name {
+    font-weight: bold;
+    font-size: 2rem;
+    font-family: 'Orbitron';
+  }
+
+  .jobtitle {
+    font-family: "Silkscreen";
+    color: #bd28b3;
+  }
+
+  .date {
+    font-weight: bold;
+  }
+
+  .description {
+    margin: 1rem .25rem;
+  }
+  margin: 6vw 0rem 6rem 12rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+#what-i-know {
+  .subtitle {
+    font-family: "Silkscreen";
+  }
+}
+
+.input.search {
+  &:focus {
+    outline: 1px solid #00FF00;
+  }
+}
+
+.grid {
+  li, .subtitle {
+    transition: all .5s ease;
+  }
+}
+
+.grid.searching {
+  li, .subtitle {
+    opacity: .3;
+  }
+
+  li.highlighted, .subtitle.highlighted {
+    opacity: 1;
+  }
+}
