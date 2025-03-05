@@ -12,45 +12,51 @@ const Question: FC<{
 
   return (
     <div className="hero is-fullheight">
-      <div className="hero-body">
-        <div className="container">
-          <h3 className="title mb-6">
-            {questionIndex}&#41; {title}
-          </h3>
-          <form
-            onSubmit={event => {
-              console.log("submitted")
-              event.preventDefault()
-              if (typeof selectedAnswerIndex !== "undefined")
-                submit(selectedAnswerIndex)
-            }}
-          >
-            <div className="field mb-6">
-              <div className="control">
-                <div className="radios is-flex-direction-column">
-                  {answers.map((answer, index) => (
-                    <label key={`${answer}-${index}`} className="radio">
-                      <input
-                        onChange={event => {
-                          setSelectedAnswerIndex(index)
-                        }}
-                        className="radio mr-2"
-                        type="radio"
-                        name="answer"
-                        value={answer}
-                      />
-                      {answer}
-                    </label>
-                  ))}
+      <div className="hero-body is-justify-content-center">
+        <div className="columns">
+          <div className="column" style={{ width: "50vw" }}>
+            <div className="container">
+              <h3 className="title mb-6">
+                {questionIndex}&#41; {title}
+              </h3>
+              <form
+                onSubmit={event => {
+                  console.log("submitted")
+                  event.preventDefault()
+                  if (typeof selectedAnswerIndex !== "undefined")
+                    submit(selectedAnswerIndex)
+                }}
+              >
+                <div className="field mb-6">
+                  <div className="control">
+                    <div className="radios is-flex-direction-column">
+                      {answers.map((answer, index) => (
+                        <label key={`${answer}-${index}`} className="radio">
+                          <input
+                            onChange={event => {
+                              setSelectedAnswerIndex(index)
+                            }}
+                            className="radio mr-2"
+                            type="radio"
+                            name="answer"
+                            value={answer}
+                          />
+                          {answer}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
+                <div className="field">
+                  <div className="control">
+                    <div className="is-flex is-flex-direction-row is-justify-content-flex-end">
+                      <button className="button is-primary">Next</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
-            <div className="field">
-              <div className="control">
-                <button className="button is-primary">Next</button>
-              </div>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
@@ -119,7 +125,7 @@ export const Quiz = () => {
               if (selectedAnswerIndex === 3) setScore(score + 1)
               setQuestionIndex(questionIndex + 1)
             }}
-            title="What language was not mentioned above?"
+            title="What language have I no experience with?"
             answers={["JavaScript", "Pascal", "Python", "COLBOT"]}
           />
         )
@@ -165,30 +171,51 @@ export const Quiz = () => {
         )
       case 6:
         return (
-          <div className="hero-body">
-            <div className="container">
-              {calledMeOld ? (
-                <>
-                  <h1 className="title has-text-centered is-danger-text">
-                    You called me old.
-                  </h1>
-                  <h3 className="title has-text-centered mb-4">
-                    Your score is -100. 🖕
-                  </h3>
-                </>
-              ) : (
-                <>
-                  <h3 className="title has-text-centered">
-                    Congrats! Your score was
-                  </h3>
-                  <h1 className="title mb-4 has-text-centered is-size-1">
-                    {score}
-                  </h1>
-                </>
-              )}
-              <button onClick={() => reset()} className="button is-primary">
-                Reset
-              </button>
+          <Question
+            questionIndex={questionIndex}
+            submit={() => {
+              setScore(score + 1)
+              setQuestionIndex(questionIndex + 1)
+            }}
+            title="What are West Ham everywhere they go?"
+            answers={["Massive", "Massive", "Massive", "Massive"]}
+          />
+        )
+      case 7:
+        return (
+          <div className="hero-body is-justify-content-center">
+            <div className="columns">
+              <div className="column" style={{ width: "50vw" }}>
+                <div className="container">
+                  {calledMeOld ? (
+                    <>
+                      <h1 className="title has-text-centered is-danger-text">
+                        You called me old.
+                      </h1>
+                      <h3 className="title has-text-centered mb-4">
+                        Your score is -100. 🖕
+                      </h3>
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="title has-text-centered">
+                        Congrats! Your score was
+                      </h3>
+                      <h1 className="title mb-4 has-text-centered is-size-1">
+                        {score}
+                      </h1>
+                    </>
+                  )}
+                  <div className="is-flex is-flex-direction-row is-justify-content-center">
+                    <button
+                      onClick={() => reset()}
+                      className="button is-primary"
+                    >
+                      Try again?
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )

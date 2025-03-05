@@ -1,9 +1,38 @@
 import React, { useState, useRef, useEffect } from "react"
 import "./old-terminal.scss"
+import Typewriter from "typewriter-effect"
+
+const initialLines = [
+  "Hello",
+  "Welcome to Ashleigh Simonelli's website",
+  "",
+  "",
+  "I'm programs to help. Can I help in any way?",
+]
+
+const useTypewriter = (text, speed = 20) => {
+  const [displayText, setDisplayText] = useState("")
+  useEffect(() => {
+    let i = 0
+
+    const typeCharacter = () => {
+      if (i < text.length) {
+        setDisplayText(prevText => prevText + text.charAt(i))
+        setTimeout(typeCharacter, speed)
+      }
+      i++
+    }
+
+    typeCharacter()
+  }, [text, speed])
+
+  return displayText
+}
 
 export const OldTerminal = () => {
-  const [lines, setLines] = useState<string[]>(["test", "test", "again"])
+  const [lines, setLines] = useState<string[]>([])
   const [cariage, setCariage] = useState<string>("")
+  const [showBoot, setShowBoot] = useState<boolean>(true)
 
   const inputElement = useRef<HTMLInputElement>()
 
@@ -11,17 +40,27 @@ export const OldTerminal = () => {
     inputElement.current?.focus()
   }, [inputElement])
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowBoot(false)
+    }, 5000)
+
+    setTimeout(() => {
+      setLines([...lines, "Hello"])
+    }, 7000)
+  }, [])
+
   return (
     <div id="old-terminal" className="is-fullscreen">
       <img className="monitor-image" src="/images/monitor.png" />
-      <div className="boot-screen">
+      <div className={`boot-screen${showBoot ? " show-boot" : ""}`}>
         <div>
           <h1 className="title is-size-1">AshleighOS</h1>
         </div>
         <p>2025© - v2.0.1 - London</p>
       </div>
       <div
-        className="screen"
+        className={`screen${showBoot ? " off" : ""}`}
         onClick={() => {
           console.log("inputElement", inputElement)
           inputElement.current?.focus()
@@ -56,7 +95,16 @@ export const OldTerminal = () => {
         </form>
         <div className="content">
           {lines.map(line => (
-            <p key={line}>{line}</p>
+            <p key={line}>
+              <Typewriter
+                options={{
+                  cursor: "",
+                }}
+                onInit={typewriter => {
+                  typewriter.typeString(line).pauseFor(2500).start()
+                }}
+              />
+            </p>
           ))}
         </div>
       </div>

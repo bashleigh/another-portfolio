@@ -15,6 +15,7 @@
   }
 
   .boot-screen {
+    display: none;
     position: absolute;
     left: 0;
     right: 0;
@@ -23,15 +24,19 @@
     width: 80vw;
     height: 70vh;
     color: #00FF00;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: auto;
+    animation: blinkingStart 5s linear infinite;
 
     .title {
       color: #00FF00;
       font-family: 'Silkscreen';
+    }
+
+    &.show-boot {
+      display: flex;
     }
   }
 
@@ -48,6 +53,10 @@
     color: #00FF00;
     display: flex;
     flex-direction: column-reverse;
+
+    &.off {
+      display: none;
+    }
 
     .cursor {
       display: none;
@@ -108,6 +117,42 @@
     opacity: 0
   }
   71% {
+    opacity: 1;
+  }
+}
+
+@keyframes blinkingStart {
+  0% {
+    opacity: 0;
+  }
+  1% {
+    opacity: .5;
+  }
+  10% {
+    opacity: .5;
+  }
+  11% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0;
+  }
+  16% {
+    opacity: .5;
+  }
+  20% {
+    opacity: .5;
+  }
+  21% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  26% {
+    opacity: .5;
+  }
+  100% {
     opacity: 1;
   }
 }
