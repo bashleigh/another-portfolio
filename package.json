@@ -20,6 +20,8 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "bulma": "^1.0.3",
     "react": "^19.0.0",
+    "react-confetti": "^6.4.0",
+    "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "^19.0.0",
     "react-helmet": "^6.1.0",
     "react-highlight-words": "^0.17.0",

@@ -1,0 +1,23 @@
+.bingo-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  .word {
+    border: 1px solid #00FF00;
+    padding: 1rem 2rem;
+    margin: .25rem;
+    border-radius: .4rem;
+    cursor: pointer;
+
+    &.selected {
+      background: #00FF00;
+      color: white;
+    }
+  }
+}
+
+.modal-card.bingo {
+  width: 80vw;
+  height: 80vh;
+}

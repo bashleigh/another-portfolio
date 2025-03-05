@@ -37,12 +37,9 @@ export const OldTerminal = () => {
   const inputElement = useRef<HTMLInputElement>()
 
   useEffect(() => {
-    inputElement.current?.focus()
-  }, [inputElement])
-
-  useEffect(() => {
     setTimeout(() => {
       setShowBoot(false)
+      inputElement.current?.focus()
     }, 5000)
 
     setTimeout(() => {
@@ -62,7 +59,6 @@ export const OldTerminal = () => {
       <div
         className={`screen${showBoot ? " off" : ""}`}
         onClick={() => {
-          console.log("inputElement", inputElement)
           inputElement.current?.focus()
         }}
       >
@@ -70,7 +66,7 @@ export const OldTerminal = () => {
           className="text-input"
           onSubmit={event => {
             event.preventDefault()
-            setLines([...lines, cariage])
+            setLines([...lines, `Ash: Command not found: ${cariage}`])
             setCariage("")
           }}
         >
@@ -95,16 +91,16 @@ export const OldTerminal = () => {
         </form>
         <div className="content">
           {lines.map(line => (
-            <p key={line}>
               <Typewriter
+                key={line}
                 options={{
                   cursor: "",
+                  delay: 20,
                 }}
                 onInit={typewriter => {
                   typewriter.typeString(line).pauseFor(2500).start()
                 }}
               />
-            </p>
           ))}
         </div>
       </div>

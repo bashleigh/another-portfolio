@@ -1,48 +1,50 @@
 import React, { FC, useState } from "react"
 import "./cv.scss"
+import { Bingo } from './bingo'
+
+const cells = {
+  languages: [
+    "JavaScript",
+    "TypeScript",
+    "PHP",
+    "Python",
+    "Dart",
+    "Pascal",
+    "C++",
+    "CSS/SCSS",
+  ],
+  frameworks: [
+    "ExpressJS",
+    "NestJS",
+    "React",
+    "React Native",
+    "Jest",
+    "Flutter",
+    "Symfony",
+    "Laravel",
+  ],
+  libraries: ["NodeJS"],
+  databases: ["MySQL", "PostGresSQL", "MongoDB", "DynamoDB"],
+  protocols: [
+    "I2C",
+    "SPI",
+    "AMQP",
+    "MQTT",
+    "HTTP",
+    "HTTPS",
+    "WS",
+    "WSS",
+    "SOAP",
+    "JWT",
+    "RPC",
+    "gRPC",
+    "TCP",
+  ],
+  "cloud platforms": ["AWS", "Google Cloud Platform"],
+  methodologies: ["REST", "SOLID"],
+}
 
 const WhatIKnow: FC<{ searchPhrase: string }> = ({ searchPhrase }) => {
-  const cells = {
-    languages: [
-      "JavaScript",
-      "TypeScript",
-      "PHP",
-      "Python",
-      "Dart",
-      "Pascal",
-      "C++",
-      "CSS/SCSS",
-    ],
-    frameworks: [
-      "ExpressJS",
-      "NestJS",
-      "React",
-      "React Native",
-      "Jest",
-      "Flutter",
-      "Symfony",
-      "Laravel",
-    ],
-    libraries: ["NodeJS"],
-    databases: ["MySQL", "PostGresSQL", "MongoDB", "DynamoDB"],
-    protocols: [
-      "I2C",
-      "SPI",
-      "AMQP",
-      "MQTT",
-      "HTTP",
-      "HTTPS",
-      "WS",
-      "WSS",
-      "SOAP",
-      "JWT",
-      "RPC",
-      "gRPC",
-      "TCP",
-    ],
-    "cloud platforms": ["AWS", "Google Cloud Platform"],
-    methodologies: ["REST", "SOLID"],
-  }
   const colours = ["primary", "danger", "warning", "info", "link"]
 
   return (
@@ -87,9 +89,11 @@ export const CV = () => {
   const thisYear = date.getFullYear()
   const experienceInYears = thisYear - 2015
   const [searchPhrase, setSearchPhrase] = useState<string>("")
+  const [bingoEnabled, setBingoEnabled] = useState<boolean>(false)
 
   return (
     <>
+    <Bingo isActive={bingoEnabled} setBingoEnabled={setBingoEnabled} words={Object.values(cells).flat(1)} />
       <div className="mt-6">
         <div className="navbar">
           <div className="container">
@@ -112,7 +116,7 @@ export const CV = () => {
                 </form>
               </div>
               <div className="navbar-item">
-                <button className="button is-primary">Bingo</button>
+                <button className="button is-primary" onClick={() => setBingoEnabled(true)}>Bingo</button>
               </div>
             </div>
           </div>
@@ -255,7 +259,7 @@ export const CV = () => {
           </div>
         </div>
       </section>
-      <section className="hero is-info is-large">
+      <section className="hero is-link is-large">
         <div className="hero-body">
           <h2 className="title has-text-centered is-size-1">
             That's <span className="is-size-1">{experienceInYears}</span> years
