@@ -12,6 +12,9 @@ import Typewriter from "typewriter-effect"
 // If Morty kills process 2, success, they've saved rick and he's free
 // If Morty kills process 1, failure, Evil Morty is not impressed. How "unfortuitous"
 
+// this is what happens when backend engineers learn React, Morty. They build stupid terminals into their websites.
+// it's like that film virus from 1995
+
 const showOffRick = [
   "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⠀⠀⠀⠀⢀⣴⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
   "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣄⠀⣠⣾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢆⠀⠀⠀⠀⠀",
@@ -99,6 +102,9 @@ const initialLines = [
   "I\'m stick in this monitor on this person's website.",
   "",
   "What do you think of that Morty?",
+  'pid        name            user',
+  ' 1         security        ashleigh',
+  ' 2         rick            lordOfTheTerminal',
 ]
 
 export const OldTerminal = () => {
@@ -125,6 +131,7 @@ export const OldTerminal = () => {
 
     setTimeout(() => {
       setLines(lines => [...lines, 'Anyway, why don\'t you try and use the terminal huh?',])
+      inputElement.current?.focus()
     }, 15000)
 
     setTimeout(() => {
@@ -157,6 +164,7 @@ export const OldTerminal = () => {
         "⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⢀⠃⠀⡆⠀⠀⠀⠀⡇⢡⠀⠀⠀⠈⣿⣿⣿⣿⣿",
         'Oh no Morty! What have you done! You\'re downloading viruses!',
         'Morty!!!',
+        'This is what happens when backend developers learn React Morty, they build dumb terminals in the browser',
       ])
     }, 24000)
   }, [])

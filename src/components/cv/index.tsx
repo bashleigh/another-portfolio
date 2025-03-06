@@ -123,10 +123,10 @@ export const CV = () => {
         </div>
         <WhatIKnow searchPhrase={searchPhrase} />
       </div>
-      <section className="hero is-halfheight is-info">
+      <section className="hero is-halfheight is-primary">
         <div className="hero-body">
           <div>
-            <h3 className="title">Where have I been all your life?</h3>
+            <h3 className="title is-size-1">Where have I been all your life?</h3>
             <div className="workplace">
               <p className="workplace-name">Reapit Ltd</p>
               <p className="jobtitle">

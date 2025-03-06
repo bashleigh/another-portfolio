@@ -1,0 +1,68 @@
+.carousel {
+  position: relative;
+
+  &.is-fullheight {
+    height: 100vh;
+  }
+
+  .slider {
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    height: 100%;
+
+    transition: transform .75s ease;
+
+    .slide {
+      width: 100vw;
+      min-height: 100%;
+
+      .slide-body {
+        height: 100%;
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+    }
+  }
+
+  .slide-button {
+    position: absolute;
+    top: 45%;
+    color: white;
+    font-size: 4rem;
+    font-family: "Silkscreen";
+    text-shadow: 0px 0px 5px black;
+
+    &.next {
+      right: 1rem;
+    }
+
+    &.previous {
+      left: 1rem;
+    }
+  }
+
+  .carousel-buttons {
+    position: absolute;
+    bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+
+    margin: auto;
+
+    a {
+      background: rgb(204, 204, 204);
+      padding: .4rem;
+      border-radius: 100px;
+      display: inline-block;
+      margin: .25rem;
+
+      &.active {
+        background: white;
+        box-shadow: 0px 0px 10px white;
+      }
+    }
+  }
+}

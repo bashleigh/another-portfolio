@@ -87,7 +87,7 @@ export const Bingo: FC<{isActive: boolean, setBingoEnabled: (value: boolean) => 
     <div className="modal-background" onClick={() => close()}></div>
     <div className="modal-card bingo">
       <header className="modal-card-head">
-        <p className="modal-card-title">Software Bingo!</p>
+        <p className="modal-card-title">Software buzzword Bingo!</p>
         <button className="delete" aria-label="close" onClick={() => close()}></button>
       </header>
       <section className="modal-card-body">
