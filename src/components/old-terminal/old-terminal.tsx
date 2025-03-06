@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react"
 import "./old-terminal.scss"
-import Typewriter from "typewriter-effect"
+import Typewriter, { TypewriterClass } from "typewriter-effect"
+import { TypewriterSection } from "./typewriter-section"
 
 // Rick is trapped in the monitor
 // He slags off the security of the terminal
@@ -107,8 +108,23 @@ const initialLines = [
   ' 2         rick            lordOfTheTerminal',
 ]
 
+const typeWriters = {
+  start: (typewriter: TypewriterClass) => {
+    typewriter.typeString('Morty!\n\r')
+      .pauseFor(1000)
+      .typeString('Morty, check it out! I\'m in this terminal Morty!\n\r')
+      .pauseFor(100)
+      .pauseFor(100)
+      .typeString('Like that film virus from 1995!')
+      .callFunction(() => {
+        console.log('done')
+      })
+      .start()
+  }
+}
+
 export const OldTerminal = () => {
-  const [lines, setLines] = useState<string[]>([])
+  const [lines, setLines] = useState<string[][]>([])
   const [cariage, setCariage] = useState<string>("")
   const [showBoot, setShowBoot] = useState<boolean>(true)
 
@@ -117,56 +133,24 @@ export const OldTerminal = () => {
   useEffect(() => {
     setTimeout(() => {
       setShowBoot(false)
-      inputElement.current?.focus()
-      setLines(initialLines)
+      setLines([[
+          'Morty!',
+          'Check it out Morty, I\'m in this terminal!',
+          ...showOffRick,
+          'It\'s like that film virus from 1995! Haha!',
+          'The security Morty, it was no good.',
+          'Wait, there\'s a security process still running, Morty',
+          'I need you to run the top command, Morty',
+      ],])
     }, 5000)
 
-    setTimeout(() => {
-      setLines(lines => [...lines, 'Ahhh this person\'s security wasn\'t that great Morty'])
-    }, 7000)
-
-    setTimeout(() => {
-      setLines(lines => [...lines, 'Glad I\'m not using something like google chrome or firefox, the viruses I\'d catch, yeeesh.',])
-    }, 10000)
-
-    setTimeout(() => {
-      setLines(lines => [...lines, 'Anyway, why don\'t you try and use the terminal huh?',])
-      inputElement.current?.focus()
-    }, 15000)
-
-    setTimeout(() => {
-      setLines(lines => [...lines, 'Downloading viruses...........................'])
-    }, 20000)
-
-    setTimeout(() => {
-      setLines(lines => [...lines, 
-        "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⠏⢿⣿⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⠟⠁⠀⢸⣿⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠈⢿⡿⠟⠁⠀⠀⠀⢸⣿⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿",
-        "⣿⣿⣿⣆⠀⠀⠈⠉⠉⠉⠁⠀⠀⣀⠠⠤⠐⠒⠢⠤⢀⠀⠀⠀⠛⠛⠛⠛⠋⣹",
-        "⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⢀⠔⠉⠀⠀⠀⠀⠀⠀⠀⠀⠉⠂⠀⠀⠀⠀⠀⣼⣿",
-        "⣿⣿⣿⣿⣿⡄⠀⠀⠀⡐⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠀⠀⢀⣾⣿⣿",
-        "⣿⣿⣿⣿⣿⠿⠀⠀⢰⠀⠀⠀⢀⣀⣀⣀⣀⡀⠀⠀⠀⠄⠀⠀⣥⠀⠻⣿⣿⣿",
-        "⣿⡿⠟⠋⠀⠀⠀⠀⡆⠀⠀⠀⠧⠤⠀⠒⠒⢶⠒⡒⠒⠒⠒⠒⠲⡀⠀⠈⠙⠿",
-        "⣧⣄⡀⠀⠀⠀⠀⠀⡇⠀⢀⣃⣀⣀⠀⠀⠀⠀⣆⠁⠀⣀⠠⠄⠀⢰⠀⢀⣴⣾",
-        "⣿⣿⣿⣷⣦⡀⠀⠀⡇⠀⠈⡄⠀⠉⠀⠀⠀⢀⠃⠄⠀⠉⠀⠀⠀⡈⢰⣿⣿⣿",
-        "⣿⣿⣿⡿⠟⠁⠀⠀⣇⠀⠀⠈⠂⠄⠤⠤⠔⠁⠀⠈⡖⠠⠤⠐⢪⠁⠈⠻⣿⣿",
-        "⣿⡿⠋⠀⠀⠀⠀⡠⠛⠀⠀⠑⠢⠤⠄⠀⠀⠀⢇⠀⢃⠀⠒⠀⢡⠓⡀⢀⣈⣿",
-        "⣿⣿⣶⣦⣄⡀⠸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠢⠋⠀⠀⠀⢸⢀⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⠃⠀⠑⠠⡄⠀⠀⡀⠀⠀⠀⢀⣀⣀⣀⣀⡀⠀⠀⠜⠉⠻⣿⣿⣿",
-        "⣿⣿⣿⣿⣷⣶⣶⣶⡆⢣⠀⠀⠁⠠⠒⠈⠀⠀⣿⣿⣿⠃⠉⠀⡸⢻⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⣿⣿⣿⣁⣀⣦⠀⠑⠒⠀⠀⠀⣄⢹⠏⠤⠀⠀⣲⣿⣿⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠁⠀⠀⠀⣀⣼⣿⣿⣿⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠐⠂⠤⠤⢤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⣿⣿⠿⠟⠛⠋⠉⠉⠹⠢⠄⠀⠠⠚⡉⠉⠉⠛⠿⣿⣿⣿⣿⣿⣿",
-        "⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⢀⠃⠀⡆⠀⠀⠀⠀⡇⢡⠀⠀⠀⠈⣿⣿⣿⣿⣿",
-        'Oh no Morty! What have you done! You\'re downloading viruses!',
-        'Morty!!!',
-        'This is what happens when backend developers learn React Morty, they build dumb terminals in the browser',
-      ])
-    }, 24000)
+    // setTimeout(() => {
+    //   setLines([...lines, [
+    //     'I need you to run the top command, Morty.',
+    //     'Then kill the process',
+    //   ]])
+    //   inputElement.current?.focus()
+    // }, 8000)
   }, [])
 
   return (
@@ -188,16 +172,16 @@ export const OldTerminal = () => {
           className="text-input"
           onSubmit={event => {
             event.preventDefault()
-            switch (cariage) {
-              case 'clear':
-                setLines([])
-                break;
-              case 'ls':
-                setLines([...lines, 'bin root usr .super-secret-folder'])
-                break;
-              default:
-                setLines([...lines, `Ash: Command not found: ${cariage}`])
-            }
+            // switch (cariage) {
+            //   case 'clear':
+            //     setLines([])
+            //     break;
+            //   case 'ls':
+            //     setLines([...lines, 'bin root usr .super-secret-folder'])
+            //     break;
+            //   default:
+            //     setLines([...lines, `Ash: Command not found: ${cariage}`])
+            // }
             setCariage("")
           }}
         >
@@ -221,7 +205,10 @@ export const OldTerminal = () => {
           ></span>
         </form>
         <div className="content">
-          {lines.map(line => (
+          {lines.map((set => (
+            <TypewriterSection lines={set}/>
+          )))}
+          {/* {lines.map(line => (
               <Typewriter
                 key={line}
                 options={{
@@ -229,10 +216,14 @@ export const OldTerminal = () => {
                   delay: 20,
                 }}
                 onInit={typewriter => {
-                  typewriter.typeString(line).pauseFor(2500).start()
+                  if (line.charAt(0) === '#') {
+                    typeWriters.start(typewriter)
+                  } else {
+                    typewriter.typeString(line).start()
+                  }
                 }}
               />
-          ))}
+          ))} */}
         </div>
       </div>
     </div>

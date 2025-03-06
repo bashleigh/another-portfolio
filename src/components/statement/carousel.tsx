@@ -36,10 +36,10 @@ export const Carousel: FC = ({ children }) => {
           </div>
         ))}
       </div>
-      <button className='slide-button previous' onClick={() => {
+      <button className={`slide-button previous${currentIndex === 0 ? ' disabled' : ''}`} onClick={() => {
         previous()
       }}>&lt;</button>
-      <button className='slide-button next' onClick={() => {
+      <button className={`slide-button next${currentIndex === (amount - 1) ? ' disabled' : ''}`} onClick={() => {
         next()
       }}>&gt;</button>
       <CarouselButtons active={currentIndex} count={amount} onClick={goTo} />
