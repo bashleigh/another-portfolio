@@ -1,13 +1,17 @@
+import React from 'react'
+import './statement.scss'
+
 export const Statement = () => {
   return (
-    <div className="hero is-fullheight is-primary">
+    <div id='statement' className="hero is-fullheight is-primary is-black">
       <div className="hero-body is-flex is-justify-content-center">
+        <section className='section'>
         <div className="columns is-centered is-flex-direction-row-reverse">
           <div className="column">
-            <h3 className="title mb-4">
+            <h3 className="title mb-4 has-text-white is-size-1">
               &quot;Shit code is shit code, good code is good code&quot;
             </h3>
-            <p>
+            <p className='has-text-white'>
               I don't spend my time on linkedin creating flashy word grabbing
               posts. I prefer to be productive.
             </p>
@@ -16,6 +20,7 @@ export const Statement = () => {
             Imagine a beautiful picture of me here.
           </div>
         </div>
+        </section>
       </div>
     </div>
   )

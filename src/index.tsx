@@ -9,10 +9,12 @@ import { CV } from "./components/cv"
 const root = document.getElementById("root")
 
 createRoot(root).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+    <>
     <OldTerminal />
     <Statement />
     <CV />
     <Quiz />
-  </React.StrictMode>,
+    </>,
+  // </React.StrictMode>,
 )

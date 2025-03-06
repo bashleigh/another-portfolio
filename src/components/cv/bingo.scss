@@ -4,14 +4,14 @@
   justify-content: center;
 
   .word {
-    border: 1px solid #00FF00;
+    border: 1px solid var(--bulma-primary);
     padding: 1rem 2rem;
     margin: .25rem;
     border-radius: .4rem;
     cursor: pointer;
 
     &.selected {
-      background: #00FF00;
+      background: var(--bulma-primary);
       color: white;
     }
   }

@@ -23,15 +23,15 @@
     top: 0;
     width: 80vw;
     height: 70vh;
-    color: #00FF00;
+    color: var(--bulma-primary);
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: auto;
-    animation: blinkingStart 5s linear infinite;
+    animation: blinkingStart 5s linear;
 
     .title {
-      color: #00FF00;
+      color: var(--bulma-primary);
       font-family: 'Silkscreen';
     }
 
@@ -50,7 +50,7 @@
     width: 80vw;
     height: 70vh;
     overflow-y: scroll;
-    color: #00FF00;
+    color: var(--bulma-primary);
     display: flex;
     flex-direction: column-reverse;
 
@@ -62,7 +62,7 @@
       display: none;
       width: 10px;
       height: 16px;
-      background-color: #00FF00;
+      background-color: var(--bulma-primary);
       animation: blinker 1s linear infinite;
       position: absolute;
       bottom: 2px;
@@ -81,7 +81,7 @@
       background: none;
       border: none;
       outline: none;
-      color: #00FF00;
+      color: var(--bulma-primary);
       caret-color: transparent;
       font-family: "Silkscreen";
       width: 100%;
@@ -126,10 +126,10 @@
     opacity: 0;
   }
   1% {
-    opacity: .5;
+    opacity: .3;
   }
   10% {
-    opacity: .5;
+    opacity: .3;
   }
   11% {
     opacity: 0;
@@ -138,10 +138,10 @@
     opacity: 0;
   }
   16% {
-    opacity: .5;
+    opacity: .3;
   }
   20% {
-    opacity: .5;
+    opacity: .3;
   }
   21% {
     opacity: 0;
@@ -150,7 +150,7 @@
     opacity: 0;
   }
   26% {
-    opacity: .5;
+    opacity: .3;
   }
   100% {
     opacity: 1;
