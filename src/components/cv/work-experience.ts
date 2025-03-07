@@ -133,7 +133,8 @@ export const workexperience: WorkExperience[] = [
     title: "Web Developer",
     company: "Merali Digital",
     description: [
-      "My main task at Merali Digital was to maintain and updating a system built in Zend 1.4 for managing and documenting opticians test results and patients. Patients requiring attention would be referred to hospital via fax. During my extremely long journey to work I used the time to experiment with Codeigniter and other frameworks such as Symfony and Laravel.",
+      "My main task at Merali Digital was to maintain and updating a system built in Zend 1.4 for managing and documenting opticians test results and patients. Patients requiring attention would be referred to hospital via fax.",
+      "During my extremely long journey to work I used the time to experiment with Codeigniter and other frameworks such as Symfony and Laravel.",
     ],
   },
 ]

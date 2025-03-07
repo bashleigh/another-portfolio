@@ -60,27 +60,51 @@ export const Statement = () => {
                   of mashing the film Virus and Rick and Morty.
                 </p>
                 <p className="has-text-white">
-                  Looking back on it, films and programs had a lot of influence
-                  on my choices in career.
+                  Looking back on it, films and Tv shows had a lot of influence
+                  on my choices in career as a kid. Robot Wars, Virus,
+                  Independence Day, Short Circuit & The Terminator.
                 </p>
               </div>
               <div className="column is-6"></div>
             </div>
           </section>
         </div>
-        <div className="slide-body is-flex is-justify-content-center independenceday">
+        <div className="slide-body is-flex is-justify-content-center terminator">
           <section className="section is-flex is-justify-content-center is-flex-direction-column is-flex-grow-1">
             <div className="columns is-centered">
               <div className="column is-6 content blur-card">
                 <h3 className="title mb-4 has-text-white is-size-1 has-text-centered">
-                  &quot;I gave it a cold, I gave it a virus.&quot;
+                  &quot;You have been terminated&quot;
                 </h3>
                 <p className="has-text-white">
-                  It always turns out to be the most simplest solution is the
-                  best solution. Be it Independence Day or War of The Worlds, a
-                  simple virus bested the tech dominant aliens.
+                  If you've never heard of the programming language{" "}
+                  <a target="_blank" href="https://lhartikk.github.io/ArnoldC/">
+                    ArnoldC
+                  </a>{" "}
+                  you should check it out.
                 </p>
-                <p className="has-text-white">Except in the film Aliens.</p>
+                <p className="has-text-white">
+                  When you click the link, feel free to say &quot;I'll be
+                  back&quot;. Don't milk it though.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div className="slide-body is-flex is-justify-content-center gizmo">
+          <section className="section is-flex is-justify-content-center is-flex-direction-column is-flex-grow-1">
+            <div className="columns is-centered">
+              <div className="column is-6 content blur-card">
+                <h3 className="title mb-4 has-text-white is-size-1 has-text-centered">
+                  Gizmos & Gadgets
+                </h3>
+                <p className="has-text-white">
+                  I really wouldn't have become a developer without a game such
+                  as Gizmos and Gadgets. Remember playing this at 6 years old on
+                  windows 95. To unlock each door in the game you had to solve a
+                  logic puzzle. Those puzzles have stuck with me all these
+                  years!
+                </p>
               </div>
             </div>
           </section>

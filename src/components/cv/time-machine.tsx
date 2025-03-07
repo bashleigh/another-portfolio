@@ -4,7 +4,6 @@ import { workexperience } from "./work-experience"
 import { useOnScreen } from "./useOneScreen"
 
 export const TimeMachine = () => {
-  // const [textSize, setTextSize] = useState(1)
   const [previousScrollVal, setPreviousScrollVal] = useState<number>(0)
   const [showText, setShowText] = useState<boolean>(false)
   const date = new Date()
@@ -22,25 +21,15 @@ export const TimeMachine = () => {
       const window = event.currentTarget
       if (previousScrollVal > window.scrollY) {
         if (onScreen && onScreenExperience) {
-          // need to set where the last position was instead of guessing
           setShowText(false)
         }
-        // console.log("scrolling up", previousScrollVal, window.scrollY)
-        // if (textSize > 1 && onScreen) setTextSize(textSize - 0.05)
       } else if (previousScrollVal < window.scrollY) {
-        // console.log("scrolling down", previousScrollVal, window.scrollY)
-        // if (textSize < 4 && onScreen) setTextSize(textSize + 0.05)
-        // else if (textSize >= 4) {
-        //   setShowText(true)
-        // }
         if (onScreen && onScreenExperience) setShowText(true)
       }
       setPreviousScrollVal(window.scrollY)
     },
     [previousScrollVal],
   )
-
-  // console.log('text complete', textSize, showText)
 
   useEffect(() => {
     setPreviousScrollVal(window.scrollY)
@@ -83,10 +72,7 @@ export const TimeMachine = () => {
         className={`bottom-reveal hero is-fullheight${onScreen || showText ? " active" : ""}`}
       >
         <div className="hero-body is-justify-content-center is-align-content-center">
-          <h2
-            className="title has-text-centered is-size-1"
-            // style={{ fontSize: `${textSize}rem` }}
-          >
+          <h2 className="title has-text-centered is-size-1">
             That's {experienceInYears} years experience!
           </h2>
         </div>

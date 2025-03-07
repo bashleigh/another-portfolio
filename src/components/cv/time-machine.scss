@@ -1,17 +1,23 @@
 @use "bulma/sass/utilities/mixins";
 
+.hero.is-timemachine {
+    background-image: linear-gradient(180deg, var(--dark-primary), var(--bulma-info));
+}
+
 .time-machine {
   padding-top: 4rem;
+
   .card-stack {
     z-index: 100;
+    position: relative;
     @include mixins.tablet {
       padding: 0rem 10vw;
     }
-
     .card {
       z-index: 100;
       background: white;
       padding: 2rem 4rem;
+      padding-top: .5rem;
       padding-bottom: 6rem;
       position: sticky;
       top: 0;
@@ -21,11 +27,12 @@
 
       &:last-child {
         margin-bottom: 0;
+        padding-bottom: 20rem;
       }
-  
+
       @for $i from 1 through 9 {
         &:nth-child(#{$i}n) {
-          top: $i * 4rem;
+          top: $i * 2rem;
         }
       }
 

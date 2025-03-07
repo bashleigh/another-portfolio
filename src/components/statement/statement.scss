@@ -29,9 +29,18 @@
   background-repeat: no-repeat;
 }
 
-.slide-body.paint {
-  background-image: url('/images/background.jpeg');
+.slide-body.terminator {
+  background-image: url('/images/terminator.jpg');
   background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.slide-body.gizmo {
+  background-image: url('/images/gizmo&gadget.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 .blur-card {
