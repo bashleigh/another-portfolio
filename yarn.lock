@@ -165,6 +165,11 @@
   dependencies:
     prop-types "^15.7.2"
 
+"@pqina/flip@^1.8.4":
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/@pqina/flip/-/flip-1.8.4.tgz#f0c542ec37f047f3663dd7b35199569edd128492"
+  integrity sha512-vOOGo23t0egDHOhnNeDwHdSQVT1p8l+MetwpZPd+5xEYjvZR6FNUaWYqLki3XFfMijro9YpYuljInCaLhO62dQ==
+
 "@rollup/rollup-android-arm-eabi@4.34.9":
   version "4.34.9"
   resolved "https://registry.yarnpkg.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.34.9.tgz#661a45a4709c70e59e596ec78daa9cb8b8d27604"

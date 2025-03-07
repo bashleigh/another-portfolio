@@ -40,7 +40,7 @@ export const Statement = () => {
           </div>
           </section>
         </div>
-        <div className="slide-body is-flex is-justify-content-center">
+        <div className="slide-body is-flex is-justify-content-center paint">
           <section className='section is-flex is-justify-content-center is-flex-direction-column'>
           <div className="columns is-centered is-flex-direction-row-reverse">
             <div className="column ">
