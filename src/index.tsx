@@ -10,11 +10,11 @@ const root = document.getElementById("root")
 
 createRoot(root).render(
   // <React.StrictMode>
-    <>
+  <>
     <OldTerminal />
     <Statement />
     <CV />
     <Quiz />
-    </>,
+  </>,
   // </React.StrictMode>,
 )

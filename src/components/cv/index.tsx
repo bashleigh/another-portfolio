@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
 import "./cv.scss"
-import { Bingo } from './bingo'
+import { Bingo } from "./bingo"
 import { TimeMachine } from "./time-machine"
 
 const cells = {
@@ -91,7 +91,11 @@ export const CV = () => {
 
   return (
     <>
-    <Bingo isActive={bingoEnabled} setBingoEnabled={setBingoEnabled} words={Object.values(cells).flat(1)} />
+      <Bingo
+        isActive={bingoEnabled}
+        setBingoEnabled={setBingoEnabled}
+        words={Object.values(cells).flat(1)}
+      />
       <div className="mt-6">
         <div className="navbar">
           <div className="container">
@@ -114,7 +118,12 @@ export const CV = () => {
                 </form>
               </div>
               <div className="navbar-item">
-                <button className="button is-primary" onClick={() => setBingoEnabled(true)}>Bingo</button>
+                <button
+                  className="button is-primary"
+                  onClick={() => setBingoEnabled(true)}
+                >
+                  Bingo
+                </button>
               </div>
             </div>
           </div>
@@ -124,8 +133,10 @@ export const CV = () => {
       <section className="hero is-halfheight is-dark-primary">
         <div className="hero-body">
           <div>
-          <h1 className="title is-size-1 has-text-centered">Where have I been all your life?</h1>
-          <TimeMachine />
+            <h1 className="title is-size-1 has-text-centered">
+              Where have I been all your life?
+            </h1>
+            <TimeMachine />
           </div>
         </div>
       </section>
