@@ -4,49 +4,52 @@ import { workexperience } from "./work-experience"
 import { useOnScreen } from "./useOneScreen"
 
 export const TimeMachine = () => {
-  const [textSize, setTextSize] = useState(1)
+  // const [textSize, setTextSize] = useState(1)
   const [previousScrollVal, setPreviousScrollVal] = useState<number>(0)
-  const [textComplete, setTextComplete] = useState<boolean>(false)
+  const [showText, setShowText] = useState<boolean>(false)
   const date = new Date()
   const thisYear = date.getFullYear()
   const experienceInYears = thisYear - 2015
 
   const onScreenRef = useRef<any>(null)
+  const onScreenExperienceRef = useRef<any>(null)
 
   const onScreen = useOnScreen(onScreenRef)
+  const onScreenExperience = useOnScreen(onScreenExperienceRef)
 
-  const handleNavigation = useCallback(
+  const handleScrollingText = useCallback(
     event => {
       const window = event.currentTarget
       if (previousScrollVal > window.scrollY) {
-        if (!onScreen) {
+        if (onScreen && onScreenExperience) {
           // need to set where the last position was instead of guessing
-          setTextComplete(false)
+          setShowText(false)
         }
-        console.log("scrolling up", previousScrollVal, window.scrollY)
-        if (textSize > 1 && onScreen) setTextSize(textSize - 0.05)
+        // console.log("scrolling up", previousScrollVal, window.scrollY)
+        // if (textSize > 1 && onScreen) setTextSize(textSize - 0.05)
       } else if (previousScrollVal < window.scrollY) {
-        console.log("scrolling down", previousScrollVal, window.scrollY)
-        if (textSize < 4 && onScreen) setTextSize(textSize + 0.05)
-        else if (textSize >= 4) {
-          setTextComplete(true)
-        }
+        // console.log("scrolling down", previousScrollVal, window.scrollY)
+        // if (textSize < 4 && onScreen) setTextSize(textSize + 0.05)
+        // else if (textSize >= 4) {
+        //   setShowText(true)
+        // }
+        if (onScreen && onScreenExperience) setShowText(true)
       }
       setPreviousScrollVal(window.scrollY)
     },
     [previousScrollVal],
   )
 
-  // console.log('text complete', textSize, textComplete)
+  // console.log('text complete', textSize, showText)
 
   useEffect(() => {
     setPreviousScrollVal(window.scrollY)
-    window.addEventListener("scroll", handleNavigation)
+    window.addEventListener("scroll", handleScrollingText)
 
     return () => {
-      window.removeEventListener("scroll", handleNavigation)
+      window.removeEventListener("scroll", handleScrollingText)
     }
-  }, [handleNavigation])
+  }, [handleScrollingText])
 
   return (
     <div className="time-machine">
@@ -76,12 +79,13 @@ export const TimeMachine = () => {
       </div>
       <div ref={onScreenRef}></div>
       <div
-        className={`bottom-reveal hero is-halfheight${onScreen || textComplete ? " active" : ""}`}
+        ref={onScreenExperienceRef}
+        className={`bottom-reveal hero is-fullheight${onScreen || showText ? " active" : ""}`}
       >
         <div className="hero-body is-justify-content-center is-align-content-center">
           <h2
-            className="title has-text-centered"
-            style={{ fontSize: `${textSize}rem` }}
+            className="title has-text-centered is-size-1"
+            // style={{ fontSize: `${textSize}rem` }}
           >
             That's {experienceInYears} years experience!
           </h2>

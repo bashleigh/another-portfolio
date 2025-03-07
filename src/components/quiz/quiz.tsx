@@ -1,4 +1,5 @@
-import React, { FC, useState } from "react"
+import React, { FC, useCallback, useEffect, useRef, useState } from "react"
+import "./quiz.scss"
 
 const Question: FC<{
   submit: (selectedAnswerIndex: number) => void
@@ -67,12 +68,52 @@ export const Quiz = () => {
   const [score, setScore] = useState<number>(0)
   const [questionIndex, setQuestionIndex] = useState<number>(0)
   const [calledMeOld, setCalledMeOld] = useState<boolean>(false)
+  const [isActive, setIsActive] = useState<boolean>(false)
+  const [warning, setWarning] = useState<boolean>(false)
+  const [warningCount, setWarningCount] = useState<number>(0)
+
+  const quizRef = useRef<HTMLDivElement>()
 
   const reset = () => {
     setScore(0)
     setQuestionIndex(1)
     setCalledMeOld(false)
+    setIsActive(true)
   }
+
+  const handleScrollSnap = useCallback(
+    event => {
+      const window = event.currentTarget
+
+      const topOfQuiz =
+        document.body.scrollHeight - (quizRef.current?.offsetHeight || 0)
+      const boundary = topOfQuiz - 300
+
+      console.log("isActive", isActive)
+
+      if (isActive && window.scrollY <= boundary) {
+        window.scrollTo({
+          top: topOfQuiz,
+          behavior: "smooth",
+        })
+        setWarning(true)
+      }
+    },
+    [quizRef, isActive],
+  )
+
+  useEffect(() => {
+    console.log("isActive changed")
+    if (warning) setWarningCount(warning => warning + 1)
+  }, [warning])
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScrollSnap)
+
+    return () => {
+      window.removeEventListener("scroll", handleScrollSnap)
+    }
+  }, [handleScrollSnap])
 
   const questions = () => {
     switch (questionIndex) {
@@ -91,6 +132,7 @@ export const Quiz = () => {
                     className="button is-primary"
                     onClick={() => {
                       setQuestionIndex(1)
+                      setIsActive(true)
                     }}
                   >
                     Start
@@ -183,6 +225,23 @@ export const Quiz = () => {
         )
       case 7:
         return (
+          <Question
+            questionIndex={questionIndex}
+            submit={selectedAnswerIndex => {
+              if (selectedAnswerIndex === 1) setScore(score + 1)
+              setQuestionIndex(questionIndex + 1)
+              setIsActive(false)
+            }}
+            title="What are the correct films that were used as inspiration in the design of this site?"
+            answers={[
+              "Virus, Short Circuit, The Matrix",
+              "Wall-e, Virus, The Matrix",
+              "Matrix, Virus, Robot Wars",
+            ]}
+          />
+        )
+      case 8:
+        return (
           <div className="hero-body is-justify-content-center">
             <div className="columns">
               <div className="column" style={{ width: "50vw" }}>
@@ -222,5 +281,42 @@ export const Quiz = () => {
     }
   }
 
-  return <section className="hero is-fullheight">{questions()}</section>
+  return (
+    <section ref={quizRef} className={`quiz hero is-fullheight`}>
+      {questions()}
+      <div className={`modal${warning ? " is-active" : ""}`}>
+        <div
+          className="modal-background"
+          onClick={() => setWarning(false)}
+        ></div>
+        <div className="modal-content">
+          <p className="has-text-white is-size-1 has-text-centered has-text-weight-bold">
+            No cheating the very important quiz!
+          </p>
+          <div className="is-flex is-flex-direction-row is-justify-content-center">
+            <div className="buttons mt-2">
+              <button
+                onClick={() => setWarning(false)}
+                className="button is-primary"
+              >
+                Ok
+              </button>
+              {warningCount >= 3 && (
+                <button
+                  onClick={() => {
+                    setWarning(false)
+                    setQuestionIndex(0)
+                    setIsActive(false)
+                  }}
+                  className="button is-info"
+                >
+                  I give up, I'm a cheater
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }

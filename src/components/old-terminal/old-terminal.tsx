@@ -4,11 +4,9 @@ import React, {
   useEffect,
   Dispatch,
   SetStateAction,
-  Ref,
   MutableRefObject,
 } from "react"
 import "./old-terminal.scss"
-import Typewriter, { TypewriterClass } from "typewriter-effect"
 import { TypewriterSection } from "./typewriter-section"
 
 // Rick is trapped in the monitor
