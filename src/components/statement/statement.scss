@@ -10,7 +10,33 @@
   background-size: cover;
 }
 
+.slide-body.johnnyfive {
+  background-image: url('/images/johnnyfive.jpg');
+  background-size: cover;
+}
+
+.slide-body.virus {
+  background-image: url('/images/virus.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.slide-body.independenceday {
+  background-image: url('/images/independenceday.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .slide-body.paint {
   background-image: url('/images/background.jpeg');
   background-size: cover;
+}
+
+.blur-card {
+  backdrop-filter: blur(10px);
+  background-color: rgba(0,0,0,.18);
+  border-radius: .2rem;
+  padding: 1rem 2rem;
 }

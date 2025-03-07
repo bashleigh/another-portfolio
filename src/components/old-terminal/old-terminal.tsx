@@ -22,12 +22,12 @@ import { TypewriterSection } from "./typewriter-section"
 // If Morty kills process 1, failure, Evil Morty is not impressed. How "unfortuitous"
 
 // this is what happens when backend engineers learn React, Morty. They build stupid terminals into their websites.
-// it's like that film virus from 1995
+// it's like that film virus from 1999
 
 // Morty!
 // Morty, check it out! I'm in the terminal, Morty!
 // showOffRick
-// It's like that film virus from 1995! Haha!
+// It's like that film virus from 1999! Haha!
 // I'm Terminal Rick baby!
 // ahhh shit, oh no, there's a security process trying to kill me.
 // Morty, I need your help! I need you to run the top command to find the process id
@@ -168,7 +168,7 @@ const itsLikeThatFilm = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
     {
       lines: [
         "",
-        "It's like that film virus from 1995! Haha!",
+        "It's like that film virus from 1999! Haha!",
         "I'm terminal Rick baby!",
       ],
       after: AfterLineSetEnum.GOING_TO_KILL_ME,
@@ -312,7 +312,7 @@ export const OldTerminal = () => {
       <img className="monitor-image" src="/images/monitor.png" />
       <div className={`boot-screen${showBoot ? " show-boot" : ""}`}>
         <div>
-          <h1 className="title is-size-1">AshleighOS</h1>
+          <h1 className="title is-size-1">Ashleigh_OS</h1>
         </div>
         <p>2025© - v2.0.1 - London</p>
       </div>
