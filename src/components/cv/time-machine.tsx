@@ -36,7 +36,7 @@ export const TimeMachine = () => {
     }, [previousScrollVal]
   )
 
-  console.log('text complete', textSize, textComplete)
+  // console.log('text complete', textSize, textComplete)
 
   useEffect(() => {
     setPreviousScrollVal(window.scrollY)

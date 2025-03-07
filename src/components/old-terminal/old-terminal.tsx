@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, Dispatch, SetStateAction, Ref, MutableRefObject } from "react"
 import "./old-terminal.scss"
 import Typewriter, { TypewriterClass } from "typewriter-effect"
 import { TypewriterSection } from "./typewriter-section"
@@ -16,48 +16,67 @@ import { TypewriterSection } from "./typewriter-section"
 // this is what happens when backend engineers learn React, Morty. They build stupid terminals into their websites.
 // it's like that film virus from 1995
 
-const showOffRick = [
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⠀⠀⠀⠀⢀⣴⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣄⠀⣠⣾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢆⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⢸⠿⣛⣛⣛⡻⢿⣇⣤⣤⣶⠆⠀⠀⠀⠀⠀⠀⠀⠀⠈⡳⣴⡄⠀⠀",
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⡟⣵⣿⣿⣿⣿⣿⣷⡝⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⢿⣿⣷⠀⠀",
-  "⠀⠀⢰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⢱⡿⣟⡿⣿⢟⣭⣭⡛⣸⣧⣤⣤⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⢿⣿⠀⠀",
-  "⢀⣠⠏⠀⠀⠀⠀⠀⠀⠀⠀⠠⢶⣿⣿⠈⣾⣟⣿⣞⡸⣿⣽⡟⡇⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠶⣀⠀",
-  "⢸⣿⣾⡤⡀⠀⠀⠀⠀⠀⠀⠀⠀⣨⣿⡜⣮⠟⠯⡾⣿⣶⣒⣺⣿⢙⢦⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀",
-  "⠀⣿⣿⠈⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠛⢥⡻⠋⠍⠟⡉⠛⠙⠈⠀⠁⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀",
-  "⠀⢘⣯⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠓⠡⡀⠀⠀⠰⡂⡀⢀⡴⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⠀",
-  "⠀⢲⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠒⢓⣛⣛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀",
+// Morty!
+// Morty, check it out! I'm in the terminal, Morty!
+// showOffRick
+// It's like that film virus from 1995! Haha!
+// I'm Terminal Rick baby!
+// ahhh shit, oh no, there's a security process trying to kill me.
+// Morty, I need your help! I need you to run the top command to find the process id
+// Hurry up Morty! It's trying to kill me!
+// This is what happens when backend developers learn React, I'm done for!
+// Run the top command Morty, how difficult is it? type T O P and hit enter.
+// pid      name           user
+//  1        security       root
+//  2        rick           terminal_hacker_69
+
+// Cool, now use the kill command to kill the security process on pid 1
+// Jesus Morty! Type K I L L 1 and kill the process
+// Whatever you do, do not kill process 2, that's me.
+// sickRick
+
+// kill 1
+// Thank christ Morty, you saved me. 
+// Now get me out of here! Download my output using wget
+
+// kill 2
+// evilMorty
+// ha, how unfortitous
+
+
+const showOffRickAscii = [
+  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⠀⠀⠀⠀⢀⣴⡀",
+  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣄⠀⣠⣾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢆",
+  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⢸⠿⣛⣛⣛⡻⢿⣇⣤⣤⣶⠆⠀⠀⠀⠀⠀⠀⠀⠀⠈⡳⣴⡄",
+  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⡟⣵⣿⣿⣿⣿⣿⣷⡝⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⢿⣿⣷",
+  "⠀⠀⢰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⢱⡿⣟⡿⣿⢟⣭⣭⡛⣸⣧⣤⣤⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⢿⣿",
+  "⢀⣠⠏⠀⠀⠀⠀⠀⠀⠀⠀⠠⢶⣿⣿⠈⣾⣟⣿⣞⡸⣿⣽⡟⡇⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠶⣀",
+  "⢸⣿⣾⡤⡀⠀⠀⠀⠀⠀⠀⠀⠀⣨⣿⡜⣮⠟⠯⡾⣿⣶⣒⣺⣿⢙⢦⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿",
+  "⠀⣿⣿⠈⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠛⢥⡻⠋⠍⠟⡉⠛⠙⠈⠀⠁⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿",
+  "⠀⢘⣯⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠓⠡⡀⠀⠀⠰⡂⡀⢀⡴⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿",
+  "⠀⢲⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠒⢓⣛⣛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿",
   "⠀⢸⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⢰⣿⣶⢹⣿⣿⣿⣿⣿⣷⣶⣶⣶⣶⣶⣦⣤⣤⣤⣽⣿⡆",
   "⠀⠀⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⣾⣿⣿⡟⣿⡟⣿⣿⢸⣿⣿⡇⠀⠉⠉⠉⠉⠉⠙⠛⠛⠛⠛⠛⠛⠛⠁",
-  "⠀⠀⢸⣿⣇⠀⠀⠀⣀⣤⣶⣿⡿⠟⠋⠁⠀⡟⣼⣿⡇⣿⣿⢸⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⢿⣿⣤⣶⣿⠿⠛⠉⠀⠀⠀⠀⠀⠀⣿⣶⢝⡇⣿⣿⣾⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⠈⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⢱⣿⣿⣿⣿⡇⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣯⢿⣿⢸⣿⣇⠿⠿⠻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+  "⠀⠀⢸⣿⣇⠀⠀⠀⣀⣤⣶⣿⡿⠟⠋⠁⠀⡟⣼⣿⡇⣿⣿⢸⣿⣿⡇",
+  "⠀⠀⠀⢿⣿⣤⣶⣿⠿⠛⠉⠀⠀⠀⠀⠀⠀⣿⣶⢝⡇⣿⣿⣾⣿⣿⡇",
+  "⠀⠀⠀⠈⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⢱⣿⣿⣿⣿⡇⣿⣿⣷",
+  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣯⢿⣿⢸⣿⣇⠿⠿⠻",
 ]
 
-const panicRick = [
-  "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⠏⢿⣿⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⠟⠁⠀⢸⣿⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠈⢿⡿⠟⠁⠀⠀⠀⢸⣿⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿",
-  "⣿⣿⣿⣆⠀⠀⠈⠉⠉⠉⠁⠀⠀⣀⠠⠤⠐⠒⠢⠤⢀⠀⠀⠀⠛⠛⠛⠛⠋⣹",
-  "⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⢀⠔⠉⠀⠀⠀⠀⠀⠀⠀⠀⠉⠂⠀⠀⠀⠀⠀⣼⣿",
-  "⣿⣿⣿⣿⣿⡄⠀⠀⠀⡐⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠀⠀⢀⣾⣿⣿",
-  "⣿⣿⣿⣿⣿⠿⠀⠀⢰⠀⠀⠀⢀⣀⣀⣀⣀⡀⠀⠀⠀⠄⠀⠀⣥⠀⠻⣿⣿⣿",
-  "⣿⡿⠟⠋⠀⠀⠀⠀⡆⠀⠀⠀⠧⠤⠀⠒⠒⢶⠒⡒⠒⠒⠒⠒⠲⡀⠀⠈⠙⠿",
-  "⣧⣄⡀⠀⠀⠀⠀⠀⡇⠀⢀⣃⣀⣀⠀⠀⠀⠀⣆⠁⠀⣀⠠⠄⠀⢰⠀⢀⣴⣾",
-  "⣿⣿⣿⣷⣦⡀⠀⠀⡇⠀⠈⡄⠀⠉⠀⠀⠀⢀⠃⠄⠀⠉⠀⠀⠀⡈⢰⣿⣿⣿",
-  "⣿⣿⣿⡿⠟⠁⠀⠀⣇⠀⠀⠈⠂⠄⠤⠤⠔⠁⠀⠈⡖⠠⠤⠐⢪⠁⠈⠻⣿⣿",
-  "⣿⡿⠋⠀⠀⠀⠀⡠⠛⠀⠀⠑⠢⠤⠄⠀⠀⠀⢇⠀⢃⠀⠒⠀⢡⠓⡀⢀⣈⣿",
-  "⣿⣿⣶⣦⣄⡀⠸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠢⠋⠀⠀⠀⢸⢀⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⠃⠀⠑⠠⡄⠀⠀⡀⠀⠀⠀⢀⣀⣀⣀⣀⡀⠀⠀⠜⠉⠻⣿⣿⣿",
-  "⣿⣿⣿⣿⣷⣶⣶⣶⡆⢣⠀⠀⠁⠠⠒⠈⠀⠀⣿⣿⣿⠃⠉⠀⡸⢻⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⣿⣿⣿⣁⣀⣦⠀⠑⠒⠀⠀⠀⣄⢹⠏⠤⠀⠀⣲⣿⣿⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠁⠀⠀⠀⣀⣼⣿⣿⣿⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠐⠂⠤⠤⢤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⣿⣿⠿⠟⠛⠋⠉⠉⠹⠢⠄⠀⠠⠚⡉⠉⠉⠛⠿⣿⣿⣿⣿⣿⣿",
-  "⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⢀⠃⠀⡆⠀⠀⠀⠀⡇⢡⠀⠀⠀⠈⣿⣿⣿⣿⣿",
+const panicRickAscii = [
+  "⠀⠀⠀⠀⠀⣠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+  "⠀⠀⠀⠀⠀⣿⠙⢦⡀⠀⠀⣰⢶⠀⠀⠀",
+  "⠀⠀⠀⠀⠀⢻⠀⠀⠹⣦⠞⠁⢸⠀⠀⠀",
+  "⠀⠸⡟⠓⠒⠛⠀⡀⠤⠤⢀⠀⠾⠶⢶⡆",
+  "⠀⠀⢻⡀⠀⡐⠁⠀⠀⠀⠀⠑⡀⢀⡞⠀",
+  "⣀⡤⠞⠃⢰⠀⠐⠒⠲⡶⠶⠶⢶⠘⠲⣄",
+  "⠙⠲⣤⡀⢸⠀⡒⠖⠒⡲⡒⠒⢒⢢⡞⠉",
+  "⢀⡴⠋⠀⡸⠀⠌⠀⠈⢀⢉⠤⢽⡈⣳⡄",
+  "⠀⠙⢳⠆⠄⡀⠀⠀⠀⣀⣁⠀⢸⢾⡁⠀",
+  "⠀⠀⠙⠛⣷⣣⠠⠎⠀⣠⠔⠉⣼⠏⠁⠀",
+  "⠀⠀⠀⠀⠉⢉⣳⡤⠀⢀⣤⡞⠁⠀⠀⠀",
+  "⠀⠀⠀⡴⠋⠉⡑⠃⠒⠊⣌⠉⢳⡄⠀⠀",
+  "⠀⠀⠀⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃⠀⠀",
 ]
 
 const evilMorty = [
@@ -108,49 +127,162 @@ const initialLines = [
   ' 2         rick            lordOfTheTerminal',
 ]
 
-const typeWriters = {
-  start: (typewriter: TypewriterClass) => {
-    typewriter.typeString('Morty!\n\r')
-      .pauseFor(1000)
-      .typeString('Morty, check it out! I\'m in this terminal Morty!\n\r')
-      .pauseFor(100)
-      .pauseFor(100)
-      .typeString('Like that film virus from 1995!')
-      .callFunction(() => {
-        console.log('done')
-      })
-      .start()
+enum AfterLineSetEnum {
+  GOING_TO_KILL_ME = 'GOING_TO_KILL_ME',
+  SHOW_OFF_RICK = 'SHOW_OFF_RICK',
+  ITS_LIKE_THAT_FILM = 'ITS_LIKE_THAT_FILM',
+  THIS_IS_WHAT_HAPPENS = 'THIS_IS_WHAT_HAPPENS',
+  PANIC_RICK = 'PANIC_RICK',
+  RICK_INSTRUCTIONS_ON_KILL = 'RICK_INSTRUCTIONS_ON_KILL',
+}
+
+type LineSet = {
+  delay?: number
+  delayStart?: number
+  delayBetween?: number
+  lines: string[]
+  after?: AfterLineSetEnum
+}
+
+const showOffRick = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
+  setLines((lines) => ([
+    ...lines,
+    {
+      delay: 1,
+      lines: showOffRickAscii,
+      after: AfterLineSetEnum.ITS_LIKE_THAT_FILM,
+    },
+  ]))
+}
+
+const itsLikeThatFilm = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
+  setLines((lines) => ([
+    ...lines,
+    {
+      lines: [
+        '',
+        'It\'s like that film virus from 1995! Haha!',
+        'I\'m terminal Rick baby!'
+      ],
+      after: AfterLineSetEnum.GOING_TO_KILL_ME,
+      delayStart: 1000,
+    }
+  ]))
+}
+
+const goingToKillMe = (setLines: Dispatch<SetStateAction<LineSet[]>>, inputElement: MutableRefObject<HTMLInputElement | undefined>) => {
+  setTimeout(() => {
+    console.log(inputElement.current)
+    inputElement?.current?.focus()
+    setLines((lines: LineSet[]) => ([
+      ...lines,
+      {
+        delay: 20,
+        delayBetween: 500,
+        lines: [
+          '',
+          'ahhh shit, oh no, no, NO! There\'s a security process trying to kill me.',
+          'Morty, I, I, I need your help! I need you to run the top command to find the process id',
+          'Hurry up Morty! It\'s trying to kill me!',
+        ],
+        after: AfterLineSetEnum.THIS_IS_WHAT_HAPPENS,
+      },
+    ]))
+  }, 2000)
+}
+
+const thisIsWhatHappensWhenBackendLearnReact = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
+
+  setLines((lines: LineSet[]) => ([
+    ...lines,
+    {
+      delayStart: 5000,
+      delay: 10,
+      delayBetween: 1000,
+      lines: [
+        '',
+        'This is what happens when backend developers learn React, I\'m done for!',
+        'Come on Morty, run the top command, how difficult is it? type "T" "O" "P" and hit enter.',
+      ],
+    },
+  ]))
+}
+
+const rickInstructionsOnKill = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
+  setLines((lines) => ([
+    ...lines,
+    {
+      delayStart: 1000,
+      delayBetween: 500,
+      lines: [
+        '',
+        'Great, now use the kill command to kill the security process on pid 1',
+        'Jesus Morty! Type "KILL 1" and kill the process before it finds me!',
+        'Whatever you do, do not kill process id 2, that\'s me.',
+      ],
+      after: AfterLineSetEnum.PANIC_RICK,
+    },
+  ]))
+}
+
+const panicRick = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
+  setLines((lines) => ([
+    ...lines,
+    {
+      lines: panicRickAscii,
+      delayBetween: 1,
+    },
+  ]))
+}
+
+const topCommand = (securityRunning: boolean): LineSet => {
+  return {
+    delay: 10,
+    lines: [
+      'pid⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀name⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀user',
+      securityRunning ? '⠀1⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀security⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀root' : '',
+      '⠀2⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀rick⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Terminal_hacker_69',
+    ],
+    after: AfterLineSetEnum.RICK_INSTRUCTIONS_ON_KILL,
   }
 }
 
+const killProcess = (setLines: Dispatch<SetStateAction<LineSet[]>>, processId?: number) => {
+  console.log('process', processId)
+  setLines((lines) => ([
+    ...lines,
+    {
+      lines: [!processId ? 'no pid provided' : processId > 2 ? `ash: kill (${processId}): no such prcocess.` : `Killing process ${processId}`],
+    },
+  ]))
+}
+
+const start = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
+  setLines([{
+    delayBetween: 1000,
+    lines: [
+      'Morty!',
+      'Morty! Check it out! I\'m in the terminal, Morty!',
+    ],
+    after: AfterLineSetEnum.SHOW_OFF_RICK,
+  }])
+}
+
 export const OldTerminal = () => {
-  const [lines, setLines] = useState<string[][]>([])
+  const [lines, setLines] = useState<LineSet[]>([])
   const [cariage, setCariage] = useState<string>("")
   const [showBoot, setShowBoot] = useState<boolean>(true)
+  const [securityProcessRunning, setSecurityProcessRunning] = useState<boolean>(true)
 
   const inputElement = useRef<HTMLInputElement>()
 
   useEffect(() => {
     setTimeout(() => {
-      setShowBoot(false)
-      setLines([[
-          'Morty!',
-          'Check it out Morty, I\'m in this terminal!',
-          ...showOffRick,
-          'It\'s like that film virus from 1995! Haha!',
-          'The security Morty, it was no good.',
-          'Wait, there\'s a security process still running, Morty',
-          'I need you to run the top command, Morty',
-      ],])
+      if (showBoot) {
+        setShowBoot(false)
+        start(setLines)
+      }
     }, 5000)
-
-    // setTimeout(() => {
-    //   setLines([...lines, [
-    //     'I need you to run the top command, Morty.',
-    //     'Then kill the process',
-    //   ]])
-    //   inputElement.current?.focus()
-    // }, 8000)
   }, [])
 
   return (
@@ -172,16 +304,37 @@ export const OldTerminal = () => {
           className="text-input"
           onSubmit={event => {
             event.preventDefault()
-            // switch (cariage) {
-            //   case 'clear':
-            //     setLines([])
-            //     break;
-            //   case 'ls':
-            //     setLines([...lines, 'bin root usr .super-secret-folder'])
-            //     break;
-            //   default:
-            //     setLines([...lines, `Ash: Command not found: ${cariage}`])
-            // }
+
+            if (cariage.startsWith('kill ')) {
+              const number = cariage.split(' ')?.pop()
+              killProcess(setLines, number ? parseInt(number) : undefined)
+              setCariage("")
+              return
+            }
+
+            switch (cariage) {
+              case 'clear':
+                setLines([{
+                  delayStart: 1000,
+                  lines: [
+                    'Ahhhh great, you cleared the output stream Morty',
+                    'This developer is lazy Morty, they\'re not writing conditions to tell you the instructions again...',
+                    'type in "restart" if you want to do it again I guess?',
+                  ],
+                }])
+                break;
+              case 'top':
+                setLines((lines) => [...lines, topCommand(securityProcessRunning)])
+                break
+              case 'ls':
+                setLines((lines) => [...lines, {lines: ['bin root usr .super-secret-folder']}])
+                break;
+              case 'restart':
+                start(setLines)
+                break
+              default:
+                setLines((lines) => [...lines, {lines: [`Ash: Command not found: ${cariage}`]}])
+            }
             setCariage("")
           }}
         >
@@ -206,24 +359,29 @@ export const OldTerminal = () => {
         </form>
         <div className="content">
           {lines.map((set => (
-            <TypewriterSection lines={set}/>
+            <TypewriterSection key={set.lines.join('-')} lines={set.lines} delay={set.delay} delayEach={set.delayBetween} isComplete={() => {
+              switch(set.after) {
+                case AfterLineSetEnum.SHOW_OFF_RICK:
+                  showOffRick(setLines)
+                  break
+                case AfterLineSetEnum.GOING_TO_KILL_ME:
+                  goingToKillMe(setLines, inputElement)
+                  break
+                case AfterLineSetEnum.ITS_LIKE_THAT_FILM:
+                  itsLikeThatFilm(setLines)
+                  break
+                case AfterLineSetEnum.THIS_IS_WHAT_HAPPENS:
+                  thisIsWhatHappensWhenBackendLearnReact(setLines)
+                  break
+                case AfterLineSetEnum.RICK_INSTRUCTIONS_ON_KILL:
+                  rickInstructionsOnKill(setLines)
+                  break
+                case AfterLineSetEnum.PANIC_RICK:
+                  panicRick(setLines)
+                  break
+              }
+            }} />
           )))}
-          {/* {lines.map(line => (
-              <Typewriter
-                key={line}
-                options={{
-                  cursor: "",
-                  delay: 20,
-                }}
-                onInit={typewriter => {
-                  if (line.charAt(0) === '#') {
-                    typeWriters.start(typewriter)
-                  } else {
-                    typewriter.typeString(line).start()
-                  }
-                }}
-              />
-          ))} */}
         </div>
       </div>
     </div>

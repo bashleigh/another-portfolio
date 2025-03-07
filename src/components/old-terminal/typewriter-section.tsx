@@ -1,8 +1,10 @@
 import { FC, useState } from "react"
 import Typewriter from "typewriter-effect"
 
-export const TypewriterSection: FC<{ lines: string[] }> = ({ lines }) => {
+export const TypewriterSection: FC<{ delay?: number, delayEach?: number, lines: string[], isComplete: () => void, delayStart?: number }> = ({ lines, isComplete, delay = 10, delayEach = 100, delayStart = 0 }) => {
   const [activeLines, setActiveLines] = useState<string[]>([lines[0]])
+
+  // console.log('props', lines, delay, delayEach)
 
   return (
     <div>
@@ -11,12 +13,16 @@ export const TypewriterSection: FC<{ lines: string[] }> = ({ lines }) => {
           key={line}
           options={{
             cursor: '',
-            delay: 20,
+            delay: delay,
           }} onInit={(type) => {
-            type.typeString(line)
-            .pauseFor(100)
+            type
+            .pauseFor(delayStart)
+            .typeString(line)
+            .pauseFor(delayEach)
             .callFunction(() => {
               if (lines.length !== activeLines.length) setActiveLines([...activeLines, lines[activeLines.length] ])
+
+              if (lines.length === activeLines.length) isComplete()
             })
             .start()
           }} />
