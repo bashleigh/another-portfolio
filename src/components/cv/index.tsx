@@ -97,7 +97,7 @@ export const CV = () => {
         words={Object.values(cells).flat(1)}
       />
       <div className="mt-6">
-        <div className="navbar">
+        <div className="navbar is-black">
           <div className="container">
             <h3 className="title">What do I know?</h3>
             <div className="navbar-end">
@@ -133,7 +133,7 @@ export const CV = () => {
       <section className="hero is-halfheight is-timemachine">
         <div className="hero-body">
           <div>
-            <h1 className="title is-size-1 has-text-centered mt-6 mb-6">
+            <h1 className="title is-size-1 has-text-centered mt-6 mb-6 has-text-white">
               Where have I been all your life?
             </h1>
             <TimeMachine />

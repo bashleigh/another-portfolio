@@ -51,13 +51,13 @@ export const TimeMachine = () => {
                   {job.startDate.month}/{job.startDate.year} -{" "}
                   {job.endDate.month}/{job.endDate.year}
                 </small>
-                <h3 className="subtitle has-text-primary">{job.title}</h3>
+                <h3 className="subtitle">{job.title}</h3>
               </div>
               <div className="level-item level-right">
                 {(workexperience.length - index).toString().padStart(2, "0")}
               </div>
             </div>
-            <h1 className="title mb-4 mt-2 has-text-info">{job.company}</h1>
+            <h1 className="title mb-4 mt-2">{job.company}</h1>
             <div className="content">
               {job.description.map(desc => (
                 <p key={desc}>{desc}</p>
