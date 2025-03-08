@@ -19,10 +19,10 @@ export const workexperience: WorkExperience[] = [
       year: "2021",
     },
     endDate: {
-      month: new Date().getMonth().toString().padStart(2, "0"),
+      month: (new Date().getMonth() + 1).toString().padStart(2, "0"),
       year: new Date().getFullYear().toString(),
     },
-    title: "Senior Platform Application Engineer, Manager",
+    title: "Platform Applications Principal Engineer, Manager",
     company: "Reapit Ltd",
     description: [
       "At Reapit I'm responsible for building developer tools for our internal and customer's developers. I have successfully built a working dynamic CI/CD pipeline tool to deploy PWA apps to AWS and I'm currently planning a verison 2 capable of deploying and maintaining backend application solutions.",

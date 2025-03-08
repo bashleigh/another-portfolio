@@ -89,8 +89,6 @@ export const Quiz = () => {
         document.body.scrollHeight - (quizRef.current?.offsetHeight || 0)
       const boundary = topOfQuiz - 300
 
-      console.log("isActive", isActive)
-
       if (isActive && window.scrollY <= boundary) {
         window.scrollTo({
           top: topOfQuiz,
@@ -103,7 +101,6 @@ export const Quiz = () => {
   )
 
   useEffect(() => {
-    console.log("isActive changed")
     if (warning) setWarningCount(warning => warning + 1)
   }, [warning])
 
@@ -204,11 +201,16 @@ export const Quiz = () => {
           <Question
             questionIndex={questionIndex}
             submit={selectedAnswerIndex => {
-              if (selectedAnswerIndex === 0) setScore(score + 1)
+              if (selectedAnswerIndex === 3) setScore(score + 1)
               setQuestionIndex(questionIndex + 1)
             }}
-            title="What is my prefered OS?"
-            answers={["MacOS", "Windows", "Arch", "Kali"]}
+            title="What was Rick's username on the terminal?"
+            answers={[
+              "toxic_gnome",
+              "trojan_dez_nutz",
+              "dora_the_fedora",
+              "terminal_hacker_69",
+            ]}
           />
         )
       case 6:
@@ -228,15 +230,15 @@ export const Quiz = () => {
           <Question
             questionIndex={questionIndex}
             submit={selectedAnswerIndex => {
-              if (selectedAnswerIndex === 1) setScore(score + 1)
+              if (selectedAnswerIndex === 0) setScore(score + 1)
               setQuestionIndex(questionIndex + 1)
               setIsActive(false)
             }}
             title="What are the correct films that were used as inspiration in the design of this site?"
             answers={[
-              "Virus, Short Circuit, The Matrix",
-              "Wall-e, Virus, The Matrix",
-              "Matrix, Virus, Robot Wars",
+              "Virus, Short Circuit, Matrix, The Terminator",
+              "Wall-e, Virus, Matrix, The Terminator",
+              "Matrix, Virus, Robot Wars, The Terminator",
             ]}
           />
         )
@@ -260,8 +262,8 @@ export const Quiz = () => {
                       <h3 className="title has-text-centered">
                         Congrats! Your score was
                       </h3>
-                      <h1 className="title mb-4 has-text-centered is-size-1">
-                        {score}
+                      <h1 className="title mb-4 has-text-centered is-size-1 is-silkscreen">
+                        {score}/7
                       </h1>
                     </>
                   )}
@@ -301,7 +303,7 @@ export const Quiz = () => {
               >
                 Ok
               </button>
-              {warningCount >= 3 && (
+              {warningCount >= 2 && (
                 <button
                   onClick={() => {
                     setWarning(false)

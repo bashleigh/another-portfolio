@@ -139,6 +139,9 @@ enum AfterLineSetEnum {
   THIS_IS_WHAT_HAPPENS = "THIS_IS_WHAT_HAPPENS",
   PANIC_RICK = "PANIC_RICK",
   RICK_INSTRUCTIONS_ON_KILL = "RICK_INSTRUCTIONS_ON_KILL",
+  KILLED_RICK = "KILLED_RICK",
+  KILLED_SECURITY = "KILLED_SECURITY",
+  HOW_UNFORTUITIOUS = "HOW_UNFORTUITIOUS",
 }
 
 type LineSet = {
@@ -224,10 +227,10 @@ const rickInstructionsOnKill = (
     ...lines,
     {
       delayStart: 1000,
-      delayBetween: 500,
+      delayBetween: 1000,
       lines: [
         "",
-        "Great, now use the kill command to kill the security process on pid 1",
+        "That's great Morty, now use the kill command to kill the security process on pid 1",
         'Jesus Morty! Type "KILL 1" and kill the process before it finds me!',
         "Whatever you do, do not kill process id 2, that's me.",
       ],
@@ -246,32 +249,88 @@ const panicRick = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
   ])
 }
 
-const topCommand = (securityRunning: boolean): LineSet => {
+const topCommand = (
+  killedProcesses: number[],
+  doomRunning: boolean,
+): LineSet => {
+  const lines = ["pid⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀name⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀user"]
+
+  if (!killedProcesses.includes(1))
+    lines.push("⠀1⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀security⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀root")
+  if (!killedProcesses.includes(2))
+    lines.push("⠀2⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀rick⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Terminal_hacker_69")
+  if (doomRunning) lines.push("⠀3⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀DOOM⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Morty")
+
   return {
     delay: 10,
-    lines: [
-      "pid⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀name⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀user",
-      securityRunning ? "⠀1⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀security⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀root" : "",
-      "⠀2⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀rick⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Terminal_hacker_69",
-    ],
-    after: AfterLineSetEnum.RICK_INSTRUCTIONS_ON_KILL,
+    lines,
+    after:
+      !killedProcesses.includes(1) && !killedProcesses.includes(2)
+        ? AfterLineSetEnum.RICK_INSTRUCTIONS_ON_KILL
+        : undefined,
   }
 }
 
 const killProcess = (
   setLines: Dispatch<SetStateAction<LineSet[]>>,
+  killed: number[],
   processId?: number,
 ) => {
-  console.log("process", processId)
   setLines(lines => [
     ...lines,
     {
       lines: [
-        !processId
+        typeof processId === "undefined"
           ? "no pid provided"
           : processId > 2
             ? `ash: kill (${processId}): no such prcocess.`
             : `Killing process ${processId}`,
+      ],
+      after:
+        typeof processId !== "undefined" && processId > 2
+          ? undefined
+          : processId === 1 && !killed.includes(1)
+            ? AfterLineSetEnum.KILLED_SECURITY
+            : AfterLineSetEnum.KILLED_RICK,
+    },
+  ])
+}
+
+const killRick = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
+  setLines(lines => [
+    ...lines,
+    {
+      delay: 5,
+      lines: ["...", ...evilMorty],
+      after: AfterLineSetEnum.HOW_UNFORTUITIOUS,
+    },
+  ])
+}
+
+const howUnfortuitous = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
+  setLines(lines => [
+    ...lines,
+    {
+      delayBetween: 2000,
+      delay: 100,
+      lines: [
+        "How unfortuitous...",
+        "You killed him. Huh, what do you know?",
+        "See ya kid.",
+      ],
+    },
+  ])
+}
+
+const killedSecurity = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
+  setLines(lines => [
+    ...lines,
+    {
+      delayStart: 1000,
+      delayBetween: 1000,
+      lines: [
+        "",
+        "Great job Morty! Now download me, get me out of this thing...",
       ],
     },
   ])
@@ -291,10 +350,162 @@ export const OldTerminal = () => {
   const [lines, setLines] = useState<LineSet[]>([])
   const [cariage, setCariage] = useState<string>("")
   const [showBoot, setShowBoot] = useState<boolean>(true)
-  const [securityProcessRunning, setSecurityProcessRunning] =
-    useState<boolean>(true)
+  const [killedProcesses, setKilledProcesses] = useState<number[]>([])
+  const [commandNotFoundCount, setCommandNotFoundCount] = useState<number>(0)
+  const [doomRunning, setDoomRunning] = useState<boolean>(false)
 
   const inputElement = useRef<HTMLInputElement>()
+
+  const doomRef = useRef<any>()
+
+  useEffect(() => {
+    if (commandNotFoundCount === 3) {
+      setLines([
+        ...lines,
+        {
+          delayStart: 1000,
+          lines: [
+            "Morty, it's not a real terminal. It's HTML and CSS for entertainment purposes. Yeeesh",
+          ],
+        },
+      ])
+    }
+    if (commandNotFoundCount === 5) {
+      setLines([
+        ...lines,
+        {
+          delayStart: 1000,
+          lines: [
+            'Are you still trying to find commands in this thing? Use "ls /bin" to see all the commands Morty.',
+          ],
+        },
+      ])
+    }
+  }, [commandNotFoundCount])
+
+  const handleCariageChange = event => {
+    event.preventDefault()
+
+    if (cariage.startsWith("kill ")) {
+      const number = cariage.split(" ")?.pop()
+      if (cariage === "kill 3") {
+        doomRef.current.setDoomRunning(false)
+      }
+      killProcess(
+        setLines,
+        killedProcesses,
+        number ? parseInt(number) : undefined,
+      )
+      if (number) setKilledProcesses(killed => [...killed, parseInt(number)])
+      setCariage("")
+      return
+    }
+
+    switch (cariage) {
+      case "whoami":
+        setLines([
+          ...lines,
+          {
+            lines: ["Stop messing around Morty! This is serious!"],
+          },
+        ])
+        break
+      case "clear":
+        setLines([
+          {
+            delayStart: 1000,
+            lines: [
+              "Ahhhh great, you cleared the output stream Morty",
+              "This developer is lazy Morty, they're not writing conditions to tell you the instructions again...",
+              'type in "restart" if you want to do it again I guess?',
+            ],
+          },
+        ])
+        break
+      case "top":
+        setLines(lines => [...lines, topCommand(killedProcesses, doomRunning)])
+        break
+      case "ls":
+        setLines(lines => [
+          ...lines,
+          { lines: ["bin root usr .super-secret-folder"] },
+        ])
+        break
+      case "ls bin":
+      case "ls /bin":
+        setLines(lines => [
+          ...lines,
+          {
+            lines: ["whoami", "restart", "top", "ls", "clear", "kill", "tail"],
+          },
+        ])
+        break
+      case "ls usr":
+      case "ls /usr":
+        setLines(lines => [
+          ...lines,
+          {
+            lines: ["ash", "bin", "sbin", "terminal_hacker_69"],
+          },
+        ])
+        break
+      case "tail /proc/1/fd/1":
+        setLines(lines => [
+          ...lines,
+          {
+            delay: 100,
+            delayBetween: 100,
+            lines: [
+              "virus detected",
+              "oxigenated tissues",
+              "nervous system",
+              "occular eye balls",
+              "iron rich blood",
+              "calcium structure",
+              "dopamine",
+              "spare",
+              "parts!",
+            ],
+          },
+        ])
+        break
+      case "restart":
+        setKilledProcesses([])
+        start(setLines)
+        break
+      case "doom":
+        setDoomRunning(true)
+
+        // setTimeout(() => {
+        //   // @ts-ignore
+        //   doomRef.current = new Dosbox({
+        //     id: "dosbox",
+        //     onload: function (dosbox) {
+        //       dosbox.run("https://js-dos.com//cdn/upload/DOOM-@evilution.zip", "./DOOM/DOOM.EXE");
+        //     },
+        //     onrun: function (dosbox, app) {
+        //       console.log("App '" + app + "' is runned");
+        //     }
+        //   })
+        // }, 1000)
+
+        setLines(lines => [
+          ...lines,
+          {
+            lines: ["Sorry Morty, now's not the time for DOOM"],
+            delayStart: 2000,
+          },
+        ])
+        break
+      default:
+        setCommandNotFoundCount(commandNotFoundCount + 1)
+        setLines(lines => [
+          ...lines,
+          { lines: [`Ash: Command not found: ${cariage}`] },
+        ])
+    }
+    setCariage("")
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -312,7 +523,7 @@ export const OldTerminal = () => {
         <div>
           <h1 className="title is-size-1">Ashleigh_OS</h1>
         </div>
-        <p>2025© - v2.0.1 - London</p>
+        <p>2025© - London - v2.0.1</p>
       </div>
       <div
         className={`screen${showBoot ? " off" : ""}`}
@@ -320,55 +531,8 @@ export const OldTerminal = () => {
           inputElement.current?.focus()
         }}
       >
-        <form
-          className="text-input"
-          onSubmit={event => {
-            event.preventDefault()
-
-            if (cariage.startsWith("kill ")) {
-              const number = cariage.split(" ")?.pop()
-              killProcess(setLines, number ? parseInt(number) : undefined)
-              setCariage("")
-              return
-            }
-
-            switch (cariage) {
-              case "clear":
-                setLines([
-                  {
-                    delayStart: 1000,
-                    lines: [
-                      "Ahhhh great, you cleared the output stream Morty",
-                      "This developer is lazy Morty, they're not writing conditions to tell you the instructions again...",
-                      'type in "restart" if you want to do it again I guess?',
-                    ],
-                  },
-                ])
-                break
-              case "top":
-                setLines(lines => [
-                  ...lines,
-                  topCommand(securityProcessRunning),
-                ])
-                break
-              case "ls":
-                setLines(lines => [
-                  ...lines,
-                  { lines: ["bin root usr .super-secret-folder"] },
-                ])
-                break
-              case "restart":
-                start(setLines)
-                break
-              default:
-                setLines(lines => [
-                  ...lines,
-                  { lines: [`Ash: Command not found: ${cariage}`] },
-                ])
-            }
-            setCariage("")
-          }}
-        >
+        {doomRunning && <div id="dosbox"></div>}
+        <form className="text-input" onSubmit={handleCariageChange}>
           <span>$&gt;</span>
           <input
             name=""
@@ -389,8 +553,9 @@ export const OldTerminal = () => {
           ></span>
         </form>
         <div className="content">
-          {lines.map(set => (
+          {lines.map((set, index) => (
             <TypewriterSection
+              index={index}
               key={set.lines.join("-")}
               lines={set.lines}
               delay={set.delay}
@@ -414,6 +579,15 @@ export const OldTerminal = () => {
                     break
                   case AfterLineSetEnum.PANIC_RICK:
                     panicRick(setLines)
+                    break
+                  case AfterLineSetEnum.HOW_UNFORTUITIOUS:
+                    howUnfortuitous(setLines)
+                    break
+                  case AfterLineSetEnum.KILLED_RICK:
+                    killRick(setLines)
+                    break
+                  case AfterLineSetEnum.KILLED_SECURITY:
+                    killedSecurity(setLines)
                     break
                 }
               }}

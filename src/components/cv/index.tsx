@@ -49,7 +49,7 @@ const WhatIKnow: FC<{ searchPhrase: string }> = ({ searchPhrase }) => {
   const colours = ["primary", "danger", "warning", "info", "link"]
 
   return (
-    <div id="what-i-know" className="hero is-halfheight">
+    <div id="what-i-know" className="hero is-halfheight is-black">
       <div className="hero-body">
         <div className="container">
           <div
@@ -96,7 +96,10 @@ export const CV = () => {
         setBingoEnabled={setBingoEnabled}
         words={Object.values(cells).flat(1)}
       />
-      <div className="mt-6">
+      <div className="">
+        <div className="hero is-black">
+          <div className="hero-body"></div>
+        </div>
         <div className="navbar is-black">
           <div className="container">
             <h3 className="title">What do I know?</h3>

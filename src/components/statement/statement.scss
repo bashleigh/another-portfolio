@@ -20,6 +20,29 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  position: relative;
+
+  .alarm {
+    position: absolute;
+    top: -5vw;
+    right: -5vw;
+    width: 10vw;
+    height: 10vw;
+    background: red;
+    border-radius: 10vw;
+    box-shadow: 0px 0px 40rem 20rem red;
+    opacity: 0;
+
+    animation: flash infinite 5s;
+
+    &.right {
+      bottom: -5vw;
+      left: -5vw;
+      top: auto;
+      animation-delay: 2.5s;
+    }
+  }
 }
 
 .slide-body.independenceday {
@@ -43,9 +66,38 @@
   background-repeat: no-repeat;
 }
 
+.slide-body.robotwars {
+  background-image: url('/images/robotwars.avif');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
 .blur-card {
   backdrop-filter: blur(10px);
   background-color: rgba(0,0,0,.18);
   border-radius: .2rem;
   padding: 1rem 2rem;
+}
+
+.has-text-shadow {
+  text-shadow: 0px 0px .75rem rgba(0,0,0,.8);
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: .4;
+  }
+  50% {
+    opacity: .4;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }

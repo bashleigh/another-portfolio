@@ -171,9 +171,11 @@ export const Bingo: FC<{
               )}
             </>
           ) : (
-            <p>
-              Get your bingo card and mark off the incoming softwares until you
-              have a row.
+            <p className="has-text-white has-text-centered">
+              A Bingo card of 3 software buzzwords will be created. Every 3
+              seconds a new buzzword will be called out. Check that your
+              buzzwords have been called out. Highlight the called out buzzwords
+              by clicking them. Once you have all 3, call bingo!
             </p>
           )}
         </section>
