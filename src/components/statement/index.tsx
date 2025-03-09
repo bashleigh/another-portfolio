@@ -1,8 +1,21 @@
-import React, { FC, useState } from "react"
+import React, { useContext, useRef } from "react"
 import "./statement.scss"
 import { Carousel } from "./carousel"
+import { useOnScreen } from "../useOneScreen"
+import { AchievementContext } from "../achievements"
 
 export const Statement = () => {
+  const gizmoRef = useRef<any>()
+  const { addAchievement } = useContext(AchievementContext)
+
+  const gizmoOnScreen = useOnScreen(gizmoRef)
+
+  if (gizmoOnScreen)
+    addAchievement({
+      title: "All the content",
+      description: "Congratulations, you've viewed all of my slider content!",
+    })
+
   return (
     <div id="statement">
       <Carousel>
@@ -115,7 +128,10 @@ export const Statement = () => {
             </div>
           </section>
         </div>
-        <div className="slide-body is-flex is-justify-content-center gizmo">
+        <div
+          className="slide-body is-flex is-justify-content-center gizmo"
+          ref={gizmoRef}
+        >
           <section className="section is-flex is-justify-content-center is-flex-direction-column is-flex-grow-1">
             <div className="columns is-centered">
               <div className="column is-6 content blur-card">

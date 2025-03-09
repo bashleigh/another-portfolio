@@ -5,6 +5,7 @@ export default () => defineConfig({
   server: {
     host: 'localhost',
     port: 8080,
+    allowedHosts: ['a3f1-82-15-16-190.ngrok-free.app'],
   },
   resolve: {
 

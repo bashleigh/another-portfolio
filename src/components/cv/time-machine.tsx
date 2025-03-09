@@ -1,7 +1,14 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from "react"
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import "./time-machine.scss"
 import { workexperience } from "./work-experience"
-import { useOnScreen } from "./useOneScreen"
+import { useOnScreen } from "../useOneScreen"
+import { AchievementContext } from "../achievements"
 
 export const TimeMachine = () => {
   const [previousScrollVal, setPreviousScrollVal] = useState<number>(0)
@@ -9,6 +16,8 @@ export const TimeMachine = () => {
   const date = new Date()
   const thisYear = date.getFullYear()
   const experienceInYears = thisYear - 2015
+
+  const { addAchievement } = useContext(AchievementContext)
 
   const onScreenRef = useRef<any>(null)
   const onScreenExperienceRef = useRef<any>(null)
@@ -24,7 +33,14 @@ export const TimeMachine = () => {
           setShowText(false)
         }
       } else if (previousScrollVal < window.scrollY) {
-        if (onScreen && onScreenExperience) setShowText(true)
+        if (onScreen && onScreenExperience) {
+          setShowText(true)
+          addAchievement({
+            title: "Years, years and years.",
+            description:
+              "It's always about how many years you've worked, never what you know.",
+          })
+        }
       }
       setPreviousScrollVal(window.scrollY)
     },
@@ -47,13 +63,13 @@ export const TimeMachine = () => {
           <div className="card" key={job.company}>
             <div className="level">
               <div className="level-item level-left">
-                <small>
+                <small className="mobile-hidden">
                   {job.startDate.month}/{job.startDate.year} -{" "}
                   {job.endDate.month}/{job.endDate.year}
                 </small>
                 <h3 className="subtitle">{job.title}</h3>
               </div>
-              <div className="level-item level-right">
+              <div className="level-item level-right mobile-hidden">
                 {(workexperience.length - index).toString().padStart(2, "0")}
               </div>
             </div>

@@ -25,6 +25,22 @@
       border-radius: 1rem;
       box-shadow: 0px 0px 5px 5px rgba(0,0,0,.018);
 
+      @include mixins.mobile {
+        padding: .4rem .2rem;
+      }
+
+      .content {
+        @include mixins.mobile {
+          padding: .4rem;
+        }
+      }
+
+      .mobile-hidden {
+        @include mixins.mobile {
+          display: none;
+        }
+      }
+
       &:last-child {
         margin-bottom: 0;
         padding-bottom: 20rem;
@@ -42,6 +58,10 @@
 
         @include mixins.tablet {
           font-size: 1.2vw;
+        }
+
+        @include mixins.mobile {
+          font-size: .8rem;
         }
       }
 

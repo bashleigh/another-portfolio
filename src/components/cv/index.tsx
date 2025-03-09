@@ -1,7 +1,8 @@
-import React, { FC, useState } from "react"
+import React, { FC, useContext, useState } from "react"
 import "./cv.scss"
 import { Bingo } from "./bingo"
 import { TimeMachine } from "./time-machine"
+import { AchievementContext } from "../achievements"
 
 const cells = {
   languages: [
@@ -89,6 +90,8 @@ export const CV = () => {
   const [searchPhrase, setSearchPhrase] = useState<string>("")
   const [bingoEnabled, setBingoEnabled] = useState<boolean>(false)
 
+  const { addAchievement } = useContext(AchievementContext)
+
   return (
     <>
       <Bingo
@@ -113,6 +116,11 @@ export const CV = () => {
                         placeholder="Search..."
                         value={searchPhrase}
                         onChange={event => {
+                          addAchievement({
+                            title: "Search...",
+                            description:
+                              "You used the search highlight feature to find out what I know quicker.",
+                          })
                           setSearchPhrase(event.target.value)
                         }}
                       />

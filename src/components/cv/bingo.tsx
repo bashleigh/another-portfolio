@@ -1,7 +1,8 @@
-import React, { FC, useEffect, useRef, useState } from "react"
+import React, { FC, useContext, useEffect, useRef, useState } from "react"
 import "./bingo.scss"
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
 import Confetti from "react-confetti"
+import { AchievementContext } from "../achievements"
 
 const BingoCard: FC<{
   words: [string, string, string]
@@ -43,11 +44,18 @@ export const Bingo: FC<{
   const [state, setState] = useState<"intro" | "running" | "complete">("intro")
   const [mySelectedValues, setSelectedValues] = useState<string[] | undefined>()
   const [result, setResult] = useState<string | undefined>()
+  const { addAchievement } = useContext(AchievementContext)
+
   const nextCallInt = 3000
 
   const intervalRef = useRef<any>()
 
   const start = () => {
+    addAchievement({
+      title: "Played Bingo",
+      description:
+        "Congratulations! You've played a game of Software Buzzword Bingo!",
+    })
     setCalled([])
     const toSelect = [
       ...words
@@ -75,9 +83,14 @@ export const Bingo: FC<{
     if (
       mySelectedValues?.every(selected => called.includes(selected)) &&
       mySelectedValues.length === 3
-    )
+    ) {
+      addAchievement({
+        title: "Winner, Winner, Chicken Dinner!",
+        description:
+          "You're an absolute wiz at Software Buzzword Bingo! you've won a prize! It's this achievement. Don't be ungrateful!",
+      })
       setResult("Winner")
-    else setResult("Loser")
+    } else setResult("Loser")
   }
 
   useEffect(() => {

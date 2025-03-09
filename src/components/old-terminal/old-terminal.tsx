@@ -5,9 +5,12 @@ import React, {
   Dispatch,
   SetStateAction,
   MutableRefObject,
+  useContext,
 } from "react"
 import "./old-terminal.scss"
 import { TypewriterSection } from "./typewriter-section"
+import { AchievementContext } from "../achievements"
+import { useOnScreen } from "../useOneScreen"
 
 // Rick is trapped in the monitor
 // He slags off the security of the terminal
@@ -99,37 +102,6 @@ const evilMorty = [
   "⠀⠀⠀⠀⠘⢄⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⢀⠔⠁⠀⠀⠀",
   "⠀⠀⠀⠀⠀⠀⠁⠢⠄⡀⠀⠀⠀⠀⠀⠀⠀⢀⡠⢖⠁⠀⠀⠀⠀⠀",
   "⠀⠀⠀⠀⠀⠀⠔⠁⠀⠀⠉⠁⠀⠒⠂⠀⠉⠁⠀⠈⠢⡀⠀⠀⠀⠀",
-  "⠀⠀⠀⠀⢀⠌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠱⡀⠀⠀⠀",
-  "⠀⠀⠀⠀⠘⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢣⠀⠀⠀",
-  "⠀⠀⠀⠀⡇⠀⠀⠀⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⠀⠀⠘⠀⠀⠀",
-  "⠀⠀⠀⠠⠀⠀⠀⠀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠀⠀⠀⠀⡇⠀⠀",
-]
-
-const initialLines = [
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⠀⠀⠀⠀⢀⣴⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣄⠀⣠⣾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢆⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⢸⠿⣛⣛⣛⡻⢿⣇⣤⣤⣶⠆⠀⠀⠀⠀⠀⠀⠀⠀⠈⡳⣴⡄⠀⠀",
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⡟⣵⣿⣿⣿⣿⣿⣷⡝⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⢿⣿⣷⠀⠀",
-  "⠀⠀⢰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⢱⡿⣟⡿⣿⢟⣭⣭⡛⣸⣧⣤⣤⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⢿⣿⠀⠀",
-  "⢀⣠⠏⠀⠀⠀⠀⠀⠀⠀⠀⠠⢶⣿⣿⠈⣾⣟⣿⣞⡸⣿⣽⡟⡇⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠶⣀⠀",
-  "⢸⣿⣾⡤⡀⠀⠀⠀⠀⠀⠀⠀⠀⣨⣿⡜⣮⠟⠯⡾⣿⣶⣒⣺⣿⢙⢦⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀",
-  "⠀⣿⣿⠈⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠛⢥⡻⠋⠍⠟⡉⠛⠙⠈⠀⠁⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀",
-  "⠀⢘⣯⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠓⠡⡀⠀⠀⠰⡂⡀⢀⡴⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⠀",
-  "⠀⢲⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠒⢓⣛⣛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀",
-  "⠀⢸⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⢰⣿⣶⢹⣿⣿⣿⣿⣿⣷⣶⣶⣶⣶⣶⣦⣤⣤⣤⣽⣿⡆",
-  "⠀⠀⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⣾⣿⣿⡟⣿⡟⣿⣿⢸⣿⣿⡇⠀⠉⠉⠉⠉⠉⠙⠛⠛⠛⠛⠛⠛⠛⠁",
-  "⠀⠀⢸⣿⣇⠀⠀⠀⣀⣤⣶⣿⡿⠟⠋⠁⠀⡟⣼⣿⡇⣿⣿⢸⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⢿⣿⣤⣶⣿⠿⠛⠉⠀⠀⠀⠀⠀⠀⣿⣶⢝⡇⣿⣿⣾⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⠈⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⢱⣿⣿⣿⣿⡇⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-  "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣯⢿⣿⢸⣿⣇⠿⠿⠻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-  "Morty,",
-  "Check this out.",
-  "I\'m stick in this monitor on this person's website.",
-  "",
-  "What do you think of that Morty?",
-  "pid        name            user",
-  " 1         security        ashleigh",
-  " 2         rick            lordOfTheTerminal",
 ]
 
 enum AfterLineSetEnum {
@@ -181,11 +153,13 @@ const itsLikeThatFilm = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
 const goingToKillMe = (
   setLines: Dispatch<SetStateAction<LineSet[]>>,
   inputElement: MutableRefObject<HTMLInputElement | undefined>,
+  terminalOnScreen: boolean,
 ) => {
   setTimeout(() => {
     console.log(inputElement.current)
-    inputElement?.current?.focus()
-    setLines((lines: LineSet[]) => [
+    if (terminalOnScreen) inputElement?.current?.focus()
+
+    const lines = setLines((lines: LineSet[]) => [
       ...lines,
       {
         delay: 20,
@@ -204,18 +178,24 @@ const goingToKillMe = (
 
 const thisIsWhatHappensWhenBackendLearnReact = (
   setLines: Dispatch<SetStateAction<LineSet[]>>,
+  terminalOnScreen: boolean,
 ) => {
-  setLines((lines: LineSet[]) => [
-    ...lines,
+  const lines = [
+    "",
+    "This is what happens when backend developers learn React, I'm done for!",
+    'Come on Morty, run the top command, how difficult is it? type "T" "O" "P" and hit enter.',
+  ]
+
+  if (!terminalOnScreen)
+    lines.push("You might need to click the terminal first, Morty...")
+
+  setLines((previous: LineSet[]) => [
+    ...previous,
     {
       delayStart: 5000,
       delay: 10,
       delayBetween: 1000,
-      lines: [
-        "",
-        "This is what happens when backend developers learn React, I'm done for!",
-        'Come on Morty, run the top command, how difficult is it? type "T" "O" "P" and hit enter.',
-      ],
+      lines,
     },
   ])
 }
@@ -315,7 +295,7 @@ const howUnfortuitous = (setLines: Dispatch<SetStateAction<LineSet[]>>) => {
       delay: 100,
       lines: [
         "How unfortuitous...",
-        "You killed him. Huh, what do you know?",
+        "You killed him. Huh, what d'ya know?",
         "See ya kid.",
       ],
     },
@@ -353,10 +333,13 @@ export const OldTerminal = () => {
   const [killedProcesses, setKilledProcesses] = useState<number[]>([])
   const [commandNotFoundCount, setCommandNotFoundCount] = useState<number>(0)
   const [doomRunning, setDoomRunning] = useState<boolean>(false)
+  const { addAchievement } = useContext(AchievementContext)
+  const terminalRef = useRef<any>()
 
   const inputElement = useRef<HTMLInputElement>()
 
   const doomRef = useRef<any>()
+  const terminalOnScreen = useOnScreen(terminalRef)
 
   useEffect(() => {
     if (commandNotFoundCount === 3) {
@@ -376,7 +359,7 @@ export const OldTerminal = () => {
         {
           delayStart: 1000,
           lines: [
-            'Are you still trying to find commands in this thing? Use "ls /bin" to see all the commands Morty.',
+            'Are you still trying to find commands in this thing? Use "ls /bin" to see all the commands, Morty.',
           ],
         },
       ])
@@ -403,6 +386,11 @@ export const OldTerminal = () => {
 
     switch (cariage) {
       case "whoami":
+        addAchievement({
+          title: "Identity Crisis",
+          description:
+            'You ran "whoami" on the terminal to try and find out what user was logged in.',
+        })
         setLines([
           ...lines,
           {
@@ -423,6 +411,11 @@ export const OldTerminal = () => {
         ])
         break
       case "top":
+        addAchievement({
+          title: "Hacker",
+          description:
+            "You ran the top command to try and save rick from the security process!",
+        })
         setLines(lines => [...lines, topCommand(killedProcesses, doomRunning)])
         break
       case "ls":
@@ -450,6 +443,10 @@ export const OldTerminal = () => {
         ])
         break
       case "tail /proc/1/fd/1":
+        addAchievement({
+          title: "Spare Parts",
+          description: "Virus detected, oxigenated tissues, nerous systems...",
+        })
         setLines(lines => [
           ...lines,
           {
@@ -472,6 +469,11 @@ export const OldTerminal = () => {
       case "restart":
         setKilledProcesses([])
         start(setLines)
+        addAchievement({
+          title: "C137",
+          description:
+            "You decided the first terminal wasn't good enough and started all over again!",
+        })
         break
       case "doom":
         setDoomRunning(true)
@@ -489,15 +491,30 @@ export const OldTerminal = () => {
         //   })
         // }, 1000)
 
+        addAchievement({
+          title: "DOOM!",
+          description: "You tried to run DOOM.",
+        })
+
         setLines(lines => [
           ...lines,
           {
-            lines: ["Sorry Morty, now's not the time for DOOM"],
+            delayBetween: 1000,
+            lines: [
+              "Sorry Morty, now's not the time for DOOM",
+              "This HTML & CSS Terminal would probably run it though if you clone the repo and uncomment some code",
+              "<a href='https://github.com/bashleigh/another-portfolio' target='_blank'>https://github.com/bashleigh/another-portfolio</a>",
+            ],
             delayStart: 2000,
           },
         ])
         break
       default:
+        addAchievement({
+          title: "NOT FOUND!",
+          description:
+            "You ran a command that didn't exist! In a HTML/CSS terminal. Who'd have thought it!",
+        })
         setCommandNotFoundCount(commandNotFoundCount + 1)
         setLines(lines => [
           ...lines,
@@ -526,6 +543,7 @@ export const OldTerminal = () => {
         <p>2025© - London - v2.0.1</p>
       </div>
       <div
+        ref={terminalRef}
         className={`screen${showBoot ? " off" : ""}`}
         onClick={() => {
           inputElement.current?.focus()
@@ -566,13 +584,16 @@ export const OldTerminal = () => {
                     showOffRick(setLines)
                     break
                   case AfterLineSetEnum.GOING_TO_KILL_ME:
-                    goingToKillMe(setLines, inputElement)
+                    goingToKillMe(setLines, inputElement, terminalOnScreen)
                     break
                   case AfterLineSetEnum.ITS_LIKE_THAT_FILM:
                     itsLikeThatFilm(setLines)
                     break
                   case AfterLineSetEnum.THIS_IS_WHAT_HAPPENS:
-                    thisIsWhatHappensWhenBackendLearnReact(setLines)
+                    thisIsWhatHappensWhenBackendLearnReact(
+                      setLines,
+                      terminalOnScreen,
+                    )
                     break
                   case AfterLineSetEnum.RICK_INSTRUCTIONS_ON_KILL:
                     rickInstructionsOnKill(setLines)
@@ -584,6 +605,11 @@ export const OldTerminal = () => {
                     howUnfortuitous(setLines)
                     break
                   case AfterLineSetEnum.KILLED_RICK:
+                    addAchievement({
+                      title: "Rickless & Dangerous",
+                      description:
+                        "Well, you got Rick killed and now you're a Rickless Morty. Destined to dwell with the other Rickless Morty's in the Citadel.",
+                    })
                     killRick(setLines)
                     break
                   case AfterLineSetEnum.KILLED_SECURITY:

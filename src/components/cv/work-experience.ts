@@ -56,7 +56,7 @@ export const workexperience: WorkExperience[] = [
     title: "Senior Fullstack Developer",
     company: "HomeServeNow",
     description: [
-      "At HomeserveNow I started a project to rebuild the entire platform to be more performative, organised and use more structured methodologies such as REST, IaC, SRP, open-closed and others. I've also maintained and improved our mobile app, admin dashboard and customer facing web site. Planned, designed, built and published homeserve's first public library https://github.com/Homeservenow/serverless-aws-handler At HomeserveNow we used AWS, TypeScript, lambdas, cognito, react, react-native, SQS, SES, pusher, expo and others.",
+      "At HomeserveNow I started a project to rebuild the entire platform to be more performative, organised and use more structured methodologies such as REST, IaC, SRP, open-closed and others. I've also maintained and improved our mobile app, admin dashboard and customer facing web site. Planned, designed, built and published homeserve's first public library serverless-aws-handler At HomeserveNow we used AWS, TypeScript, lambdas, cognito, react, react-native, SQS, SES, pusher, expo and others.",
     ],
   },
   {

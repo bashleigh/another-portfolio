@@ -1,5 +1,13 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from "react"
+import React, {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import "./quiz.scss"
+import { AchievementContext } from "../achievements"
 
 const Question: FC<{
   submit: (selectedAnswerIndex: number) => void
@@ -71,6 +79,7 @@ export const Quiz = () => {
   const [isActive, setIsActive] = useState<boolean>(false)
   const [warning, setWarning] = useState<boolean>(false)
   const [warningCount, setWarningCount] = useState<number>(0)
+  const { addAchievement } = useContext(AchievementContext)
 
   const quizRef = useRef<HTMLDivElement>()
 
@@ -101,7 +110,14 @@ export const Quiz = () => {
   )
 
   useEffect(() => {
-    if (warning) setWarningCount(warning => warning + 1)
+    if (warning) {
+      setWarningCount(warning => warning + 1)
+      addAchievement({
+        title: "SHAME",
+        description:
+          "You tried to cheat at the most important quiz in the world!",
+      })
+    }
   }, [warning])
 
   useEffect(() => {
@@ -243,10 +259,21 @@ export const Quiz = () => {
           />
         )
       case 8:
+        if (score === 7)
+          addAchievement({
+            title: "I'm Impressed!",
+            description:
+              "You did it! You must know me or something because you got every question correct!",
+          })
+        else if (calledMeOld)
+          addAchievement({
+            title: "Not impressed.",
+            description: "How dare you call me old!",
+          })
         return (
           <div className="hero-body is-justify-content-center">
             <div className="columns">
-              <div className="column" style={{ width: "50vw" }}>
+              <div className="column">
                 <div className="container">
                   {calledMeOld ? (
                     <>
@@ -284,7 +311,7 @@ export const Quiz = () => {
   }
 
   return (
-    <section ref={quizRef} className={`quiz hero is-fullheight`}>
+    <section ref={quizRef} className={`quiz hero is-black is-fullheight`}>
       {questions()}
       <div className={`modal${warning ? " is-active" : ""}`}>
         <div
@@ -309,6 +336,11 @@ export const Quiz = () => {
                     setWarning(false)
                     setQuestionIndex(0)
                     setIsActive(false)
+                    setScore(0)
+                    addAchievement({
+                      title: "Booo!",
+                      description: "Least you admitted you're a cheater...",
+                    })
                   }}
                   className="button is-info"
                 >
