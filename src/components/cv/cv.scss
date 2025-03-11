@@ -50,6 +50,16 @@
   li.highlighted, .subtitle.highlighted {
     opacity: 1;
   }
+
+  &.is-mobile {
+    .cell {
+      display: none;
+
+      &.is-active {
+        display: block;
+      }
+    }
+  }
 }
 
 .is-dark-primary {

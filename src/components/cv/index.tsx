@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from "react"
+import React, { FC, useContext, useLayoutEffect, useState } from "react"
 import "./cv.scss"
 import { Bingo } from "./bingo"
 import { TimeMachine } from "./time-machine"
@@ -48,16 +48,32 @@ const cells = {
 
 const WhatIKnow: FC<{ searchPhrase: string }> = ({ searchPhrase }) => {
   const colours = ["primary", "danger", "warning", "info", "link"]
+  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const mobileSize = 768
+
+  useLayoutEffect(() => {
+    function updateSize() {
+      if (window.innerWidth <= mobileSize) setIsMobile(true)
+      else setIsMobile(false)
+    }
+
+    window.addEventListener("resize", updateSize)
+    updateSize()
+    return () => window.removeEventListener("resize", updateSize)
+  }, [])
 
   return (
-    <div id="what-i-know" className="hero is-halfheight is-black">
+    <div id="what-i-know" className={`hero is-halfheight is-black`}>
       <div className="hero-body">
         <div className="container">
           <div
-            className={`grid is-col-min-12 is-row-gap-6${searchPhrase !== "" ? " searching" : ""}`}
+            className={`grid is-col-min-12 is-row-gap-6${searchPhrase !== "" ? " searching" : ""}${isMobile ? " is-mobile" : ""}`}
           >
             {Object.keys(cells).map(key => (
-              <div className="cell" key={key}>
+              <div
+                className={`cell${cells[key].some(word => word.toLowerCase().includes(searchPhrase.toLowerCase())) ? " is-active" : ""}`}
+                key={key}
+              >
                 <h4
                   className={`subtitle has-text-${colours[Math.floor(Math.random() * (colours.length - 1 + 1))]} ${cells[key].some(word => word.toLowerCase().includes(searchPhrase.toLowerCase())) ? "highlighted" : ""}`}
                 >

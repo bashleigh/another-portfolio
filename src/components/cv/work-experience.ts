@@ -22,7 +22,7 @@ export const workexperience: WorkExperience[] = [
       month: (new Date().getMonth() + 1).toString().padStart(2, "0"),
       year: new Date().getFullYear().toString(),
     },
-    title: "Platform Applications Principal Engineer, Manager",
+    title: "Manager, Engineering, Platform Applications",
     company: "Reapit Ltd",
     description: [
       "At Reapit I'm responsible for building developer tools for our internal and customer's developers. I have successfully built a working dynamic CI/CD pipeline tool to deploy PWA apps to AWS and I'm currently planning a verison 2 capable of deploying and maintaining backend application solutions.",
