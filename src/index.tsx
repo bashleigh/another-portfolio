@@ -9,6 +9,12 @@ import { AchievementProvider, Achievements } from "./components/achievements"
 
 const root = document.getElementById("root")
 
+console.log(
+  "Hello, I see you've opened the console. The source code is here https://github.com/bashleigh/another-portfolio",
+)
+console.log("That'll save you some time!")
+console.log("I'll be here. Waiting for you to get back...")
+
 createRoot(root).render(
   // <React.StrictMode>
   <>

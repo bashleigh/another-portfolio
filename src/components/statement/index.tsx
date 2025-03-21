@@ -128,14 +128,14 @@ export const Statement = () => {
             </div>
           </section>
         </div>
-        <div
-          className="slide-body is-flex is-justify-content-center gizmo"
-          ref={gizmoRef}
-        >
+        <div className="slide-body is-flex is-justify-content-center gizmo">
           <section className="section is-flex is-justify-content-center is-flex-direction-column is-flex-grow-1">
             <div className="columns is-centered">
               <div className="column is-6 content blur-card">
-                <h3 className="title mb-4 has-text-white is-size-1 has-text-centered">
+                <h3
+                  className="title mb-4 has-text-white is-size-1 has-text-centered"
+                  ref={gizmoRef}
+                >
                   Gizmos & Gadgets
                 </h3>
                 <p className="has-text-white has-text-weight-medium">

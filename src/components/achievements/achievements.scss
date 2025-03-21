@@ -71,6 +71,12 @@
   padding: 1rem 0rem;
   margin: 1rem 0rem;
 
+  @include mixins.mobile {
+    &.grid.is-col-min-14 {
+      --bulma-grid-column-min: 9rem;
+    }
+  }
+
   // .achievement {
   //   &:not(:first-child) {
   //     margin-top: 2rem;

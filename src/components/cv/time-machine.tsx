@@ -58,12 +58,12 @@ export const TimeMachine = () => {
 
   return (
     <div className="time-machine">
-      <div className="card-stack">
+      <div className={`card-stack card-length-${workexperience.length}`}>
         {workexperience.map((job, index) => (
           <div className="card" key={job.company}>
             <div className="level">
               <div className="level-item level-left">
-                <small className="mobile-hidden">
+                <small>
                   {job.startDate.month}/{job.startDate.year} -{" "}
                   {job.endDate.month}/{job.endDate.year}
                 </small>
@@ -75,6 +75,7 @@ export const TimeMachine = () => {
             </div>
             <h1 className="title mb-4 mt-2">{job.company}</h1>
             <div className="content">
+              <p className="excert">{job.exert}</p>
               {job.description.map(desc => (
                 <p key={desc}>{desc}</p>
               ))}

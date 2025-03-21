@@ -1,11 +1,26 @@
 @use "bulma/sass/utilities/mixins";
 
+.timemachine-container {
+  max-width: 100%;
+}
+
 .hero.is-timemachine {
     background-image: linear-gradient(180deg, var(--bulma-primary-10), var(--bulma-info));
+
+    @include mixins.mobile {
+      background-color: var(--bulma-info);
+      background-image: none;
+    }
 }
 
 .time-machine {
   padding-top: 4rem;
+
+  @include mixins.mobile {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    overflow-x: scroll;
+  }
 
   .card-stack {
     z-index: 100;
@@ -13,6 +28,7 @@
     @include mixins.tablet {
       padding: 0rem 10vw;
     }
+
     .card {
       z-index: 100;
       background: white;
@@ -85,6 +101,46 @@
 
     &.active {
       opacity: 1;
+    }
+
+    @include mixins.mobile {
+      display: none;
+    }
+  }
+
+  @include mixins.mobile {
+    .card-stack {
+      display: flex;
+      flex-direction: row;
+
+      @for $i from 1 through 12 {
+        &.card-length-#{$i} {
+          width: $i * 100vw;
+        }
+
+        &.position-#{$i} {
+          transform: translateX($i * 100vw);
+        }
+      }
+
+      .card {
+        margin: 0rem 1rem;
+        padding: 1rem;
+        width: calc(100vw - 2rem);
+
+        &:last-child {
+          padding-bottom: 0;
+        }
+
+        p:not(.excert) {
+          display: none;
+        }
+
+        .level, .level-item {
+          align-items: start;
+          gap: normal;
+        }
+      }
     }
   }
 }

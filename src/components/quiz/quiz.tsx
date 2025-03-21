@@ -23,7 +23,7 @@ const Question: FC<{
     <div className="hero is-fullheight">
       <div className="hero-body is-justify-content-center">
         <div className="columns">
-          <div className="column" style={{ width: "50vw" }}>
+          <div className="column question-container">
             <div className="container">
               <h3 className="title mb-6">
                 {questionIndex}&#41; {title}
@@ -34,6 +34,7 @@ const Question: FC<{
                   event.preventDefault()
                   if (typeof selectedAnswerIndex !== "undefined")
                     submit(selectedAnswerIndex)
+                  setSelectedAnswerIndex(undefined)
                 }}
               >
                 <div className="field mb-6">

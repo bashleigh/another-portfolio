@@ -43,7 +43,7 @@ const cells = {
     "TCP",
   ],
   "cloud platforms": ["AWS", "Google Cloud Platform"],
-  methodologies: ["REST", "SOLID"],
+  methodologies: ["REST", "SOLID", "IaaS", "IaC", "IoT", "Serverless"],
 }
 
 const WhatIKnow: FC<{ searchPhrase: string }> = ({ searchPhrase }) => {
@@ -63,7 +63,7 @@ const WhatIKnow: FC<{ searchPhrase: string }> = ({ searchPhrase }) => {
   }, [])
 
   return (
-    <div id="what-i-know" className={`hero is-halfheight is-black`}>
+    <div id="what-i-know" className={`hero is-black`}>
       <div className="hero-body">
         <div className="container">
           <div
@@ -157,9 +157,9 @@ export const CV = () => {
         </div>
         <WhatIKnow searchPhrase={searchPhrase} />
       </div>
-      <section className="hero is-halfheight is-timemachine">
+      <section className="hero is-timemachine">
         <div className="hero-body">
-          <div>
+          <div className="timemachine-container">
             <h1 className="title is-size-1 has-text-centered mt-6 mb-6 has-text-white">
               Where have I been all your life?
             </h1>

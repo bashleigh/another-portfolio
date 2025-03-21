@@ -409,6 +409,10 @@ export const OldTerminal = () => {
             ],
           },
         ])
+        addAchievement({
+          title: "Clean Freak",
+          description: "You really like being clean don't you?",
+        })
         break
       case "top":
         addAchievement({
