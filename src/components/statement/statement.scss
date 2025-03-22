@@ -66,11 +66,25 @@
   background-position: center center;
   background-repeat: no-repeat;
   position: relative;
+  overflow: hidden;
 
   .column.content {
     position: absolute;
     bottom: 4rem;
     right: 4rem;
+  }
+
+  .greenlight {
+    background: var(--bulma-primary);
+    border-radius: 100%;
+    width: 20vw;
+    height: 20vw;
+    position: absolute;
+    top: -5vw;
+    box-shadow: 0px 0px 40rem 30rem var(--bulma-primary);
+    opacity: .15;
+    animation: semi-flash infinite 2.5s;
+    right: 0;
   }
 }
 
@@ -100,5 +114,41 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes semi-flash {
+  0% {
+    opacity: .15;
+  }
+  30% {
+    opacity: .4;
+  }
+  50% {
+    opacity: .4;
+  }
+  80% {
+    opacity: .15;
+  }
+  100% {
+    opacity: .15;
+  }
+}
+
+@keyframes shuttle {
+  0% {
+    left: 0%;
+  }
+  10% {
+    left: 0%;
+  }
+  40% {
+    left: 100%;
+  }
+  70% {
+    left: 100%;
+  }
+  100% {
+    left: 0%;
   }
 }

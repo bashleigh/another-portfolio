@@ -63,6 +63,7 @@ export const Statement = () => {
           </section>
         </div>
         <div className="slide-body is-flex is-justify-content-center robotwars">
+          <div className="greenlight"></div>
           <section className="section is-flex is-justify-content-center is-flex-direction-column is-flex-grow-1">
             <div className="columns is-centered is-flex-direction-row-reverse">
               <div className="column is-6 content">
@@ -126,6 +127,10 @@ export const Statement = () => {
                   When you click the link, feel free to say &quot;I'll be
                   back&quot;. Don't milk it though.
                 </p>
+                <small className="has-text-white has-text-weight-medium has-text-shadow">
+                  I would've made his eyes glow but can you imaging consistently
+                  putting a div over his eyes responsively?
+                </small>
               </div>
             </div>
           </section>
