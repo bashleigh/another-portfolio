@@ -21,9 +21,11 @@ export const TimeMachine = () => {
 
   const onScreenRef = useRef<any>(null)
   const onScreenExperienceRef = useRef<any>(null)
+  const onScreen2Ref = useRef<any>(null)
 
   const onScreen = useOnScreen(onScreenRef)
   const onScreenExperience = useOnScreen(onScreenExperienceRef)
+  const onScreen2 = useOnScreen(onScreen2Ref)
 
   const handleScrollingText = useCallback(
     event => {
@@ -56,6 +58,17 @@ export const TimeMachine = () => {
     }
   }, [handleScrollingText])
 
+  useEffect(() => {
+    if (onScreen2)
+      addAchievement({
+        title: "Years, years and years.",
+        description:
+          "It's always about how many years you've worked, never what you know.",
+      })
+  }, [onScreen2])
+
+  // console.log('onscreen', onScreen, showText, onScreenExperience)
+
   return (
     <div className="time-machine">
       <div className={`card-stack card-length-${workexperience.length}`}>
@@ -82,6 +95,12 @@ export const TimeMachine = () => {
             </div>
           </div>
         ))}
+        <div className="work-experience-years card">
+          <div ref={onScreen2Ref}></div>
+          <h1 className="title has-text-centered">
+            That's {experienceInYears} years experience!
+          </h1>
+        </div>
       </div>
       <div ref={onScreenRef}></div>
       <div
