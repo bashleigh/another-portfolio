@@ -65,23 +65,25 @@ export const Statement = () => {
         <div className="slide-body is-flex is-justify-content-center robotwars">
           <section className="section is-flex is-justify-content-center is-flex-direction-column is-flex-grow-1">
             <div className="columns is-centered is-flex-direction-row-reverse">
-              <div className="column is-6 content blur-card">
-                <h3 className="title mb-4 has-text-white is-size-1 has-text-centered">
+              <div className="column is-6 content">
+                <h3 className="title mb-4 has-text-white is-size-1 has-text-right is-silkscreen">
                   "3, 2, 1, ACTIVATE"
                 </h3>
-                <p className="has-text-white has-text-weight-medium has-text-centered">
-                  Every night after the Simpsons it was Robot Wars time! The
-                  iconic robots and presenter eventually lead my Dad to buy
-                  myself and my sister the iRobot magazines. I kept up with the
-                  magazines each week until I built my Cybot!
+                <p className="has-text-white has-text-weight-medium has-text-right">
+                  This is Matilda. The only female robot from Robot Wars from
+                  way back in 1998. This robot inspired me to get into tech.
+                  Good old Craig whats-his-face, the presenter then went on to
+                  advertise a magazine called Real Robots. This magazine
+                  featured a robot you could build called Cybot which I built as
+                  a young kid!
                 </p>
               </div>
             </div>
           </section>
         </div>
         <div className="slide-body is-flex is-justify-content-center virus">
-          {/* <div className="alarm"></div>
-          <div className="alarm right"></div> */}
+          <div className="alarm"></div>
+          <div className="alarm right"></div>
           <section className="section is-flex is-justify-content-center is-flex-direction-column">
             <div className="columns is-centered">
               <div className="column is-6 content">

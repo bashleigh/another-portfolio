@@ -205,12 +205,12 @@ export const Quiz = () => {
         return (
           <Question
             questionIndex={questionIndex}
-            submit={() => {
-              setScore(score + 1)
+            submit={selectedAnswerIndex => {
+              if (selectedAnswerIndex === 1) setScore(score + 1)
               setQuestionIndex(questionIndex + 1)
             }}
-            title="What is shit code?"
-            answers={["shit", "shit", "shit", "shit"]}
+            title="What was the female robot from Robot Wars called?"
+            answers={["HerBot", "Matilda", "Shella", "Dot Matrix"]}
           />
         )
       case 5:

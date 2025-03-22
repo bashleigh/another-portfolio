@@ -22,6 +22,7 @@
   background-repeat: no-repeat;
 
   position: relative;
+  overflow: hidden;
 
   .alarm {
     position: absolute;
@@ -45,13 +46,6 @@
   }
 }
 
-.slide-body.independenceday {
-  background-image: url('/images/independenceday.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .slide-body.terminator {
   background-image: url('/images/terminator.jpg');
   background-size: cover;
@@ -67,10 +61,17 @@
 }
 
 .slide-body.robotwars {
-  background-image: url('/images/robotwars.avif');
+  background-image: url('/images/matilda.webp');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  position: relative;
+
+  .column.content {
+    position: absolute;
+    bottom: 4rem;
+    right: 4rem;
+  }
 }
 
 .blur-card {
