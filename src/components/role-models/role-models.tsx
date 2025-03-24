@@ -1,6 +1,6 @@
-import React, { FC, PropsWithChildren } from "react"
+import React, { FC } from "react"
 import "./styles.scss"
-import { GlitchText } from "./glitch/glitch-text"
+import { GlitchImage, GlitchText } from "./glitch"
 
 type RoleModel = {
   name: string
@@ -99,10 +99,56 @@ const roleModels: RoleModel[] = [
   },
 ]
 
+const RoleModelCard: FC<RoleModel> = ({
+  name,
+  description,
+  image,
+  programOrFilm,
+}) => {
+  const nameShouldGlitch = Math.random() * 100 > 70
+  const shouldLabelGlitch = !nameShouldGlitch && Math.random() * 100 > 70
+  const shouldImageGlitch = Math.random() * 100 > 70
+
+  return (
+    <div className="card terminal-box">
+      <figure className="image">
+        {shouldImageGlitch ? (
+          <GlitchImage
+            delay={Math.random() * 10}
+            src={image}
+            title={`Ashleigh's role model ${name}`}
+            alt={name}
+          />
+        ) : (
+          <img src={image} title={`Ashleigh's role model ${name}`} alt={name} />
+        )}
+      </figure>
+      <div className="content">
+        <h2 className="title">
+          {nameShouldGlitch ? (
+            <GlitchText delay={Math.random() * 5}>{name}</GlitchText>
+          ) : (
+            name
+          )}
+        </h2>
+        <label className="label">
+          {shouldLabelGlitch ? (
+            <GlitchText delay={Math.random() * 10}>{programOrFilm}</GlitchText>
+          ) : (
+            programOrFilm
+          )}
+        </label>
+        {description.map(desc => (
+          <p key={desc}>{desc}</p>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export const RoleModels = () => {
   return (
     <div className="role-models section">
-      <div className="screen-buzz"></div>
       <div className="screen-buzz"></div>
       <div className="terminal-boxes">
         <div className="terminal-box">
@@ -113,14 +159,14 @@ export const RoleModels = () => {
         </div>
         <div className="terminal-box">
           <div>
-            <p className="highlight">Control</p>
+            <p className="highlight blink">Control</p>
 
-            <div className="buttons">
-              <button>P</button>
+            <div className="control-buttons">
+              <button>&lt;</button>
               <button>1</button>
               <button>2</button>
               <button>3</button>
-              <button>N</button>
+              <button>&gt;</button>
             </div>
             <div className="progressbar">
               <progress />
@@ -131,27 +177,13 @@ export const RoleModels = () => {
       <div className="role-model-container grid is-col-min-18">
         <div className="slider">
           {roleModels.map(model => (
-            <div className="card terminal-box" key={model.name}>
-              <figure className="image">
-                <img
-                  src={model.image}
-                  title={`Ashleigh's role model ${model.name}`}
-                  alt={model.name}
-                />
-              </figure>
-              <div className="content">
-                <h2 className="title">
-                  <GlitchText>{model.name}</GlitchText>
-                </h2>
-                <label className="label">{model.programOrFilm}</label>
-                {model.description.map(desc => (
-                  <p key={desc}>{desc}</p>
-                ))}
-              </div>
-            </div>
+            <RoleModelCard key={model.name} {...model} />
           ))}
         </div>
       </div>
+      {/* <div className="screen-buzz-overlay">
+        <hr />
+      </div> */}
     </div>
   )
 }

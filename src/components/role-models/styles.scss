@@ -1,6 +1,6 @@
 .section.role-models {
   background-color: rgb(12, 12, 31);
-  background-image: linear-gradient(to top, rgb(10, 10, 35), rgb(12, 12, 31), rgb(10, 10, 35));
+  background-image: linear-gradient(to top, rgb(10, 10, 35), rgb(42, 42, 95), rgb(10, 10, 35));
   padding-left: 0;
   padding-right: 0;
   position: relative;
@@ -33,6 +33,23 @@
     // background: linear-gradient(to top, transparent, transparent, #301dae, #301dae);
     }
   }
+
+  .screen-buzz-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding: .4rem;
+    backdrop-filter: blur(3px);
+    bottom: 50%;
+    // background-color: red;
+    opacity: 1;
+    // animation: movementBlink 5s infinite, blink 2s infinite;
+
+    hr {
+      background-color: blue;
+      margin: 0;
+    }
+  }
 }
 
 .terminal-boxes {
@@ -45,6 +62,18 @@
     flex-grow: 1;
     margin-right: 1rem;
   }
+  
+  .control-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: .5rem 0 .25rem;
+
+    .active {
+      filter: drop-shadow(0 1px 3px);
+      color: white;
+    }
+  }
 }
 
 .terminal-box {
@@ -56,14 +85,21 @@
   border-radius: 0;
   font-family: 'Silkscreen';
 
-  .title, .subtitle, .content p {
+  .title, .subtitle, .content p, .label {
     font-family: 'Silkscreen';
+    filter: drop-shadow(0 1px 3px);
   }
   
   .highlight {
     background: rgba(170, 50, 20, 0.843);
     display: inline-block;
     padding: .25rem 1rem;
+    filter: none;
+
+    &.blink {
+      color: white;
+      animation: blink 3s infinite;
+    }
   }
 }
 
@@ -108,20 +144,60 @@
     
         img {
           width: 250px;
-          border-radius: .8rem;
-          opacity: .8;
+          border-radius: 0;
+          opacity: .7;
         }
       }
     }
   }
 }
 
-@keyframes moveDownwards { 
-  0%{background-position:0% 0%}
-  100%{background-position:0% 100%}
-}
+// @keyframes moveDownwards { 
+//   0%{background-position:0% 0%}
+//   100%{background-position:0% 100%}
+// }
 
 @keyframes blink {
-  0% {opacity: .2;}
-  100% {opacity: .4;}
+  0% {opacity: .5;}
+  49% {opacity: .5;}
+  50% {opacity: 1;}
+  90% {opacity: 1;}
+  91% {opacity: .5;}
+  100% {opacity: .5;}
 }
+
+// @keyframes movementBlink {
+//   0% {
+//     transform: translateY(20px);
+//   }
+//   10% {
+//     transform: translateY(10px);
+//   }
+//   20% {
+//     transform: translateY(15px);
+//   }
+//   30% {
+//     transform: translateY(20px);
+//   }
+//   40% {
+//     transform: translateY(20px);
+//   }
+//   50% {
+//     transform: translateY(10px);
+//   }
+//   60% {
+//     transform: translateY(20px);
+//   }
+//   70% {
+//     transform: translateY(15px);
+//   }
+//   80% {
+//     transform: translateY(20px);
+//   }
+//   90% {
+//     transform: translateY(15px);
+//   }
+//   100% {
+//     transform: translateY(20px);
+//   }
+// }
