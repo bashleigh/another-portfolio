@@ -1,0 +1,127 @@
+.section.role-models {
+  background-color: rgb(12, 12, 31);
+  background-image: linear-gradient(to top, rgb(10, 10, 35), rgb(12, 12, 31), rgb(10, 10, 35));
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+
+  .progressbar {
+    opacity: .5;
+    max-width: 90px;
+
+    progress {
+      width: 100%;
+    }
+  }
+
+  .screen-buzz {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    background: linear-gradient(to top, #0d015a, #0d015a, transparent, transparent);
+    background-size: cover;
+    background-size: 200% 10px;
+    filter: blur(.8px);
+    // animation: moveDownwards 60s infinite;
+
+    &:nth-child(2) {
+    background-size: 200% 5px;
+    display: none;
+    // background: linear-gradient(to top, transparent, transparent, #301dae, #301dae);
+    }
+  }
+}
+
+.terminal-boxes {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 3rem;
+  margin-right: 3rem;
+
+  .terminal-box:nth-child(1) {
+    flex-grow: 1;
+    margin-right: 1rem;
+  }
+}
+
+.terminal-box {
+  background-color: rgba(45, 54, 179, .3);
+  backdrop-filter: blur(2px);
+  color: rgb(198, 197, 197);
+  padding: 2rem 1rem;
+  border: 1px solid blue;
+  border-radius: 0;
+  font-family: 'Silkscreen';
+
+  .title, .subtitle, .content p {
+    font-family: 'Silkscreen';
+  }
+  
+  .highlight {
+    background: rgba(170, 50, 20, 0.843);
+    display: inline-block;
+    padding: .25rem 1rem;
+  }
+}
+
+.role-model-container {
+  margin: 1rem 0;
+  overflow-x: scroll;
+  
+  .slider {
+    display: flex;
+    flex-direction: row;
+    width: calc((33vw - 1rem) * 9);
+    padding-left: 3rem;
+    padding-right: 3rem;
+
+    .card {
+      margin: 0rem 1rem;
+      width: calc(((100vw) / 3) - 3.3rem);
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+  
+      .title, .subtitle, .content p, .label {
+        font-family: 'Silkscreen';
+      }
+
+      .content {
+        font-size: .8rem;
+      }
+    
+      .image {
+        overflow: hidden;
+        display: flex;
+        margin-bottom: 2rem;
+    
+        height: 250px;
+        justify-content: center;
+    
+        img {
+          width: 250px;
+          border-radius: .8rem;
+          opacity: .8;
+        }
+      }
+    }
+  }
+}
+
+@keyframes moveDownwards { 
+  0%{background-position:0% 0%}
+  100%{background-position:0% 100%}
+}
+
+@keyframes blink {
+  0% {opacity: .2;}
+  100% {opacity: .4;}
+}

@@ -74,9 +74,12 @@ export const Statement = () => {
                   This is Matilda. The only female robot from Robot Wars from
                   way back in 1998. This robot inspired me to get into tech.
                   Good old Craig whats-his-face, the presenter then went on to
-                  advertise a magazine called Real Robots. This magazine
-                  featured a robot you could build called Cybot which I built as
-                  a young kid!
+                  advertise a magazine called{" "}
+                  <a href="https://realrobots.co.uk/magazine.html">
+                    Real Robots
+                  </a>
+                  . This magazine featured a robot you could build called Cybot
+                  which I built as a young kid!
                 </p>
               </div>
             </div>
@@ -109,7 +112,7 @@ export const Statement = () => {
             </div>
           </section>
         </div>
-        <div className="slide-body is-flex is-justify-content-center terminator">
+        {/* <div className="slide-body is-flex is-justify-content-center terminator">
           <section className="section is-flex is-justify-content-center is-flex-direction-column is-flex-grow-1">
             <div className="columns is-centered">
               <div className="column is-6 content">
@@ -131,6 +134,23 @@ export const Statement = () => {
                   I would've made his eyes glow but can you imaging consistently
                   putting a div over his eyes responsively?
                 </small>
+              </div>
+            </div>
+          </section>
+        </div> */}
+        <div className="slide-body is-flex is-justify-content-center jurassic-park">
+          <section className="section is-flex is-justify-content-center is-flex-direction-column is-flex-grow-1">
+            <div className="columns is-centered">
+              <div className="column is-6 content">
+                <h3 className="title mb-4 has-text-white is-size-1 has-text-centered has-text-shadow">
+                  &quot;Nah uh, uh! Not without the magic word!&quot;
+                </h3>
+                <p className="has-text-white has-text-weight-medium">
+                  A film you wouldn't represent with programming yet has
+                  programming at it's very core. IT in the 90s was a very niche
+                  thing and Jurassic Park summed up what programming was capable
+                  of whilst protraying the vulnerabilities of poor code bases.
+                </p>
               </div>
             </div>
           </section>

@@ -6,6 +6,7 @@ import { Quiz } from "./components/quiz"
 import { Statement } from "./components/statement"
 import { CV } from "./components/cv"
 import { AchievementProvider, Achievements } from "./components/achievements"
+import { RoleModels } from "./components/role-models"
 
 const root = document.getElementById("root")
 
@@ -22,6 +23,7 @@ createRoot(root).render(
       <OldTerminal />
       <Statement />
       <CV />
+      <RoleModels />
       <Achievements />
       <Quiz />
     </AchievementProvider>

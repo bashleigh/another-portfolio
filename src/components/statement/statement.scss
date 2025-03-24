@@ -53,6 +53,13 @@
   background-repeat: no-repeat;
 }
 
+.slide-body.jurassic-park {
+  background-image: url('/images/jurassicpark.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
 .slide-body.gizmo {
   background-image: url('/images/gizmo&gadget.jpg');
   background-size: cover;
@@ -119,19 +126,19 @@
 
 @keyframes semi-flash {
   0% {
-    opacity: .15;
+    opacity: .01;
   }
   30% {
-    opacity: .4;
+    opacity: .15;
   }
   50% {
-    opacity: .4;
+    opacity: .15;
   }
   80% {
-    opacity: .15;
+    opacity: .01;
   }
   100% {
-    opacity: .15;
+    opacity: .01;
   }
 }
 

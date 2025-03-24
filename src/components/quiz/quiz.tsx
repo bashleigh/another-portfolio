@@ -253,9 +253,9 @@ export const Quiz = () => {
             }}
             title="What are the correct films that were used as inspiration in the design of this site?"
             answers={[
-              "Virus, Short Circuit, Matrix, The Terminator",
-              "Wall-e, Virus, Matrix, The Terminator",
-              "Matrix, Virus, Robot Wars, The Terminator",
+              "Virus, Short Circuit, Matrix, Jurassic Park",
+              "Wall-e, Virus, Matrix, Jurassic World",
+              "Matrix, Virus, Robot Wars, Jurassic Park II",
             ]}
           />
         )
