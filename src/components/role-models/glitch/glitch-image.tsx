@@ -17,7 +17,7 @@ export const GlitchImage: FC<{
         title={title}
         alt={alt}
         style={{
-          animationDelay: `${delay || 0}s`,
+          animationDelay: `-${delay || 0}s`,
           animationDuration: `${duration || 5}s`,
         }}
       />
@@ -27,7 +27,7 @@ export const GlitchImage: FC<{
         title={title}
         alt={alt}
         style={{
-          animationDelay: `${delay || 0}s`,
+          animationDelay: `-${delay || 0}s`,
           animationDuration: `${duration || 5}s`,
         }}
       />

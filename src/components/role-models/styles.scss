@@ -1,9 +1,15 @@
-.section.role-models {
+@import "./glitch/animations.scss";
+
+.role-models {
   background-color: rgb(12, 12, 31);
   background-image: linear-gradient(to top, rgb(10, 10, 35), rgb(42, 42, 95), rgb(10, 10, 35));
   padding-left: 0;
   padding-right: 0;
   position: relative;
+
+  &.is-fullheight.hero .hero-body {
+    display: block;
+  }
 
   .progressbar {
     opacity: .5;
@@ -55,8 +61,6 @@
 .terminal-boxes {
   display: flex;
   justify-content: space-between;
-  margin-left: 3rem;
-  margin-right: 3rem;
 
   .terminal-box:nth-child(1) {
     flex-grow: 1;
@@ -105,18 +109,19 @@
 
 .role-model-container {
   margin: 1rem 0;
-  overflow-x: scroll;
   
-  .slider {
-    display: flex;
+  .role-group {
     flex-direction: row;
-    width: calc((33vw - 1rem) * 9);
-    padding-left: 3rem;
-    padding-right: 3rem;
+    display: none;
+
+    &.active {
+      display: flex;
+    }
 
     .card {
       margin: 0rem 1rem;
       width: calc(((100vw) / 3) - 3.3rem);
+      // animation: jitter 5s infinite;
 
       &:first-child {
         margin-left: 0;
@@ -152,11 +157,6 @@
   }
 }
 
-// @keyframes moveDownwards { 
-//   0%{background-position:0% 0%}
-//   100%{background-position:0% 100%}
-// }
-
 @keyframes blink {
   0% {opacity: .5;}
   49% {opacity: .5;}
@@ -165,39 +165,3 @@
   91% {opacity: .5;}
   100% {opacity: .5;}
 }
-
-// @keyframes movementBlink {
-//   0% {
-//     transform: translateY(20px);
-//   }
-//   10% {
-//     transform: translateY(10px);
-//   }
-//   20% {
-//     transform: translateY(15px);
-//   }
-//   30% {
-//     transform: translateY(20px);
-//   }
-//   40% {
-//     transform: translateY(20px);
-//   }
-//   50% {
-//     transform: translateY(10px);
-//   }
-//   60% {
-//     transform: translateY(20px);
-//   }
-//   70% {
-//     transform: translateY(15px);
-//   }
-//   80% {
-//     transform: translateY(20px);
-//   }
-//   90% {
-//     transform: translateY(15px);
-//   }
-//   100% {
-//     transform: translateY(20px);
-//   }
-// }

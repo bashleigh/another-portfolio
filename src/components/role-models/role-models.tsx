@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import "./styles.scss"
 import { GlitchImage, GlitchText } from "./glitch"
 
@@ -15,8 +15,8 @@ const roleModels: RoleModel[] = [
     image: "images/samanthacarter.webp",
     programOrFilm: "Stargate SG1",
     description: [
-      "My Mum got me into SG1 on the weekends. We watched it on an old vacum-tube TV. The first couple of episodes, I thought they were real events! Admittedly I was around 5 or 6 at the time.",
-      "Admanda Tapping, born in the same hosptial as myself! Played Dr Samantha Carter, a theoretical astrophysist and USAF pilot that brought quantum physics to the sci-fi action program.",
+      "Dr Samantha Carter, a theoretical astrophysist and USAF pilot that brought quantum physics to the sci-fi action program.",
+      "She would always produce an alternative solution to 'all guns blazing'",
     ],
   },
   {
@@ -110,7 +110,10 @@ const RoleModelCard: FC<RoleModel> = ({
   const shouldImageGlitch = Math.random() * 100 > 70
 
   return (
-    <div className="card terminal-box">
+    <div
+      className="card terminal-box"
+      style={{ animationDelay: `-${Math.random() * 5}s` }}
+    >
       <figure className="image">
         {shouldImageGlitch ? (
           <GlitchImage
@@ -146,44 +149,90 @@ const RoleModelCard: FC<RoleModel> = ({
   )
 }
 
-export const RoleModels = () => {
-  return (
-    <div className="role-models section">
-      <div className="screen-buzz"></div>
-      <div className="terminal-boxes">
-        <div className="terminal-box">
-          <h1 className="title is-size-1">
-            <GlitchText>My Role Models</GlitchText>
-          </h1>
-          <p className="subtitle highlight">System Active</p>
-        </div>
-        <div className="terminal-box">
-          <div>
-            <p className="highlight blink">Control</p>
+function* chunkCards<T>(arr: T[], splitBy: number): Generator<T[], void> {
+  for (let index = 0; index < arr.length; index += splitBy) {
+    yield arr.slice(index, index + splitBy)
+  }
+}
 
-            <div className="control-buttons">
-              <button>&lt;</button>
-              <button>1</button>
-              <button>2</button>
-              <button>3</button>
-              <button>&gt;</button>
-            </div>
-            <div className="progressbar">
-              <progress />
+export const RoleModels = () => {
+  const [currentPage, setCurrentPage] = useState<number>(0)
+  const cardsPerPage = 3 // TODO change on screen size change
+  const pages: RoleModel[][] = [
+    ...chunkCards<RoleModel>(roleModels, cardsPerPage),
+  ]
+
+  return (
+    <div className="role-models hero is-fullheight">
+      <div className="screen-buzz"></div>
+      <div className="hero-body">
+        <div className="terminal-boxes">
+          <div className="terminal-box">
+            <h1 className="title is-size-1">
+              <GlitchText>My Role Models</GlitchText>
+            </h1>
+            <p className="subtitle highlight">System Active</p>
+          </div>
+          <div className="terminal-box">
+            <div>
+              <p className="highlight blink">Control</p>
+
+              <div className="control-buttons">
+                <button
+                  className="carousel-button"
+                  onClick={() =>
+                    currentPage > 0 && setCurrentPage(currentPage - 1)
+                  }
+                >
+                  &lt;
+                </button>
+                <button
+                  onClick={() => setCurrentPage(0)}
+                  className={`carousel-button${currentPage === 0 ? " active" : ""}`}
+                >
+                  1
+                </button>
+                <button
+                  onClick={() => setCurrentPage(1)}
+                  className={`carousel-button${currentPage === 1 ? " active" : ""}`}
+                >
+                  2
+                </button>
+                <button
+                  onClick={() => setCurrentPage(2)}
+                  className={`carousel-button${currentPage === 2 ? " active" : ""}`}
+                >
+                  3
+                </button>
+                <button
+                  className="carousel-button"
+                  onClick={() =>
+                    currentPage < 2 && setCurrentPage(currentPage + 1)
+                  }
+                >
+                  &gt;
+                </button>
+              </div>
+              <div className="progressbar">
+                <progress />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="role-model-container grid is-col-min-18">
-        <div className="slider">
-          {roleModels.map(model => (
-            <RoleModelCard key={model.name} {...model} />
-          ))}
+        <div className="role-model-container">
+          <div className="">
+            {pages.map((page, index) => (
+              <div
+                className={`role-group${index === currentPage ? " active" : ""}`}
+              >
+                {page.map(roleModel => (
+                  <RoleModelCard key={roleModel.name} {...roleModel} />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      {/* <div className="screen-buzz-overlay">
-        <hr />
-      </div> */}
     </div>
   )
 }

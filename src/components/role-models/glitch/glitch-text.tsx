@@ -9,7 +9,7 @@ export const GlitchText: FC<
       data-text={children}
       className="glitch"
       style={{
-        animationDelay: `${delay || 0}s`,
+        animationDelay: `-${delay || 0}s`,
         animationDuration: `${duration || 5}s`,
       }}
     >
