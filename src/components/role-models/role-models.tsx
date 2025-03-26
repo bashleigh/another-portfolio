@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import "./styles.scss"
 import { GlitchImage, GlitchText } from "./glitch"
 
@@ -12,16 +12,16 @@ type RoleModel = {
 const roleModels: RoleModel[] = [
   {
     name: "Dr Samantha Carter",
-    image: "images/samanthacarter.webp",
+    image: "images/samanthacarter.png",
     programOrFilm: "Stargate SG1",
     description: [
       "Dr Samantha Carter, a theoretical astrophysist and USAF pilot that brought quantum physics to the sci-fi action program.",
-      "She would always produce an alternative solution to 'all guns blazing'",
+      "She would always produce an alternative solution to 'all guns blazing' that involved ",
     ],
   },
   {
     name: "Seven of Nine",
-    image: "images/sevenofnine.webp",
+    image: "images/sevenofnine.png",
     programOrFilm: "Star Trek: Voyager",
     description: [
       "A former Borg drone who joined the federation that struggled with assimilating with the illogical culture of humanoid species.",
@@ -30,7 +30,7 @@ const roleModels: RoleModel[] = [
   },
   {
     name: "Ellen Ripley",
-    image: "images/ellenripley.webp",
+    image: "images/ellenripley.png",
     programOrFilm: "Aliens",
     description: [
       "Although Ripley was not a predominately scientist or into tech I can't denied that Ripley had an influence on me.",
@@ -39,7 +39,7 @@ const roleModels: RoleModel[] = [
   },
   {
     name: "Ellie Sattler",
-    image: "images/elliesattler.webp",
+    image: "images/elliesattler.png",
     programOrFilm: "Jurassic Park",
     description: [
       "A paleobotanist turn velociraptor bait, Ellie inspired me to pursue",
@@ -53,7 +53,7 @@ const roleModels: RoleModel[] = [
   // },
   {
     name: "Lisa Simpson",
-    image: "images/lisasimpson.webp",
+    image: "images/lisasimpson.png",
     programOrFilm: "The Simpsons",
     description: [
       "As much as I hate to admit it, Lisa Simpson had a big impact on me as a child. She played the saxophone, I played guitar, she was a massive sicence nerd, I was a massive science nerd.",
@@ -61,7 +61,7 @@ const roleModels: RoleModel[] = [
   },
   {
     name: "Dexter",
-    image: "images/dexter.webp",
+    image: "images/dexter.png",
     programOrFilm: "Dexter's Laboratory",
     description: [
       "There wasn't many strong female role models from the 90s that I could find so I've had to include Dexter!",
@@ -82,7 +82,7 @@ const roleModels: RoleModel[] = [
   // },
   {
     name: "Lara Croft",
-    image: "images/laracroft.jpeg",
+    image: "images/laracroft.jpg",
     programOrFilm: "Tomb Raider",
     description: [
       "Ah yes, triangle boobed Lara Croft. You didn't think you'd see her here did you? I had the demo for Tomb Raider back in 1997.",
@@ -99,23 +99,25 @@ const roleModels: RoleModel[] = [
   },
 ]
 
-const RoleModelCard: FC<RoleModel> = ({
+const RoleModelCard: FC<
+  RoleModel & {
+    hasImageGlitch: boolean
+    hasTitleGlitch: boolean
+    hasLabelGlitch: boolean
+  }
+> = ({
   name,
   description,
   image,
   programOrFilm,
+  hasImageGlitch,
+  hasLabelGlitch,
+  hasTitleGlitch,
 }) => {
-  const nameShouldGlitch = Math.random() * 100 > 70
-  const shouldLabelGlitch = !nameShouldGlitch && Math.random() * 100 > 70
-  const shouldImageGlitch = Math.random() * 100 > 70
-
   return (
-    <div
-      className="card terminal-box"
-      style={{ animationDelay: `-${Math.random() * 5}s` }}
-    >
+    <div className="card terminal-box">
       <figure className="image">
-        {shouldImageGlitch ? (
+        {hasImageGlitch ? (
           <GlitchImage
             delay={Math.random() * 10}
             src={image}
@@ -128,14 +130,14 @@ const RoleModelCard: FC<RoleModel> = ({
       </figure>
       <div className="content">
         <h2 className="title">
-          {nameShouldGlitch ? (
+          {hasTitleGlitch ? (
             <GlitchText delay={Math.random() * 5}>{name}</GlitchText>
           ) : (
             name
           )}
         </h2>
         <label className="label">
-          {shouldLabelGlitch ? (
+          {hasLabelGlitch ? (
             <GlitchText delay={Math.random() * 10}>{programOrFilm}</GlitchText>
           ) : (
             programOrFilm
@@ -149,18 +151,66 @@ const RoleModelCard: FC<RoleModel> = ({
   )
 }
 
+const RoleModelGroup: FC<{ roleModels: RoleModel[]; isActive: boolean }> = ({
+  roleModels,
+  isActive,
+}) => {
+  const imageGlitch = roleModels.indexOf(
+    roleModels[Math.floor(Math.random() * roleModels.length)],
+  )
+  const titleGlitch = roleModels.indexOf(
+    roleModels[Math.floor(Math.random() * roleModels.length)],
+  )
+  const labelGlitch = roleModels.indexOf(
+    roleModels[Math.floor(Math.random() * roleModels.length)],
+  )
+
+  return (
+    <div className={`role-group${isActive ? " active" : ""}`}>
+      {roleModels.map((roleModel, index) => (
+        <RoleModelCard
+          key={roleModel.name}
+          {...roleModel}
+          hasImageGlitch={index === imageGlitch}
+          hasTitleGlitch={index === titleGlitch}
+          hasLabelGlitch={index === labelGlitch}
+        />
+      ))}
+    </div>
+  )
+}
+
 function* chunkCards<T>(arr: T[], splitBy: number): Generator<T[], void> {
   for (let index = 0; index < arr.length; index += splitBy) {
     yield arr.slice(index, index + splitBy)
   }
 }
 
+const resolveCardsPerPage = (): 1 | 2 | 3 => {
+  const outerWidth = window.outerWidth
+
+  if (outerWidth <= 750) return 1
+  else if (outerWidth <= 1032) return 2
+  return 3
+}
+
 export const RoleModels = () => {
   const [currentPage, setCurrentPage] = useState<number>(0)
-  const cardsPerPage = 3 // TODO change on screen size change
+  const [cardsPerPage, setCardsPerPage] = useState<1 | 2 | 3>(
+    resolveCardsPerPage(),
+  )
+
   const pages: RoleModel[][] = [
     ...chunkCards<RoleModel>(roleModels, cardsPerPage),
   ]
+
+  useEffect(() => {
+    // TODO if currentPage > pages then change to 1
+    const changeCardsPerPage = () => setCardsPerPage(resolveCardsPerPage())
+    window.addEventListener("resize", changeCardsPerPage)
+
+    return () => window.removeEventListener("resize", changeCardsPerPage)
+  }, [])
 
   return (
     <div className="role-models hero is-fullheight">
@@ -168,9 +218,7 @@ export const RoleModels = () => {
       <div className="hero-body">
         <div className="terminal-boxes">
           <div className="terminal-box">
-            <h1 className="title is-size-1">
-              <GlitchText>My Role Models</GlitchText>
-            </h1>
+            <h1 className="title is-size-1">My Role Models</h1>
             <p className="subtitle highlight">System Active</p>
           </div>
           <div className="terminal-box">
@@ -186,24 +234,15 @@ export const RoleModels = () => {
                 >
                   &lt;
                 </button>
-                <button
-                  onClick={() => setCurrentPage(0)}
-                  className={`carousel-button${currentPage === 0 ? " active" : ""}`}
-                >
-                  1
-                </button>
-                <button
-                  onClick={() => setCurrentPage(1)}
-                  className={`carousel-button${currentPage === 1 ? " active" : ""}`}
-                >
-                  2
-                </button>
-                <button
-                  onClick={() => setCurrentPage(2)}
-                  className={`carousel-button${currentPage === 2 ? " active" : ""}`}
-                >
-                  3
-                </button>
+                {pages.map((_, index) => (
+                  <button
+                    key={`control-button-${index}`}
+                    onClick={() => setCurrentPage(index)}
+                    className={`carousel-button${currentPage === index ? " active" : ""}`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
                 <button
                   className="carousel-button"
                   onClick={() =>
@@ -220,17 +259,13 @@ export const RoleModels = () => {
           </div>
         </div>
         <div className="role-model-container">
-          <div className="">
-            {pages.map((page, index) => (
-              <div
-                className={`role-group${index === currentPage ? " active" : ""}`}
-              >
-                {page.map(roleModel => (
-                  <RoleModelCard key={roleModel.name} {...roleModel} />
-                ))}
-              </div>
-            ))}
-          </div>
+          {pages.map((page, index) => (
+            <RoleModelGroup
+              key={page.map(role => role.name).join("-")}
+              roleModels={page}
+              isActive={index === currentPage}
+            />
+          ))}
         </div>
       </div>
     </div>

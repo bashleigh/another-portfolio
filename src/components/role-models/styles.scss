@@ -109,10 +109,17 @@
 
 .role-model-container {
   margin: 1rem 0;
+  // position: relative;
+  // height: 70vh;
   
   .role-group {
     flex-direction: row;
     display: none;
+    // position: absolute;
+    // top: 0;
+    // bottom: 0;
+    // left: 0;
+    // right: 0;
 
     &.active {
       display: flex;
@@ -120,8 +127,15 @@
 
     .card {
       margin: 0rem 1rem;
-      width: calc(((100vw) / 3) - 3.3rem);
-      // animation: jitter 5s infinite;
+      width: calc((100vw / 3) - 3.3rem);
+
+      @media only screen and (max-width: 750px) {
+        width: calc(100vw - 3.3rem);
+      }
+
+      @media only screen and (min-width: 751px) and (max-width: 1032px) {
+        width: calc((100vw / 2) - 3.3rem);
+      }
 
       &:first-child {
         margin-left: 0;
@@ -157,10 +171,53 @@
   }
 }
 
+// Can't figure out how to make each card glitch before disppearing without using JS
+// .role-group {
+//   .card {
+//     animation: paths 1s forwards, glitchOut .5s forwards;
+
+//     @for $i from 1 through 3 {
+//       .card:nth-child(#{$i}n) {
+//         animation-delay: .4s * $i;
+//       }
+//     }
+//   }
+
+//   &.active {
+//     .card {
+//       animation: paths 1s forwards, glitchIn .5s forwards;
+//     }
+//   }
+// }
+
+@keyframes glitchOut {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes glitchIn {
+  0% {
+    opacity: 0;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 @keyframes blink {
   0% {opacity: .5;}
-  49% {opacity: .5;}
-  50% {opacity: 1;}
+  29% {opacity: .5;}
+  30% {opacity: 1;}
   90% {opacity: 1;}
   91% {opacity: .5;}
   100% {opacity: .5;}
