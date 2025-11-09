@@ -2,6 +2,44 @@ import React, { FC, useEffect, useState } from "react"
 import "./styles.scss"
 import { GlitchImage, GlitchText } from "./glitch"
 
+const ChevronLeft: FC<{ className?: string }> = ({ className }) => (
+  <svg
+    className={className}
+    width="24"
+    height="24"
+    viewBox="8 5 8 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M15 18L9 12L15 6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const ChevronRight: FC<{ className?: string }> = ({ className }) => (
+  <svg
+    className={className}
+    width="24"
+    height="24"
+    viewBox="8 5 8 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M9 18L15 12L9 6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
 type RoleModel = {
   name: string
   image: string
@@ -205,12 +243,21 @@ export const RoleModels = () => {
   ]
 
   useEffect(() => {
-    // TODO if currentPage > pages then change to 1
-    const changeCardsPerPage = () => setCardsPerPage(resolveCardsPerPage())
+    const changeCardsPerPage = () => {
+      const newCardsPerPage = resolveCardsPerPage()
+      setCardsPerPage(newCardsPerPage)
+    }
     window.addEventListener("resize", changeCardsPerPage)
 
     return () => window.removeEventListener("resize", changeCardsPerPage)
   }, [])
+
+  useEffect(() => {
+    // If currentPage is out of bounds after cardsPerPage changes, reset to last valid page
+    if (currentPage >= pages.length && pages.length > 0) {
+      setCurrentPage(pages.length - 1)
+    }
+  }, [pages.length, currentPage])
 
   return (
     <div className="role-models hero is-fullheight">
@@ -246,7 +293,7 @@ export const RoleModels = () => {
                 <button
                   className="carousel-button"
                   onClick={() =>
-                    currentPage < 2 && setCurrentPage(currentPage + 1)
+                    currentPage < pages.length - 1 && setCurrentPage(currentPage + 1)
                   }
                 >
                   &gt;
@@ -266,6 +313,18 @@ export const RoleModels = () => {
               isActive={index === currentPage}
             />
           ))}
+        </div>
+        <div className="mobile-controls">
+          <button className="carousel-button" onClick={() =>
+                    currentPage > 0 && setCurrentPage(currentPage - 1)
+                  }>
+            <ChevronLeft />
+          </button>
+          <button className="carousel-button" onClick={() =>
+                    currentPage < pages.length - 1 && setCurrentPage(currentPage + 1)
+                  }>
+            <ChevronRight />
+          </button>
         </div>
       </div>
     </div>

@@ -56,11 +56,55 @@
       margin: 0;
     }
   }
+
+  .mobile-controls {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    top: 50vh;
+    left: 0;
+    right: 0;
+    @media only screen and (max-width: 750px) {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+  
+    .carousel-button {
+      color: white;
+      font-size: 2.5rem;
+      padding: .25rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      svg {
+        width: 2rem;
+        height: 3rem;
+      }
+    }
+  }
 }
 
 .terminal-boxes {
   display: flex;
   justify-content: space-between;
+
+  @media only screen and (max-width: 750px) {
+    flex-direction: column;
+
+    .terminal-box:nth-child(1) {
+      margin-bottom: .75rem;
+      margin-right: 0 !important;
+    }
+
+    .terminal-box:nth-child(2) {
+      display: none;
+    }
+  }
 
   .terminal-box:nth-child(1) {
     flex-grow: 1;
@@ -89,6 +133,12 @@
   border-radius: 0;
   font-family: 'Silkscreen';
 
+  @media only screen and (max-width: 1000px) {
+    .title {
+      font-size: 2rem !important;
+    }
+  }
+
   .title, .subtitle, .content p, .label {
     font-family: 'Silkscreen';
     filter: drop-shadow(0 1px 3px);
@@ -111,6 +161,10 @@
   margin: 1rem 0;
   // position: relative;
   // height: 70vh;
+
+  @media only screen and (max-width: 750px) {
+    margin: 0;
+  }
   
   .role-group {
     flex-direction: row;
