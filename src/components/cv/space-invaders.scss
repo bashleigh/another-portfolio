@@ -179,6 +179,11 @@
       box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
       border-radius: 2px;
       transform: translateX(-50%);
+
+      &.enemy-bullet {
+        background-color: #f00;
+        box-shadow: 0 0 5px #f00, 0 0 10px #f00;
+      }
     }
 
     .player-ship {
@@ -189,6 +194,20 @@
       text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
       user-select: none;
       pointer-events: none;
+      transition: opacity 0.1s;
+
+      &.blinking {
+        animation: blink 0.15s infinite;
+      }
+    }
+
+    @keyframes blink {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.2;
+      }
     }
 
     .game-overlay {

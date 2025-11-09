@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useRef, useState, useContext, useCallback } from "react"
 import "./space-invaders.scss"
 import { AchievementContext } from "../achievements"
+import { soundManager } from "./sounds"
 
 type Letter = {
   char: string
@@ -51,20 +52,29 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
     setGameOver(false)
     setGameWon(false)
     setBullets([])
+    setEnemyBullets([])
+    setIsBlinking(false)
+    setIsInvincible(false)
     setDirection(1)
     setMoveDown(false)
     lastShotTimeRef.current = 0
+    lastEnemyShotTimeRef.current = 0
   }
   const [playerX, setPlayerX] = useState(0)
   const [keys, setKeys] = useState<{ [key: string]: boolean }>({})
   const [bullets, setBullets] = useState<Bullet[]>([])
+  const [enemyBullets, setEnemyBullets] = useState<Bullet[]>([])
+  const [isBlinking, setIsBlinking] = useState(false)
+  const [isInvincible, setIsInvincible] = useState(false)
   const [wordsData, setWordsData] = useState<Word[]>([])
   const [direction, setDirection] = useState(1) // 1 = right, -1 = left
   const [moveDown, setMoveDown] = useState(false)
   const [gameArea, setGameArea] = useState({ width: 0, height: 0 })
   const wordsDataRef = useRef<Word[]>([])
   const bulletsRef = useRef<Bullet[]>([])
+  const enemyBulletsRef = useRef<Bullet[]>([])
   const lastShotTimeRef = useRef<number>(0)
+  const lastEnemyShotTimeRef = useRef<number>(0)
 
   // Initialize words
   useEffect(() => {
@@ -79,7 +89,6 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
     const rows = 5
     const cols = Math.min(10, Math.floor(width / 120))
     const letterWidth = 20
-    const letterHeight = 30
     const wordSpacing = 10
     const rowSpacing = 50
 
@@ -175,6 +184,9 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
     if (now - lastShotTimeRef.current < 150) return
     lastShotTimeRef.current = now
     
+    // Play pew pew sound!
+    soundManager.playShootSound()
+    
     setBullets(prev => {
       // Allow multiple bullets (increased fire rate)
       return [...prev, { x: playerX, y: gameArea.height - 40, active: true }]
@@ -206,7 +218,7 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
         shootBullet()
       }
 
-      // Update bullets
+      // Update player bullets
       setBullets(prev => {
         const updated = prev.map(bullet => {
           if (!bullet.active) return bullet
@@ -217,6 +229,62 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
           return { ...bullet, y: newY }
         })
         bulletsRef.current = updated
+        return updated
+      })
+
+      // Enemy shooting logic
+      const wordsForShooting = wordsDataRef.current
+      const now = Date.now()
+      // Enemies shoot every 1-2 seconds (randomized)
+      if (now - lastEnemyShotTimeRef.current > 1000 + Math.random() * 1000) {
+        lastEnemyShotTimeRef.current = now
+        
+        // Find a random active letter to shoot from
+        const activeLetters: { wordIdx: number; letterIdx: number; x: number; y: number }[] = []
+        wordsForShooting.forEach((word, wordIdx) => {
+          word.letters.forEach((letter, letterIdx) => {
+            if (!letter.destroyed) {
+              activeLetters.push({ wordIdx, letterIdx, x: letter.x, y: letter.y })
+            }
+          })
+        })
+        
+        if (activeLetters.length > 0) {
+          // Pick a random letter from the bottom rows (more dangerous!)
+          const bottomLetters = activeLetters.filter(l => {
+            const letter = wordsForShooting[l.wordIdx].letters[l.letterIdx]
+            return letter.y > gameArea.height * 0.3 // Only bottom 70% of screen
+          })
+          const sourceLetter = bottomLetters.length > 0 
+            ? bottomLetters[Math.floor(Math.random() * bottomLetters.length)]
+            : activeLetters[Math.floor(Math.random() * activeLetters.length)]
+          
+          // Play enemy shoot sound
+          soundManager.playEnemyShootSound()
+          
+          setEnemyBullets(prev => {
+            const newBullet = {
+              x: sourceLetter.x,
+              y: sourceLetter.y + 20,
+              active: true
+            }
+            enemyBulletsRef.current = [...prev, newBullet]
+            return [...prev, newBullet]
+          })
+        }
+      }
+
+      // Update enemy bullets
+      setEnemyBullets(prev => {
+        const updated = prev.map(bullet => {
+          if (!bullet.active) return bullet
+          const newY = bullet.y + 5 // Move down
+          if (newY > gameArea.height) {
+            return { ...bullet, active: false }
+          }
+          return { ...bullet, y: newY }
+        })
+        enemyBulletsRef.current = updated
         return updated
       })
 
@@ -288,7 +356,7 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
         return updated
       })
 
-      // Collision detection
+      // Collision detection - player bullets vs enemies
       const currentWords = wordsDataRef.current
       const currentBullets = bulletsRef.current
       let wordsUpdated = false
@@ -317,6 +385,8 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
               wordsUpdated = true
               newWords[wordIdx].letters[letterIdx].destroyed = true
               setScore(prev => prev + 10)
+              // Play hit sound!
+              soundManager.playHitSound()
               break
             }
           }
@@ -325,6 +395,77 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
 
         return hit ? { ...bullet, active: false } : bullet
       })
+
+      // Collision detection - enemy bullets vs player
+      if (!isInvincible) {
+        const currentEnemyBullets = enemyBulletsRef.current
+        const playerY = gameArea.height - 40
+        const playerWidth = 20
+        const playerHeight = 30
+
+        let playerHit = false
+        const updatedEnemyBullets: Bullet[] = []
+        
+        // Process bullets and check for collision - only process first hit
+        for (const bullet of currentEnemyBullets) {
+          if (!bullet.active) {
+            updatedEnemyBullets.push(bullet)
+            continue
+          }
+
+          // Check collision with player
+          if (
+            !playerHit && // Only check if we haven't been hit yet this frame
+            bullet.x >= playerX - playerWidth / 2 &&
+            bullet.x <= playerX + playerWidth / 2 &&
+            bullet.y >= playerY - playerHeight / 2 &&
+            bullet.y <= playerY + playerHeight / 2
+          ) {
+            playerHit = true
+            // Don't add this bullet (it hit the player)
+          } else {
+            updatedEnemyBullets.push(bullet)
+          }
+        }
+
+        if (playerHit) {
+          // Play hit sound
+          soundManager.playPlayerHitSound()
+          
+          // Start blinking and invincibility immediately
+          setIsBlinking(true)
+          setIsInvincible(true)
+          
+          // Remove hit enemy bullets
+          enemyBulletsRef.current = updatedEnemyBullets
+          setEnemyBullets(updatedEnemyBullets)
+          
+          // Lose a life (only once per hit)
+          setLives(prevLives => {
+            const newLives = prevLives - 1
+            if (newLives <= 0 && !gameOver) {
+              setGameOver(true)
+              addAchievement({
+                title: "Defeated",
+                description: "The skills got the better of you this time. Better luck next time!",
+              })
+            }
+            return newLives
+          })
+          
+          // Stop blinking and invincibility after 2 seconds
+          setTimeout(() => {
+            setIsBlinking(false)
+            setIsInvincible(false)
+          }, 2000)
+        } else {
+          // Update enemy bullets even if no hit (for cleanup)
+          enemyBulletsRef.current = updatedEnemyBullets
+          setEnemyBullets(updatedEnemyBullets)
+        }
+      }
+      // Note: Enemy bullets are already updated earlier in the game loop, 
+      // so we don't need to update them again when invincible
 
       if (wordsUpdated) {
         wordsDataRef.current = newWords
@@ -405,10 +546,14 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
     setGameOver(false)
     setGameWon(false)
     setBullets([])
+    setEnemyBullets([])
+    setIsBlinking(false)
+    setIsInvincible(false)
     setWordsData([])
     setDirection(1)
     setMoveDown(false)
     lastShotTimeRef.current = 0
+    lastEnemyShotTimeRef.current = 0
   }
 
   if (!gameStarted) {
@@ -435,7 +580,7 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
             <div className="instruction-item">
               <p className="instruction-text">
                 Destroy all the letters to win! Each letter is worth 10 points.
-                You have 3 lives - lose one if the words reach the bottom.
+                You have 3 lives - game over if you lose all your lives or the words reach the bottom.
               </p>
             </div>
           </div>
@@ -496,8 +641,21 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
               />
             )
         )}
+        {enemyBullets.map(
+          (bullet, idx) =>
+            bullet.active && (
+              <div
+                key={`enemy-${idx}`}
+                className="bullet enemy-bullet"
+                style={{
+                  left: `${bullet.x}px`,
+                  top: `${bullet.y}px`,
+                }}
+              />
+            )
+        )}
         <div
-          className="player-ship"
+          className={`player-ship ${isBlinking ? 'blinking' : ''}`}
           style={{
             left: `${playerX}px`,
             bottom: "20px",
