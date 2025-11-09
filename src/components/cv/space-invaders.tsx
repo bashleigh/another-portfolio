@@ -239,9 +239,9 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
 
         // Calculate speed multiplier based on how close to bottom
         // Speed increases as letters get closer to bottom (higher Y value)
-        // Base speed: 0.5, max speed multiplier: 3x when near bottom
+        // Base speed: 0.5, max speed multiplier: 5x when near bottom
         const maxY = gameArea.height - 100 // Near bottom threshold
-        const speedMultiplier = 1 + (lowestY / maxY) * 2 // 1x to 3x speed
+        const speedMultiplier = 1 + (lowestY / maxY) * 4 // 1x to 5x speed
         const moveSpeed = 0.5 * speedMultiplier
 
         // Check if any word hits the edge
