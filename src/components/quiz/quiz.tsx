@@ -340,7 +340,7 @@ export const Quiz = () => {
                     setScore(0)
                     addAchievement({
                       title: "Booo!",
-                      description: "Least you admitted you're a cheater...",
+                      description: "At least you admitted you're a cheater...",
                     })
                   }}
                   className="button is-info"

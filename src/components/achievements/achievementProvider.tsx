@@ -25,7 +25,7 @@ export const AchievementProvider: FC = ({ children }) => {
       <div id="achievement-window">
         {latestAchievement && (
           <a className="achievement" href="#achievements">
-            <div className="achievement-throphy">🏆</div>
+            <div className="achievement-trophy">🏆</div>
             <div>
               <p className="title">{latestAchievement.title}</p>
               <p className="description">{latestAchievement.description}</p>

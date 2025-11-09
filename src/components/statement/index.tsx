@@ -28,8 +28,8 @@ export const Statement = () => {
                 </h3>
                 <p className="has-text-white has-text-weight-semibold has-text-shadow">
                   I often find myself asking the question &quot;How did I end up
-                  here?&quot;. Well my friend, this carousel will looking into
-                  the films, games and programs that influenced me as a kid to
+                  here?&quot;. Well my friend, this carousel will look into
+                  the films, games and programmes that influenced me as a kid to
                   get into tech.
                 </p>
               </div>
@@ -55,8 +55,8 @@ export const Statement = () => {
                   cybot and Robot Wars.
                 </p>
                 <p className="has-text-white has-text-weight-medium">
-                  Which is probably why I ended up with a fasination for
-                  electronic and software.
+                  Which is probably why I ended up with a fascination for
+                  electronics and software.
                 </p>
               </div>
             </div>
@@ -147,9 +147,9 @@ export const Statement = () => {
                 </h3>
                 <p className="has-text-white has-text-weight-medium">
                   A film you wouldn't represent with programming yet has
-                  programming at it's very core. IT in the 90s was a very niche
+                  programming at its very core. IT in the 90s was a very niche
                   thing and Jurassic Park summed up what programming was capable
-                  of whilst protraying the vulnerabilities of poor code bases.
+                  of whilst portraying the vulnerabilities of poor code bases.
                 </p>
               </div>
             </div>

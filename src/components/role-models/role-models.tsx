@@ -15,7 +15,7 @@ const roleModels: RoleModel[] = [
     image: "images/samanthacarter.png",
     programOrFilm: "Stargate SG1",
     description: [
-      "Dr Samantha Carter, a theoretical astrophysist and USAF pilot that brought quantum physics to the sci-fi action program.",
+      "Dr Samantha Carter, a theoretical astrophysicist and USAF pilot that brought quantum physics to the sci-fi action program.",
       "She would always produce an alternative solution to 'all guns blazing' that involved ",
     ],
   },
@@ -25,7 +25,7 @@ const roleModels: RoleModel[] = [
     programOrFilm: "Star Trek: Voyager",
     description: [
       "A former Borg drone who joined the federation that struggled with assimilating with the illogical culture of humanoid species.",
-      "A strong, scientifically motivated women who had a robotic like charisma.",
+      "A strong, scientifically motivated woman who had a robotic like charisma.",
     ],
   },
   {
@@ -33,7 +33,7 @@ const roleModels: RoleModel[] = [
     image: "images/ellenripley.png",
     programOrFilm: "Aliens",
     description: [
-      "Although Ripley was not a predominately scientist or into tech I can't denied that Ripley had an influence on me.",
+      "Although Ripley was not a predominantly scientist or into tech I can't deny that Ripley had an influence on me.",
       "Her fight for survival in the sci-fi/horror Aliens inspired me to become a fighter no matter the situation.",
     ],
   },
@@ -42,7 +42,7 @@ const roleModels: RoleModel[] = [
     image: "images/elliesattler.png",
     programOrFilm: "Jurassic Park",
     description: [
-      "A paleobotanist turn velociraptor bait, Ellie inspired me to pursue",
+      "A paleobotanist turned velociraptor bait, Ellie inspired me to pursue",
     ],
   },
   // {
@@ -56,7 +56,7 @@ const roleModels: RoleModel[] = [
     image: "images/lisasimpson.png",
     programOrFilm: "The Simpsons",
     description: [
-      "As much as I hate to admit it, Lisa Simpson had a big impact on me as a child. She played the saxophone, I played guitar, she was a massive sicence nerd, I was a massive science nerd.",
+      "As much as I hate to admit it, Lisa Simpson had a big impact on me as a child. She played the saxophone, I played guitar, she was a massive science nerd, I was a massive science nerd.",
     ],
   },
   {
@@ -64,7 +64,7 @@ const roleModels: RoleModel[] = [
     image: "images/dexter.png",
     programOrFilm: "Dexter's Laboratory",
     description: [
-      "There wasn't many strong female role models from the 90s that I could find so I've had to include Dexter!",
+      "There weren't many strong female role models from the 90s that I could find so I've had to include Dexter!",
       "Dexter was a lonely kid that spent most of his time in his lab, planning, building and scheming.",
     ],
   },
@@ -94,7 +94,7 @@ const roleModels: RoleModel[] = [
     image: "images/data.jpg",
     programOrFilm: "Star Trek: The Next Generation",
     description: [
-      "Another Star Trek character that was robitic and struggled with human interaction. There's a theme here?",
+      "Another Star Trek character that was robotic and struggled with human interaction. There's a theme here?",
     ],
   },
 ]

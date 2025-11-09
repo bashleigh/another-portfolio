@@ -31,7 +31,7 @@ export const Achievements = () => {
           <div className="achievements grid is-col-min-14 is-gap-3">
             {achievements.map(achievement => (
               <div key={achievement.title} className="achievement cell">
-                <div className="achievement-throphy">🏆</div>
+                <div className="achievement-trophy">🏆</div>
                 <div>
                   <p className="title">{achievement.title}</p>
                   <p className="description">{achievement.description}</p>
