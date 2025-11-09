@@ -2,6 +2,7 @@ import React, { FC, useContext, useLayoutEffect, useState } from "react"
 import "./cv.scss"
 import { Bingo } from "./bingo"
 import { TimeMachine } from "./time-machine"
+import { SpaceInvaders } from "./space-invaders"
 import { AchievementContext } from "../achievements"
 
 const cells = {
@@ -105,8 +106,11 @@ const WhatIKnow: FC<{ searchPhrase: string }> = ({ searchPhrase }) => {
 export const CV = () => {
   const [searchPhrase, setSearchPhrase] = useState<string>("")
   const [bingoEnabled, setBingoEnabled] = useState<boolean>(false)
+  const [gameActive, setGameActive] = useState<boolean>(false)
 
   const { addAchievement } = useContext(AchievementContext)
+
+  const allWords = Object.values(cells).flat(1)
 
   return (
     <>
@@ -115,47 +119,55 @@ export const CV = () => {
         setBingoEnabled={setBingoEnabled}
         words={Object.values(cells).flat(1)}
       />
-      <div className="">
-        <div className="hero is-black">
-          <div className="hero-body"></div>
-        </div>
-        <div className="navbar is-black">
-          <div className="container">
-            <h3 className="title">What do I know?</h3>
-            <div className="navbar-end">
-              <div className="navbar-item">
-                <form onSubmit={(event) => event.preventDefault()}>
-                  <div className="field">
-                    <div className="control">
-                      <input
-                        className="input search"
-                        placeholder="Search..."
-                        value={searchPhrase}
-                        onChange={event => {
-                          addAchievement({
-                            title: "Search...",
-                            description:
-                              "You used the search highlight feature to find out what I know quicker.",
-                          })
-                          setSearchPhrase(event.target.value)
-                        }}
-                      />
-                    </div>
+      <div className={`cv-section ${gameActive ? "game-active" : ""}`}>
+        {!gameActive && (
+          <>
+            <div className="hero is-black">
+              <div className="hero-body"></div>
+            </div>
+            <div className="navbar is-black">
+              <div className="container">
+                <h3 className="title">What do I know?</h3>
+                <div className="navbar-end">
+                  <div className="navbar-item">
+                    <form onSubmit={(event) => event.preventDefault()}>
+                      <div className="field">
+                        <div className="control">
+                          <input
+                            className="input search"
+                            placeholder="Search..."
+                            value={searchPhrase}
+                            onChange={event => {
+                              addAchievement({
+                                title: "Search...",
+                                description:
+                                  "You used the search highlight feature to find out what I know quicker.",
+                              })
+                              setSearchPhrase(event.target.value)
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </form>
                   </div>
-                </form>
-              </div>
-              <div className="navbar-item">
-                <button
-                  className="button is-primary"
-                  onClick={() => setBingoEnabled(true)}
-                >
-                  Bingo
-                </button>
+                  <div className="navbar-item">
+                    <button
+                      className="button is-primary"
+                      onClick={() => setGameActive(true)}
+                    >
+                      Space Invaders
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <WhatIKnow searchPhrase={searchPhrase} />
+          </>
+        )}
+        {gameActive ? (
+          <SpaceInvaders words={allWords} onGameEnd={() => setGameActive(false)} />
+        ) : (
+          <WhatIKnow searchPhrase={searchPhrase} />
+        )}
       </div>
       <section className="hero is-timemachine">
         <div className="hero-body">

@@ -65,3 +65,23 @@
 .is-dark-primary {
   background-color: #14570d;
 }
+
+.cv-section {
+  position: relative;
+
+  &.game-active {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .space-invaders-game {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100vh;
+      z-index: 10;
+    }
+  }
+}
