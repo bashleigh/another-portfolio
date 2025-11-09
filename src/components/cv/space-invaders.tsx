@@ -581,6 +581,11 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
               <p className="instruction-text">
                 Destroy all the letters to win! Each letter is worth 10 points.
                 You have 3 lives - game over if you lose all your lives or the words reach the bottom.
+                <br />
+                <br />
+                <strong>Desktop:</strong> Use arrow keys (or A/D) to move, SPACE to shoot.
+                <br />
+                <strong>Mobile:</strong> Use the on-screen buttons at the bottom.
               </p>
             </div>
           </div>
@@ -685,6 +690,96 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
             </div>
           </div>
         )}
+      </div>
+      {/* Mobile touch controls */}
+      <div className="mobile-controls">
+        <button
+          className="control-button left-button"
+          onTouchStart={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, left: true }))
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, left: false }))
+          }}
+          onTouchCancel={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, left: false }))
+          }}
+          onMouseDown={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, left: true }))
+          }}
+          onMouseUp={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, left: false }))
+          }}
+          onMouseLeave={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, left: false }))
+          }}
+        >
+          ←
+        </button>
+        <button
+          className="control-button shoot-button"
+          onTouchStart={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, shoot: true }))
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, shoot: false }))
+          }}
+          onTouchCancel={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, shoot: false }))
+          }}
+          onMouseDown={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, shoot: true }))
+          }}
+          onMouseUp={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, shoot: false }))
+          }}
+          onMouseLeave={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, shoot: false }))
+          }}
+        >
+          ⚡
+        </button>
+        <button
+          className="control-button right-button"
+          onTouchStart={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, right: true }))
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, right: false }))
+          }}
+          onTouchCancel={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, right: false }))
+          }}
+          onMouseDown={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, right: true }))
+          }}
+          onMouseUp={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, right: false }))
+          }}
+          onMouseLeave={(e) => {
+            e.preventDefault()
+            setKeys(prev => ({ ...prev, right: false }))
+          }}
+        >
+          →
+        </button>
       </div>
     </div>
   )

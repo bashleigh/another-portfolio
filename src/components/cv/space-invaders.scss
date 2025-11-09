@@ -283,6 +283,62 @@
     }
   }
 
+  // Mobile touch controls
+  .mobile-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-top: 2px solid #0f0;
+    position: relative;
+    z-index: 100;
+
+    @media (min-width: 769px) {
+      display: none; // Hide on desktop, show on mobile
+    }
+
+    .control-button {
+      flex: 1;
+      min-height: 60px;
+      background-color: rgba(15, 240, 15, 0.2);
+      border: 2px solid #0f0;
+      border-radius: 8px;
+      color: #0f0;
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 0 0 10px #0f0;
+      box-shadow: 0 0 15px rgba(15, 240, 15, 0.3);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: all 0.1s;
+
+      &:active {
+        background-color: rgba(15, 240, 15, 0.4);
+        box-shadow: 0 0 25px rgba(15, 240, 15, 0.6);
+        transform: scale(0.95);
+      }
+
+      &.shoot-button {
+        flex: 1.5;
+        font-size: 2.5rem;
+        background-color: rgba(0, 255, 255, 0.2);
+        border-color: #0ff;
+        color: #0ff;
+        text-shadow: 0 0 10px #0ff;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+
+        &:active {
+          background-color: rgba(0, 255, 255, 0.4);
+          box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+        }
+      }
+    }
+  }
+
   @media only screen and (max-width: 768px) {
     .game-area {
       .letter {
