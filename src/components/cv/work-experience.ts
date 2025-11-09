@@ -27,7 +27,6 @@ export const workexperience: WorkExperience[] = [
     company: "Reapit Ltd",
     description: [
       "I have successfully built a working dynamic CI/CD pipeline tool to deploy PWA apps to AWS and I'm currently planning a version 2 capable of deploying and maintaining backend application solutions.",
-      "Despite the funky job title I'm not a manager. Within my team I'm almost self sufficient. However I have been supporting aspiring junior developers within the company by offering them support whenever I can.",
     ],
     exert:
       "At Reapit I'm responsible for building and maintaining internal and external developer tools within the business",
