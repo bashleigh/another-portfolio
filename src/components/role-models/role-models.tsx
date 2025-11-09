@@ -80,7 +80,7 @@ const roleModels: RoleModel[] = [
     image: "images/elliesattler.png",
     programOrFilm: "Jurassic Park",
     description: [
-      "A paleobotanist turned velociraptor bait, Ellie inspired me to pursue",
+      "A paleobotanist turned velociraptor bait, Ellie inspired me to become a scientist and a fighter no matter the situation.",
     ],
   },
   // {

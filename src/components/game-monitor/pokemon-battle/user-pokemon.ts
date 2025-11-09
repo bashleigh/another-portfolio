@@ -1,0 +1,86 @@
+import { Character } from "./types";
+
+export const playerCharacters: Character[] = [
+  {
+    id: "c3po",
+    name: "C-3PO",
+    level: "L5",
+    hp: 100,
+    maxHp: 100,
+    sprite: "c3po",
+    abilities: [
+      { name: "Protocol Attack", type: "attack", damage: 20, description: "C-3PO uses protocol knowledge to confuse the enemy!" },
+      { name: "Translate", type: "buff", description: "C-3PO translates enemy moves, reducing damage taken!" },
+      { name: "Complain", type: "joke", description: "C-3PO complains about the situation. Nothing happens." },
+      { name: "Worry", type: "joke", description: "C-3PO worries excessively. The enemy is slightly confused." },
+    ],
+  },
+  {
+    id: "r2d2",
+    name: "R2-D2",
+    level: "L7",
+    hp: 120,
+    maxHp: 120,
+    sprite: "r2d2",
+    abilities: [
+      { name: "Beep Attack", type: "attack", damage: 25, description: "R2-D2 beeps aggressively at the enemy!" },
+      { name: "Hack", type: "debuff", description: "R2-D2 hacks into enemy systems, reducing their attack!" },
+      { name: "Sparks", type: "attack", damage: 15, description: "R2-D2 shoots sparks everywhere!" },
+      { name: "Whistle", type: "joke", description: "R2-D2 whistles cheerfully. It's oddly calming." },
+    ],
+  },
+  {
+    id: "neo",
+    name: "NEO",
+    level: "L10",
+    hp: 150,
+    maxHp: 150,
+    sprite: "neo",
+    abilities: [
+      { name: "Matrix Punch", type: "attack", damage: 40, description: "Neo bends reality and punches through the matrix!" },
+      { name: "Dodge", type: "buff", description: "Neo dodges like in the matrix, increasing evasion!" },
+      { name: "Bullet Time", type: "attack", damage: 30, description: "Neo slows time and attacks multiple times!" },
+      { name: "I Know Kung Fu", type: "buff", description: "Neo remembers he knows kung fu. Attack power increases!" },
+    ],
+  },
+  {
+    id: "morpheus",
+    name: "MORPHEUS",
+    level: "L8",
+    hp: 130,
+    maxHp: 130,
+    sprite: "morpheus",
+    abilities: [
+      { name: "Red Pill", type: "attack", damage: 35, description: "Morpheus offers the red pill. Reality hits hard!" },
+      { name: "Philosophy", type: "buff", description: "Morpheus gives a speech. Team morale increases!" },
+      { name: "What If", type: "debuff", description: "Morpheus asks 'What if I told you...' Enemy is confused." },
+      { name: "Spoon", type: "joke", description: "There is no spoon. Nothing happens, but it's deep." },
+    ],
+  },
+  {
+    id: "aquatus",
+    name: "AQUATUS",
+    level: "L6",
+    hp: 110,
+    maxHp: 110,
+    sprite: "aquatus",
+    abilities: [
+      { name: "Assimilate", type: "attack", damage: 30, description: "Aquatus attempts to assimilate the enemy!" },
+      { name: "Resistance is Futile", type: "debuff", description: "Aquatus states the obvious. Enemy loses hope." },
+      { name: "Borg Shield", type: "buff", description: "Borg technology adapts. Defense increases!" },
+      { name: "We are Borg", type: "joke", description: "Aquatus states 'We are Borg'. Everyone is slightly confused." },
+    ],
+  },
+  {
+    id: "tbd",
+    name: "CHARACTER 6",
+    level: "L5",
+    hp: 100,
+    maxHp: 100,
+    sprite: "placeholder",
+    abilities: [
+      { name: "Attack", type: "attack", damage: 20, description: "Basic attack!" },
+      { name: "Defend", type: "buff", description: "Defensive stance!" },
+    ],
+  },
+]

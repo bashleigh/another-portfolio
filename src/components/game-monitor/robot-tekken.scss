@@ -1,0 +1,299 @@
+.robot-tekken {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow-y: auto;
+
+  .back-button {
+    background: var(--bulma-primary);
+    color: #000;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-family: "Silkscreen", sans-serif;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+
+    &:hover {
+      background: var(--bulma-link);
+    }
+  }
+
+  .fighter-selection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    h2 {
+      color: var(--bulma-primary);
+      font-family: "Silkscreen", sans-serif;
+      font-size: 2rem;
+    }
+
+    .fighters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1000px;
+
+      .fighter-card {
+        background: rgba(0, 0, 0, 0.7);
+        border: 2px solid var(--bulma-primary);
+        border-radius: 8px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        &:hover {
+          border-color: var(--bulma-link);
+          transform: translateY(-5px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .sprite-placeholder {
+          width: 120px;
+          height: 120px;
+          border: 2px dashed var(--bulma-primary);
+          border-radius: 8px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          color: var(--bulma-primary);
+          font-family: "Silkscreen", sans-serif;
+          font-size: 0.8rem;
+
+          .small {
+            font-size: 0.6rem;
+            opacity: 0.7;
+          }
+        }
+
+        h3 {
+          color: var(--bulma-primary);
+          font-family: "Silkscreen", sans-serif;
+          margin: 0;
+        }
+
+        p {
+          color: var(--bulma-primary);
+          font-family: "Silkscreen", sans-serif;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .battle-arena {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex: 1;
+  }
+
+  .fighter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    &.opponent {
+      align-items: flex-end;
+    }
+
+    &.player {
+      align-items: flex-start;
+    }
+
+    .sprite-container {
+      width: 200px;
+      height: 200px;
+      border: 2px solid var(--bulma-primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s;
+
+      &.attacking {
+        animation: punchAnimation 0.5s;
+      }
+
+      .sprite-placeholder {
+        text-align: center;
+        color: var(--bulma-primary);
+        font-family: "Silkscreen", sans-serif;
+        font-size: 0.8rem;
+
+        .small {
+          font-size: 0.6rem;
+          opacity: 0.7;
+        }
+      }
+    }
+
+    .fighter-info {
+      width: 100%;
+      max-width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      h3 {
+        color: var(--bulma-primary);
+        font-family: "Silkscreen", sans-serif;
+        margin: 0;
+      }
+
+      .hp-bar {
+        width: 100%;
+        height: 25px;
+        background: rgba(0, 0, 0, 0.5);
+        border: 2px solid var(--bulma-primary);
+        border-radius: 4px;
+        overflow: hidden;
+
+        .hp-fill {
+          height: 100%;
+          background: var(--bulma-primary);
+          transition: width 0.5s;
+        }
+      }
+
+      p {
+        color: var(--bulma-primary);
+        font-family: "Silkscreen", sans-serif;
+        font-size: 0.9rem;
+        margin: 0;
+        text-align: center;
+      }
+    }
+  }
+
+  .battle-log {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--bulma-primary);
+    border-radius: 8px;
+    padding: 1rem;
+    min-height: 100px;
+    max-height: 150px;
+    overflow-y: auto;
+
+    p {
+      color: var(--bulma-primary);
+      font-family: "Silkscreen", sans-serif;
+      font-size: 0.8rem;
+      margin: 0.25rem 0;
+    }
+  }
+
+  .moves-panel {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--bulma-primary);
+    border-radius: 8px;
+    padding: 1.5rem;
+
+    h3 {
+      color: var(--bulma-primary);
+      font-family: "Silkscreen", sans-serif;
+      margin: 0 0 1rem 0;
+    }
+
+    .moves-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+
+      .move-button {
+        background: rgba(0, 0, 0, 0.5);
+        border: 2px solid var(--bulma-primary);
+        color: var(--bulma-primary);
+        padding: 1rem;
+        font-family: "Silkscreen", sans-serif;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.3s;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        &:hover:not(:disabled) {
+          border-color: var(--bulma-link);
+          background: rgba(255, 255, 255, 0.1);
+          transform: translateY(-2px);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .move-name {
+          font-size: 1rem;
+          font-weight: bold;
+        }
+
+        .move-damage {
+          font-size: 0.8rem;
+          opacity: 0.8;
+        }
+      }
+    }
+
+    p {
+      color: var(--bulma-primary);
+      font-family: "Silkscreen", sans-serif;
+      text-align: center;
+    }
+  }
+
+  .game-over {
+    background: rgba(0, 0, 0, 0.9);
+    border: 3px solid var(--bulma-primary);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+
+    h2 {
+      color: var(--bulma-primary);
+      font-family: "Silkscreen", sans-serif;
+      font-size: 2rem;
+      margin: 0 0 1.5rem 0;
+    }
+
+    button {
+      background: var(--bulma-primary);
+      color: #000;
+      border: none;
+      padding: 1rem 2rem;
+      font-family: "Silkscreen", sans-serif;
+      cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        background: var(--bulma-link);
+      }
+    }
+  }
+}
+
+@keyframes punchAnimation {
+  0%, 100% {
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    transform: translateX(30px) scale(1.15);
+  }
+}
+

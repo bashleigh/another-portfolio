@@ -1,6 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import { OldTerminal } from "./components/old-terminal"
+import { GameMonitor } from "./components/game-monitor"
 import "./styles/index.scss"
 import { Quiz } from "./components/quiz"
 import { Statement } from "./components/statement"
@@ -20,7 +20,7 @@ createRoot(root).render(
   // <React.StrictMode>
   <>
     <AchievementProvider>
-      <OldTerminal />
+      <GameMonitor />
       <Statement />
       <CV />
       <RoleModels />
