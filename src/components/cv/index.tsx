@@ -124,7 +124,7 @@ export const CV = () => {
             <h3 className="title">What do I know?</h3>
             <div className="navbar-end">
               <div className="navbar-item">
-                <form>
+                <form onSubmit={(event) => event.preventDefault()}>
                   <div className="field">
                     <div className="control">
                       <input

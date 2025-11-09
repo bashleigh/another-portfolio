@@ -24,13 +24,13 @@ export const AchievementProvider: FC = ({ children }) => {
       {children}
       <div id="achievement-window">
         {latestAchievement && (
-          <div className="achievement">
+          <a className="achievement" href="#achievements">
             <div className="achievement-throphy">🏆</div>
             <div>
               <p className="title">{latestAchievement.title}</p>
               <p className="description">{latestAchievement.description}</p>
             </div>
-          </div>
+          </a>
         )}
       </div>
     </AchievementContext.Provider>

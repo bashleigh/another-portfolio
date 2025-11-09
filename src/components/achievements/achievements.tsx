@@ -10,7 +10,7 @@ export const Achievements = () => {
   )
 
   return (
-    <div className="hero is-dark-primary">
+    <div className="hero is-dark-primary" id="achievements">
       <div className="hero-body">
         <section className="section">
           <h2 className="title">Achievements</h2>
