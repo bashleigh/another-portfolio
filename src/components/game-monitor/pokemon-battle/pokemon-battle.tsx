@@ -3,60 +3,66 @@ import Typewriter from "typewriter-effect"
 import "./pokemon-battle.scss"
 import { Ability, Character } from "./types"
 import { playerCharacters } from "./user-pokemon"
-import { battleMusicManager } from "./battle-music"
+import { attackSoundManager } from "./attack-sounds"
 import { PokemonStats } from "./pokemon-stats"
+import { useRickOverlay } from "../rick-overlay-context"
+import { calculateHpFromLevel, getAbilityDamage, applyStatusEffectsToDamage, checkDodge, decrementStatusEffects, addStatusEffect } from "./utils"
+import { StatusEffect } from "./types"
 import ricoSpriteUrl from "./images/richie.webp?url"
 import captainEvertonSpriteUrl from "./images/captain-robert-everton.webp?url"
+import virusImageUrl from "./images/virus.webp?url"
 
 type PokemonBattleProps = {
   onBack: () => void
-  setRickNarration: (narration: string, expression?: "normal" | "panic" | "excited" | "sarcastic" | "showoff") => void
-  clearRickNarration: () => void
 }
 
+const ricoBaseHp = calculateHpFromLevel("L10", 150)
 const rico: Character = {
   id: "rico",
   name: "RICO",
   level: "L10",
-  hp: 150,
-  maxHp: 150,
+  hp: ricoBaseHp,
+  maxHp: ricoBaseHp,
   sprite: "rico",
   image: ricoSpriteUrl,
   abilities: [
-    { name: "Steve", type: "attack", damage: 5, description: "Steve!" },
-    { name: "STEVE", type: "attack", damage: 10, description: "STEVE!" },
-    { name: "Steve...", type: "attack", damage: 2, description: "Steve..." },
-    { name: "STEVE!!!", type: "attack", damage: 11, description: "STEVE!!!" },
+    { name: "Steve", type: "attack", damage: { min: 3, max: 7 }, description: "Steve!", soundEffect: "steve" },
+    { name: "STEVE", type: "attack", damage: { min: 8, max: 12 }, description: "STEVE!", soundEffect: "steve-loud" },
+    { name: "Steve...", type: "attack", damage: { min: 1, max: 3 }, description: "Steve...", soundEffect: "steve-soft" },
+    { name: "STEVE!!!", type: "attack", damage: { min: 9, max: 13 }, description: "STEVE!!!", soundEffect: "steve-excited" },
   ],
 }
 
+const captainEvertonBaseHp = calculateHpFromLevel("L11", 175)
 const captainEverton: Character = {
   id: "captain-everton",
   name: "CAPTAIN EVERTON",
   level: "L11",
-  hp: 175,
-  maxHp: 175,
+  hp: captainEvertonBaseHp,
+  maxHp: captainEvertonBaseHp,
   sprite: "captain-everton",
   image: captainEvertonSpriteUrl,
   abilities: [
-    { name: "Power Grab", type: "attack", damage: 20, description: "Captain Everton reaches for power!" },
-    { name: "Virus Conversion", type: "debuff", description: "Captain Everton tries to convert you to the virus!" },
-    { name: "Release the Virus", type: "attack", damage: 22, description: "Captain Everton attempts to set the virus free!" },
-    { name: "World Domination", type: "attack", damage: 18, description: "Captain Everton seeks to escape and rule the world!" },
+    { name: "Power Grab", type: "attack", damage: { min: 18, max: 22 }, description: "Captain Everton reaches for power!", soundEffect: "power-grab" },
+    { name: "Virus Conversion", type: "debuff", description: "Captain Everton tries to convert you to the virus!", soundEffect: "virus-conversion" },
+    { name: "Release the Virus", type: "attack", damage: { min: 20, max: 24 }, description: "Captain Everton attempts to set the virus free!", soundEffect: "release-virus" },
+    { name: "World Domination", type: "attack", damage: { min: 16, max: 20 }, description: "Captain Everton seeks to escape and rule the world!", soundEffect: "world-domination" },
   ],
 }
 
+const virusBaseHp = calculateHpFromLevel("L99", 200)
 const virus: Character = {
   id: "virus",
   name: "VIRUS",
-  level: "L12",
-  hp: 200,
-  maxHp: 200,
+  level: "L99",
+  hp: virusBaseHp,
+  maxHp: virusBaseHp,
   sprite: "virus",
+  image: virusImageUrl,
   abilities: [
-    { name: "Virus Attack", type: "attack", damage: 25, description: "The virus machine attacks with malicious code!" },
-    { name: "System Override", type: "debuff", description: "The virus overrides your systems!" },
-    { name: "Spare Parts", type: "attack", damage: 30, description: "The virus machine demands spare parts!" },
+    { name: "Virus Attack", type: "attack", damage: { min: 23, max: 27 }, description: "The virus machine attacks with malicious code!", soundEffect: "virus-attack" },
+    { name: "System Override", type: "debuff", description: "The virus overrides your systems!", soundEffect: "system-override" },
+    { name: "Spare Parts", type: "attack", damage: { min: 28, max: 32 }, description: "The virus machine demands spare parts! Oxygenated tissues, vagus nerve...", soundEffect: "spare-parts" },
   ],
 }
 
@@ -64,8 +70,8 @@ type MenuState = "main" | "fight" | "pokemon"
 
 export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   onBack,
-  setRickNarration,
 }) => {
+  const { showRick } = useRickOverlay()
   const [playerTeam, setPlayerTeam] = useState<Character[]>(playerCharacters)
   const [opponentState, setOpponentState] = useState<Character>(rico)
   const [currentEnemy, setCurrentEnemy] = useState<"rico" | "captain" | "virus">("rico")
@@ -82,45 +88,40 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   const [characterAnimating, setCharacterAnimating] = useState<string | null>(null)
   const [showIntro, setShowIntro] = useState(true)
   const [introTextFinished, setIntroTextFinished] = useState(false)
+  const [introGoMessageShown, setIntroGoMessageShown] = useState(false)
 
   const currentPlayer = playerTeam[currentPlayerIndex]
 
   useEffect(() => {
-    setRickNarration(
+    showRick(
       "Pokemon? Really? *burp* In 2025? Well, at least it's not another terminal command. Pick your character and fight!",
-      "sarcastic"
+      "sarcastic",
+      5000
     )
-    
-    // Start battle music (async, but we don't need to await)
-    battleMusicManager.start().catch(err => {
-      console.warn("Failed to start battle music:", err)
-    })
-    
-    return () => {
-      // Stop music when component unmounts
-      battleMusicManager.stop()
-    }
-  }, [setRickNarration])
+  }, [showRick])
 
-  // Handle transition after intro text finishes typing + 5000ms wait
+  // Show a "Go {character}!" message once after the intro text finishes
   useEffect(() => {
-    if (introTextFinished) {
-      const transitionTimer = setTimeout(() => {
+    if (introTextFinished && !introGoMessageShown) {
+      const firstCharacter = playerTeam[0]
+      if (!firstCharacter) return
+
+      setIntroGoMessageShown(true)
+      const goMessage = `Go ${firstCharacter.name}!`
+
+      showDescriptionWithTypewriter(goMessage, () => {
         setShowIntro(false)
         setDescription("What will you do?")
-      }, 5000)
-      
-      return () => {
-        clearTimeout(transitionTimer)
-      }
+      })
     }
-  }, [introTextFinished])
+  }, [introTextFinished, introGoMessageShown, playerTeam])
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     // Skip intro on Enter or Space (only after text has finished typing)
     if (showIntro) {
       if ((e.key === "Enter" || e.key === " ") && introTextFinished) {
         e.preventDefault()
+        setIntroGoMessageShown(true)
         setShowIntro(false)
         setDescription("What will you do?")
       }
@@ -203,10 +204,10 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       setSelectedPokemonIndex(0)
     } else if (index === 2) {
       // ITEM/BAG
-      setRickNarration("What you gonna do Morty? Hit it with your handbag? *burp*", "sarcastic")
+      showRick("What you gonna do Morty? Hit it with your handbag? *burp*", "sarcastic", 3000)
     } else if (index === 3) {
       // RUN
-      setRickNarration("Morty, you can't run away from this fight! Man up for christ sake! *burp*", "panic")
+      showRick("Morty, you can't run away from this fight! Man up for christ sake! *burp*", "panic", 3000)
     }
   }
 
@@ -235,16 +236,27 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     setCharacterAnimating(currentPlayer.id)
     setDescription("")
     
+    // Play attack sound effect
+    if (ability.soundEffect) {
+      attackSoundManager.playAttackSound(ability.soundEffect).catch(err => {
+        console.warn("Failed to play attack sound:", err)
+      })
+    }
+    
     const firstMessage = `${currentPlayer.name} uses ${ability.name}!`
     showDescriptionWithTypewriter(firstMessage, () => {
       if (ability.type === "attack" && ability.damage) {
-        const newHp = Math.max(0, opponentState.hp - ability.damage!)
+        let baseDamage = getAbilityDamage(ability.damage)
+        // Apply attack boosts from status effects
+        baseDamage = applyStatusEffectsToDamage(baseDamage, currentPlayer, true)
+        const finalDamage = applyStatusEffectsToDamage(baseDamage, opponentState, false)
+        const newHp = Math.max(0, opponentState.hp - finalDamage)
         setOpponentState(prev => ({
           ...prev,
           hp: newHp,
         }))
         
-        const damageMessage = `It deals ${ability.damage} damage!`
+        const damageMessage = `It deals ${finalDamage} damage!`
         showDescriptionWithTypewriter(damageMessage, () => {
           setCharacterAnimating(null)
           
@@ -259,7 +271,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                   setOpponentState(captainEverton)
                   setDescription("What will you do?")
                   setIsPlayerTurn(true)
-                  setRickNarration("Oh jeez, Morty! *burp* Captain Everton wants power and he's trying to set the virus free!", "panic")
+                  showRick("Oh jeez, Morty! *burp* Captain Everton wants power and he's trying to set the virus free!", "panic", 5000)
                 })
                 return
               } else if (currentEnemy === "captain") {
@@ -270,7 +282,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                   setOpponentState(virus)
                   setDescription("What will you do?")
                   setIsPlayerTurn(true)
-                  setRickNarration("Oh crap, Morty! *burp* Now the virus is here! This is bad!", "panic")
+                  showRick("Oh crap, Morty! *burp* Now the virus is here! This is bad!", "panic", 5000)
                 })
                 return
               } else {
@@ -278,7 +290,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                 setTimeout(() => {
                   setGameOver("win")
                   setDescription("You won!")
-                  setRickNarration("YES! *burp* You won, Morty! Now get me out of here!", "excited")
+                  showRick("YES! *burp* You won, Morty! Now get me out of here!", "excited", 5000)
                 }, 1000)
                 return
               }
@@ -286,12 +298,78 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
             return
           }
 
+          // Decrement status effects after attack
+          setPlayerTeam(prev => prev.map((char, idx) => 
+            idx === currentPlayerIndex ? decrementStatusEffects(char) : char
+          ))
+          
+          setTimeout(() => {
+            setIsPlayerTurn(false)
+            opponentTurn()
+          }, 500)
+        })
+      } else if (ability.type === "buff") {
+        // Handle buff abilities
+        let statusEffect: StatusEffect | null = null
+        
+        if (ability.name === "Dodge") {
+          statusEffect = { type: "dodge", value: 50, duration: 2 } // 50% dodge chance for 2 turns
+        } else if (ability.name === "Bullet Time") {
+          statusEffect = { type: "dodge", value: 40, duration: 3 } // 40% dodge chance for 3 turns
+        } else if (ability.name === "I Know Kung Fu") {
+          statusEffect = { type: "attackBoost", value: 25, duration: 1 } // +25% attack for next turn only
+        } else if (ability.name === "Translate") {
+          statusEffect = { type: "defenseBoost", value: 20, duration: 3 } // +20% defense for 3 turns
+        } else if (ability.name === "Philosophy") {
+          statusEffect = { type: "attackBoost", value: 15, duration: 1 } // +15% attack for next turn only
+        } else if (ability.name === "Borg Shield") {
+          statusEffect = { type: "defenseBoost", value: 30, duration: 2 } // +30% defense for 2 turns
+        }
+        
+        if (statusEffect) {
+          setPlayerTeam(prev => prev.map((char, idx) => 
+            idx === currentPlayerIndex ? addStatusEffect(char, statusEffect!) : char
+          ))
+        }
+        
+        // Use original ability description
+        showDescriptionWithTypewriter(ability.description, () => {
+          setCharacterAnimating(null)
+          setTimeout(() => {
+            setIsPlayerTurn(false)
+            opponentTurn()
+          }, 500)
+        })
+      } else if (ability.type === "debuff") {
+        // Handle debuff abilities - apply effects to opponent
+        let statusEffect: StatusEffect | null = null
+        
+        if (ability.name === "Hack") {
+          statusEffect = { type: "attackReduction", value: 20, duration: 2 } // -20% attack for 2 turns
+        } else if (ability.name === "Virus Conversion") {
+          statusEffect = { type: "attackReduction", value: 15, duration: 3 } // -15% attack for 3 turns
+        } else if (ability.name === "System Override") {
+          statusEffect = { type: "defenseReduction", value: 25, duration: 2 } // -25% defense for 2 turns
+        } else if (ability.name === "What If") {
+          statusEffect = { type: "attackReduction", value: 10, duration: 2 } // -10% attack for 2 turns
+        } else if (ability.name === "Resistance is Futile") {
+          statusEffect = { type: "defenseReduction", value: 20, duration: 2 } // -20% defense for 2 turns
+        }
+        
+        if (statusEffect) {
+          setOpponentState(prev => addStatusEffect(prev, statusEffect!))
+        }
+        
+        // Use original ability description
+        showDescriptionWithTypewriter(ability.description, () => {
+          setCharacterAnimating(null)
           setTimeout(() => {
             setIsPlayerTurn(false)
             opponentTurn()
           }, 500)
         })
       } else {
+        // Joke abilities - no effect
         showDescriptionWithTypewriter(ability.description, () => {
           setCharacterAnimating(null)
           setTimeout(() => {
@@ -308,21 +386,50 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     setCharacterAnimating(opponentState.id)
     setDescription("")
     
+    // Play attack sound effect
+    if (opponentAbility.soundEffect) {
+      attackSoundManager.playAttackSound(opponentAbility.soundEffect).catch(err => {
+        console.warn("Failed to play attack sound:", err)
+      })
+    }
+    
     const firstMessage = `${opponentState.name} uses ${opponentAbility.name}!`
     showDescriptionWithTypewriter(firstMessage, () => {
       if (opponentAbility.type === "attack" && opponentAbility.damage) {
+        // Check for dodge first
+        const currentPlayerChar = playerTeam[currentPlayerIndex]
+        if (checkDodge(currentPlayerChar)) {
+          const dodgeMessage = `${currentPlayerChar.name} dodged the attack!`
+          showDescriptionWithTypewriter(dodgeMessage, () => {
+            // Decrement all status effects (dodge effect remains if duration > 0)
+            setPlayerTeam(prev => prev.map((char, idx) => 
+              idx === currentPlayerIndex ? decrementStatusEffects(char) : char
+            ))
+            setOpponentState(prev => decrementStatusEffects(prev))
+            
+            setCharacterAnimating(null)
+            setIsPlayerTurn(true)
+            setDescription("What will you do?")
+          })
+          return
+        }
+        
+        let baseDamage = getAbilityDamage(opponentAbility.damage)
+        // Apply attack boosts from opponent's status effects
+        baseDamage = applyStatusEffectsToDamage(baseDamage, opponentState, true)
+        const finalDamage = applyStatusEffectsToDamage(baseDamage, currentPlayerChar, false)
         const isSpareParts = opponentAbility.name === "Spare Parts"
         const updatedTeam = playerTeam.map((char, index) => {
           if (index === currentPlayerIndex) {
-            const newHp = Math.max(0, char.hp - opponentAbility.damage!)
+            const newHp = Math.max(0, char.hp - finalDamage)
             if (newHp === 0) {
               const faintMessage = `${char.name} fainted!`
               showDescriptionWithTypewriter(faintMessage, () => {
-                const damageMessage = `It deals ${opponentAbility.damage} damage!`
+                const damageMessage = `It deals ${finalDamage} damage!`
                 showDescriptionWithTypewriter(damageMessage, () => {
                   // Heal virus if it's Spare Parts
                   if (isSpareParts) {
-                    const damageDealt = Math.min(opponentAbility.damage!, char.hp)
+                    const damageDealt = Math.min(finalDamage, char.hp)
                     setOpponentState(prev => ({
                       ...prev,
                       hp: Math.min(prev.maxHp, prev.hp + damageDealt),
@@ -336,11 +443,17 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                         setTimeout(() => {
                           setGameOver("lose")
                           setDescription("You lost!")
-                          setRickNarration("Oh no, Morty! *burp* You lost! Try again!", "panic")
+                          showRick("Oh no, Morty! *burp* You lost! Try again!", "panic", 5000)
                         }, 1000)
                         return
                       }
 
+                      // Decrement status effects
+                      setPlayerTeam(prev => prev.map((char, idx) => 
+                        idx === currentPlayerIndex ? decrementStatusEffects(char) : char
+                      ))
+                      setOpponentState(prev => decrementStatusEffects(prev))
+                      
                       // Open pokemon selection panel
                       const firstAliveIndex = updatedTeam.findIndex(char => char.hp > 0)
                       if (firstAliveIndex !== -1) {
@@ -352,11 +465,17 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                     setCharacterAnimating(null)
                     setIsPlayerTurn(true)
                     
+                    // Decrement status effects
+                    setPlayerTeam(prev => prev.map((char, idx) => 
+                      idx === currentPlayerIndex ? decrementStatusEffects(char) : char
+                    ))
+                    setOpponentState(prev => decrementStatusEffects(prev))
+                    
                     if (updatedTeam.every(char => char.hp === 0)) {
                       setTimeout(() => {
                         setGameOver("lose")
                         setDescription("You lost!")
-                        setRickNarration("Oh no, Morty! *burp* You lost! Try again!", "panic")
+                        showRick("Oh no, Morty! *burp* You lost! Try again!", "panic", 5000)
                       }, 1000)
                       return
                     }
@@ -371,22 +490,34 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                 })
               })
             } else {
-              const damageMessage = `It deals ${opponentAbility.damage} damage!`
+              const damageMessage = `It deals ${finalDamage} damage!`
               showDescriptionWithTypewriter(damageMessage, () => {
                 // Heal virus if it's Spare Parts
                 if (isSpareParts) {
-                  const damageDealt = opponentAbility.damage!
+                  const damageDealt = finalDamage
                   setOpponentState(prev => ({
                     ...prev,
                     hp: Math.min(prev.maxHp, prev.hp + damageDealt),
                   }))
                   const healMessage = `${opponentState.name} restored ${damageDealt} HP!`
                   showDescriptionWithTypewriter(healMessage, () => {
+                    // Decrement status effects
+                    setPlayerTeam(prev => prev.map((char, idx) => 
+                      idx === currentPlayerIndex ? decrementStatusEffects(char) : char
+                    ))
+                    setOpponentState(prev => decrementStatusEffects(prev))
+                    
                     setCharacterAnimating(null)
                     setIsPlayerTurn(true)
                     setDescription("What will you do?")
                   })
                 } else {
+                  // Decrement status effects
+                  setPlayerTeam(prev => prev.map((char, idx) => 
+                    idx === currentPlayerIndex ? decrementStatusEffects(char) : char
+                  ))
+                  setOpponentState(prev => decrementStatusEffects(prev))
+                  
                   setCharacterAnimating(null)
                   setIsPlayerTurn(true)
                   setDescription("What will you do?")
@@ -398,7 +529,42 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
           return char
         })
         setPlayerTeam(updatedTeam)
+      } else if (opponentAbility.type === "debuff") {
+        // Handle opponent debuff abilities - apply effects to player
+        let statusEffect: StatusEffect | null = null
+        
+        if (opponentAbility.name === "Virus Conversion") {
+          statusEffect = { type: "attackReduction", value: 15, duration: 3 } // -15% attack for 3 turns
+        } else if (opponentAbility.name === "System Override") {
+          statusEffect = { type: "defenseReduction", value: 25, duration: 2 } // -25% defense for 2 turns
+        }
+        
+        if (statusEffect) {
+          setPlayerTeam(prev => prev.map((char, idx) => 
+            idx === currentPlayerIndex ? addStatusEffect(char, statusEffect!) : char
+          ))
+        }
+        
+        // Decrement status effects
+        setPlayerTeam(prev => prev.map((char, idx) => 
+          idx === currentPlayerIndex ? decrementStatusEffects(char) : char
+        ))
+        setOpponentState(prev => decrementStatusEffects(prev))
+        
+        // Use original ability description
+        showDescriptionWithTypewriter(opponentAbility.description, () => {
+          setCharacterAnimating(null)
+          setIsPlayerTurn(true)
+          setDescription("What will you do?")
+        })
       } else {
+        // Joke or other abilities
+        // Decrement status effects
+        setPlayerTeam(prev => prev.map((char, idx) => 
+          idx === currentPlayerIndex ? decrementStatusEffects(char) : char
+        ))
+        setOpponentState(prev => decrementStatusEffects(prev))
+        
         showDescriptionWithTypewriter(opponentAbility.description, () => {
           setCharacterAnimating(null)
           setIsPlayerTurn(true)
@@ -466,22 +632,6 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
               </div>
             )}
           </div>
-
-          {/* Player Stats - Bottom Right */}
-          {/* <div className="player-stats">
-            <div className="stat-name">{currentPlayer?.name}</div>
-            <div className="stat-level">{currentPlayer?.level}</div>
-            <div className="hp-label">HP:</div>
-            <div className="hp-bar-container">
-              <div
-                className="hp-bar-fill"
-                style={{ width: `${currentPlayer ? (currentPlayer.hp / currentPlayer.maxHp) * 100 : 0}%` }}
-              />
-            </div>
-            <div className="hp-numbers">
-              {currentPlayer?.hp} / {currentPlayer?.maxHp}
-            </div>
-          </div> */}
           <PokemonStats opponentState={currentPlayer} isOpponent={false} />
 
         </div>

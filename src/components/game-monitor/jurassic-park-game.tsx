@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react"
 import "./jurassic-park-game.scss"
+import { useRickOverlay } from "./rick-overlay-context"
 
 type JurassicParkGameProps = {
   onBack: () => void
-  setRickNarration: (narration: string, expression?: "normal" | "panic" | "excited" | "sarcastic" | "showoff") => void
-  clearRickNarration: () => void
 }
 
 const PASSWORD = "clever_girl"
 
 export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
   onBack,
-  setRickNarration,
-  clearRickNarration,
 }) => {
+  const { showRick } = useRickOverlay()
   const [password, setPassword] = useState("")
   const [attempts, setAttempts] = useState(0)
   const [solvedPuzzles, setSolvedPuzzles] = useState<string[]>([])
@@ -23,11 +21,12 @@ export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
   const [gameWon, setGameWon] = useState(false)
 
   useEffect(() => {
-    setRickNarration(
+    showRick(
       "Oh great, a password game. *burp* Just what I needed. Look Morty, there's an IT guy in the middle. You need to guess the password. Solve puzzles to get clues!",
-      "sarcastic"
+      "sarcastic",
+      6000
     )
-  }, [setRickNarration])
+  }, [showRick])
 
   const puzzles = [
     {
@@ -54,16 +53,18 @@ export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
     e.preventDefault()
     if (password.toLowerCase() === PASSWORD.toLowerCase()) {
       setGameWon(true)
-      setRickNarration(
+      showRick(
         "YES! *burp* You did it Morty! The password was correct! Now get me out of here!",
-        "excited"
+        "excited",
+        5000
       )
     } else {
       setAttempts(prev => prev + 1)
       setPassword("")
-      setRickNarration(
+      showRick(
         `Wrong password, Morty! *burp* You've tried ${attempts + 1} times. Maybe solve some puzzles for clues?`,
-        "panic"
+        "panic",
+        4000
       )
     }
   }
@@ -75,9 +76,9 @@ export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
       setClues(prev => [...prev, puzzle.clue])
       setShowPuzzle(false)
       setCurrentPuzzle(null)
-      setRickNarration(`Good job Morty! *burp* Here's a clue: ${puzzle.clue}`, "normal")
+      showRick(`Good job Morty! *burp* Here's a clue: ${puzzle.clue}`, "normal", 4000)
     } else {
-      setRickNarration("Wrong answer, Morty! *burp* Try again!", "sarcastic")
+      showRick("Wrong answer, Morty! *burp* Try again!", "sarcastic", 3000)
     }
   }
 

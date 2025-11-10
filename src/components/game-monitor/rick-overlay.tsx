@@ -1,10 +1,6 @@
 import React from "react"
 import "./rick-overlay.scss"
-
-type RickOverlayProps = {
-  narration: string
-  expression: "normal" | "panic" | "excited" | "sarcastic" | "showoff"
-}
+import { useRickOverlay } from "./rick-overlay-context"
 
 const rickExpressions = {
   normal: [
@@ -96,10 +92,9 @@ const rickExpressions = {
   ],
 }
 
-export const RickOverlay: React.FC<RickOverlayProps> = ({
-  narration,
-  expression,
-}) => {
+export const RickOverlay: React.FC = () => {
+  const { narration, expression } = useRickOverlay()
+
   if (!narration) return null
 
   return (

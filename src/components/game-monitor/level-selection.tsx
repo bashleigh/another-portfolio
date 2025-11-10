@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react"
 import "./level-selection.scss"
+import { useRickOverlay } from "./rick-overlay-context"
 
 type LevelSelectionProps = {
   onSelectGame: (game: "jurassic-park" | "pokemon-battle" | "robot-tekken") => void
-  setRickNarration: (narration: string, expression?: "normal" | "panic" | "excited" | "sarcastic" | "showoff") => void
 }
 
 const games = [
@@ -26,28 +26,28 @@ const games = [
 
 export const LevelSelection: React.FC<LevelSelectionProps> = ({
   onSelectGame,
-  setRickNarration,
 }) => {
+  const { showRick, hideRick } = useRickOverlay()
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   useEffect(() => {
-    setRickNarration(
+    showRick(
       "Alright Morty, pick a game! *burp* Any of these should help me escape... I think...",
       "normal"
     )
-  }, [setRickNarration])
+  }, [showRick])
 
   useEffect(() => {
     // Update Rick's comment when selection changes
-    setRickNarration(games[selectedIndex].rickComment, "sarcastic")
-  }, [selectedIndex, setRickNarration])
+    showRick(games[selectedIndex].rickComment, "sarcastic", 3000)
+  }, [selectedIndex, showRick])
 
   const handleGameSelect = useCallback((gameId: typeof games[number]["id"]) => {
-    setRickNarration("", "normal")
+    hideRick()
     setTimeout(() => {
       onSelectGame(gameId)
     }, 300)
-  }, [onSelectGame, setRickNarration])
+  }, [onSelectGame, hideRick])
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === "ArrowUp") {

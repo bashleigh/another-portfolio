@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react"
 import "./robot-tekken.scss"
+import { useRickOverlay } from "./rick-overlay-context"
 
 type RobotTekkenProps = {
   onBack: () => void
-  setRickNarration: (narration: string, expression?: "normal" | "panic" | "excited" | "sarcastic" | "showoff") => void
-  clearRickNarration: () => void
 }
 
 type Fighter = {
@@ -87,9 +86,8 @@ const fighters: Fighter[] = [
 
 export const RobotTekken: React.FC<RobotTekkenProps> = ({
   onBack,
-  setRickNarration,
-  clearRickNarration,
 }) => {
+  const { showRick } = useRickOverlay()
   const [playerFighter, setPlayerFighter] = useState<Fighter | null>(null)
   const [opponentFighter, setOpponentFighter] = useState<Fighter | null>(null)
   const [gameStarted, setGameStarted] = useState(false)
@@ -100,20 +98,22 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
   const [opponentAnimating, setOpponentAnimating] = useState(false)
 
   useEffect(() => {
-    setRickNarration(
+    showRick(
       "Now THIS is more like it! *burp* Robots fighting robots! Classic! Pick your fighter, Morty!",
-      "excited"
+      "excited",
+      5000
     )
-  }, [setRickNarration])
+  }, [showRick])
 
   const selectFighter = (fighter: Fighter) => {
     setPlayerFighter({ ...fighter })
     const randomOpponent = fighters[Math.floor(Math.random() * fighters.filter(f => f.id !== fighter.id).length)]
     setOpponentFighter({ ...randomOpponent })
     setGameStarted(true)
-    setRickNarration(
+    showRick(
       `Alright Morty! *burp* ${fighter.name} vs ${randomOpponent.name}! Let's see who wins!`,
-      "excited"
+      "excited",
+      4000
     )
   }
 
@@ -131,7 +131,7 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
           const newHp = Math.max(0, prev.hp - move.damage)
           if (newHp === 0) {
             setGameOver("win")
-            setRickNarration("YES! *burp* You won, Morty! Great job!", "excited")
+            showRick("YES! *burp* You won, Morty! Great job!", "excited", 5000)
           }
           return { ...prev, hp: newHp }
         })
@@ -161,7 +161,7 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
         const newHp = Math.max(0, prev.hp - randomMove.damage)
         if (newHp === 0) {
           setGameOver("lose")
-          setRickNarration("Oh no, Morty! *burp* You lost! Try again!", "panic")
+          showRick("Oh no, Morty! *burp* You lost! Try again!", "panic", 5000)
         }
         return { ...prev, hp: newHp }
       })
