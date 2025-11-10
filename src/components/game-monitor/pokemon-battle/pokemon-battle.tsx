@@ -157,7 +157,10 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   onBack,
 }) => {
   const { showRick } = useRickOverlay()
-  const [playerTeam, setPlayerTeam] = useState<Character[]>(playerCharacters)
+  // Initialize team without Rick - he'll be added when alien entity appears
+  const [playerTeam, setPlayerTeam] = useState<Character[]>(() => 
+    playerCharacters.filter(char => char.id !== "rick")
+  )
   const [opponentState, setOpponentState] = useState<Character>(rico)
   const [currentEnemy, setCurrentEnemy] = useState<"rico" | "captain" | "alien-entity">("rico")
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0)
@@ -342,6 +345,15 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
         setOpponentState(alienEntity)
         setDescription("What will you do?")
         setIsPlayerTurn(true)
+        // Add Rick to the team when alien entity appears
+        setPlayerTeam(prev => {
+          const hasRick = prev.some(char => char.id === "rick")
+          if (!hasRick) {
+            const rick = playerCharacters.find(char => char.id === "rick")
+            return rick ? [...prev, rick] : prev
+          }
+          return prev
+        })
         showRick("Put me in Morty! I can take this thing!", "excited", 5000)
         onComplete()
       })
@@ -526,9 +538,33 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   const handleJokeAbility = useCallback((ability: Ability) => {
     showDescriptionWithTypewriter(ability.description, () => {
       setCharacterAnimating(null)
+      
+      // Special case: Blackjack & hookers - Bender leaves the game
+      if (ability.name === "Blackjack & hookers" && currentPlayer?.id === "Bender") {
+        // Remove Bender from the team (set HP to 0 without showing fainted message)
+        setPlayerTeam(prev => {
+          const updatedTeam = prev.map(char => 
+            char.id === "Bender" ? { ...char, hp: 0 } : char
+          )
+          
+          // If Bender was the current player, switch to another alive character
+          const firstAliveIndex = updatedTeam.findIndex(char => char.hp > 0)
+          
+          if (firstAliveIndex !== -1 && firstAliveIndex !== currentPlayerIndex) {
+            setCurrentPlayerIndex(firstAliveIndex)
+            setDescription(`Go! ${updatedTeam[firstAliveIndex].name}!`)
+          } else if (firstAliveIndex === -1) {
+            // All characters are gone - check for game over
+            checkGameOver(updatedTeam)
+          }
+          
+          return updatedTeam
+        })
+      }
+      
       endPlayerTurn()
     })
-  }, [showDescriptionWithTypewriter, endPlayerTurn])
+  }, [showDescriptionWithTypewriter, endPlayerTurn, currentPlayer, currentPlayerIndex, checkGameOver])
 
   const executeAbility = useCallback((ability: Ability) => {
     if (!isPlayerTurn || !currentPlayer) return
