@@ -2,6 +2,7 @@ import { Character } from "./types";
 import { calculateHpFromLevel } from "./utils";
 import pikachuSpriteUrl from "./images/pikachu.webp?url"
 import locutusImageUrl from "./images/locutus.webp?url"
+import rickImageUrl from "./images/rick.webp?url"
 
 export const playerCharacters: Character[] = [
   {
@@ -79,14 +80,15 @@ export const playerCharacters: Character[] = [
     id: "rick",
     name: "Rick",
     level: "L99",
+    image: rickImageUrl,
     hp: calculateHpFromLevel("L99", 200),
     maxHp: calculateHpFromLevel("L99", 200),
     sprite: "Rick",
     abilities: [
-      { name: "Go Go gadget arms", type: "attack", damage: { min: 23, max: 80 }, description: "Rick's Go Go gadget arms attack the enemy!", soundEffect: "beep-attack" },
-      { name: "Wormhole", type: "debuff", description: "Rick creates a wormhole to the enemy, reducing their attack!", soundEffect: "debuff" },
-      { name: "Portal Gun", type: "attack", damage: { min: 13, max: 100 }, description: "Rick's Portal Gun attacks the enemy!", soundEffect: "sparks" },
-      { name: "Morty", type: "joke", description: "Shut up Morty I'm battling this guy!", soundEffect: "joke" },
+      { name: "Go Go gadget arms", type: "attack", damage: { min: 50, max: 200 }, description: "Rick's Go Go gadget arms attack the enemy!", soundEffect: "beep-attack" },
+      { name: "Shields", type: "debuff", description: "Rick creates a shield to protect himself, reducing the enemy's attack!", soundEffect: "debuff" },
+      { name: "Arm rocket", type: "attack", damage: { min: 10, max: 200 }, description: "Rick's Arm Rocket attacks the enemy!", soundEffect: "sparks" },
+      { name: "Morty", type: "joke", description: "Shut up Morty I'm battling this guy! Pick an attack!", soundEffect: "joke" },
     ],
   },
 ]

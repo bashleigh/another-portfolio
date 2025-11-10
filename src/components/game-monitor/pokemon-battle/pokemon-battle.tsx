@@ -33,20 +33,20 @@ const rico: Character = {
   ],
 }
 
-const captainEvertonBaseHp = calculateHpFromLevel("L11", 175)
+const captainEvertonBaseHp = calculateHpFromLevel("L50", 175)
 const captainEverton: Character = {
   id: "captain-everton",
   name: "CAPTAIN EVERTON",
-  level: "L11",
+  level: "L50",
   hp: captainEvertonBaseHp,
   maxHp: captainEvertonBaseHp,
   sprite: "captain-everton",
   image: captainEvertonSpriteUrl,
   abilities: [
-    { name: "Power Grab", type: "attack", damage: { min: 18, max: 22 }, description: "Captain Everton reaches for power!", soundEffect: "power-grab" },
+    { name: "Power Grab", type: "attack", damage: { min: 10, max: 50 }, description: "Captain Everton reaches for power!", soundEffect: "power-grab" },
     { name: "Virus Conversion", type: "debuff", description: "Captain Everton tries to convert you to the virus!", soundEffect: "virus-conversion" },
-    { name: "Release the Virus", type: "attack", damage: { min: 20, max: 24 }, description: "Captain Everton attempts to set the virus free!", soundEffect: "release-virus" },
-    { name: "World Domination", type: "attack", damage: { min: 16, max: 20 }, description: "Captain Everton seeks to escape and rule the world!", soundEffect: "world-domination" },
+    { name: "Release the Virus", type: "attack", damage: { min: 40, max: 75 }, description: "Captain Everton attempts to set the virus free!", soundEffect: "release-virus" },
+    { name: "World Domination", type: "attack", damage: { min: 30, max: 100 }, description: "Captain Everton seeks to escape and rule the world!", soundEffect: "world-domination" },
   ],
 }
 
@@ -67,6 +67,54 @@ const virus: Character = {
 }
 
 type MenuState = "main" | "fight" | "pokemon"
+
+const GRID_NAVIGATION_KEYS = new Set(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"])
+const CONFIRM_KEY = "Enter"
+
+const isBackKey = (key: string) => key === "Escape" || key === "Backspace"
+
+const moveWithinGrid = (key: string, currentIndex: number, totalItems: number, columns = 2) => {
+  if (!GRID_NAVIGATION_KEYS.has(key) || totalItems <= 0) return currentIndex
+
+  const row = Math.floor(currentIndex / columns)
+  const col = currentIndex % columns
+  switch (key) {
+    case "ArrowUp": {
+      if (row === 0) return currentIndex
+      const nextIndex = currentIndex - columns
+      return nextIndex >= 0 ? nextIndex : currentIndex
+    }
+    case "ArrowDown": {
+      const nextIndex = currentIndex + columns
+      return nextIndex < totalItems ? nextIndex : currentIndex
+    }
+    case "ArrowLeft": {
+      return col === 0 ? currentIndex : currentIndex - 1
+    }
+    case "ArrowRight": {
+      const nextIndex = currentIndex + 1
+      const isAtRowEnd = col === columns - 1 || nextIndex >= totalItems
+      return isAtRowEnd ? currentIndex : nextIndex
+    }
+    default:
+      return currentIndex
+  }
+}
+
+const moveWithinList = (key: string, currentIndex: number, totalItems: number) => {
+  if (totalItems <= 0) return currentIndex
+
+  switch (key) {
+    case "ArrowUp":
+      return currentIndex > 0 ? currentIndex - 1 : totalItems - 1
+    case "ArrowDown":
+      return currentIndex < totalItems - 1 ? currentIndex + 1 : 0
+    default:
+      return currentIndex
+  }
+}
+
+const MAIN_MENU_ITEMS = ["FIGHT", "PkMn", "ITEM", "RUN"] as const
 
 export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   onBack,
@@ -116,100 +164,26 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     }
   }, [introTextFinished, introGoMessageShown, playerTeam])
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    // Skip intro on Enter or Space (only after text has finished typing)
-    if (showIntro) {
-      if ((e.key === "Enter" || e.key === " ") && introTextFinished) {
-        e.preventDefault()
-        setIntroGoMessageShown(true)
-        setShowIntro(false)
-        setDescription("What will you do?")
-      }
-      return
+  const handleMainMenuSelect = useCallback((index: number) => {
+    switch (index) {
+      case 0: // FIGHT
+        setMenuState("fight")
+        setSelectedAbilityIndex(0)
+        break
+      case 1: // PkMn
+        setMenuState("pokemon")
+        setSelectedPokemonIndex(0)
+        break
+      case 2: // ITEM/BAG
+        showRick("What you gonna do Morty? Hit it with your handbag? *burp*", "sarcastic", 3000)
+        break
+      case 3: // RUN
+        showRick("Morty, you can't run away from this fight! Man up for christ sake! *burp*", "panic", 3000)
+        break
+      default:
+        break
     }
-    
-    if (gameOver || !isPlayerTurn) return
-
-    if (menuState === "main") {
-      if (e.key === "ArrowUp") {
-        e.preventDefault()
-        setSelectedMenuIndex(prev => (prev === 0 || prev === 1 ? prev : prev - 2))
-      } else if (e.key === "ArrowDown") {
-        e.preventDefault()
-        setSelectedMenuIndex(prev => (prev === 2 || prev === 3 ? prev : prev < 2 ? prev + 2 : prev))
-      } else if (e.key === "ArrowLeft") {
-        e.preventDefault()
-        setSelectedMenuIndex(prev => (prev % 2 === 1 ? prev - 1 : prev))
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault()
-        setSelectedMenuIndex(prev => (prev % 2 === 0 ? prev + 1 : prev))
-      } else if (e.key === "Enter") {
-        e.preventDefault()
-        handleMainMenuSelect(selectedMenuIndex)
-      }
-    } else if (menuState === "fight") {
-      if (e.key === "ArrowUp") {
-        e.preventDefault()
-        setSelectedAbilityIndex(prev => (prev === 0 || prev === 1 ? prev : prev - 2))
-      } else if (e.key === "ArrowDown") {
-        e.preventDefault()
-        setSelectedAbilityIndex(prev => (prev === 2 || prev === 3 ? prev : prev < 2 ? prev + 2 : prev))
-      } else if (e.key === "ArrowLeft") {
-        e.preventDefault()
-        setSelectedAbilityIndex(prev => (prev % 2 === 1 ? prev - 1 : prev))
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault()
-        setSelectedAbilityIndex(prev => (prev % 2 === 0 ? prev + 1 : prev))
-      } else if (e.key === "Enter") {
-        e.preventDefault()
-        if (currentPlayer?.abilities[selectedAbilityIndex]) {
-          executeAbility(currentPlayer.abilities[selectedAbilityIndex])
-        }
-      } else if (e.key === "Escape" || e.key === "Backspace") {
-        e.preventDefault()
-        setMenuState("main")
-        setSelectedMenuIndex(0)
-      }
-    } else if (menuState === "pokemon") {
-      if (e.key === "ArrowUp") {
-        e.preventDefault()
-        setSelectedPokemonIndex(prev => (prev > 0 ? prev - 1 : playerTeam.length - 1))
-      } else if (e.key === "ArrowDown") {
-        e.preventDefault()
-        setSelectedPokemonIndex(prev => (prev < playerTeam.length - 1 ? prev + 1 : 0))
-      } else if (e.key === "Enter") {
-        e.preventDefault()
-        switchToPokemon(selectedPokemonIndex)
-      } else if (e.key === "Escape" || e.key === "Backspace") {
-        e.preventDefault()
-        setMenuState("main")
-        setSelectedMenuIndex(1)
-      }
-    }
-  }, [menuState, selectedMenuIndex, selectedAbilityIndex, selectedPokemonIndex, gameOver, isPlayerTurn, currentPlayer, playerTeam, showIntro, introTextFinished, currentEnemy])
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [handleKeyDown])
-
-  const handleMainMenuSelect = (index: number) => {
-    if (index === 0) {
-      // FIGHT
-      setMenuState("fight")
-      setSelectedAbilityIndex(0)
-    } else if (index === 1) {
-      // PkMn
-      setMenuState("pokemon")
-      setSelectedPokemonIndex(0)
-    } else if (index === 2) {
-      // ITEM/BAG
-      showRick("What you gonna do Morty? Hit it with your handbag? *burp*", "sarcastic", 3000)
-    } else if (index === 3) {
-      // RUN
-      showRick("Morty, you can't run away from this fight! Man up for christ sake! *burp*", "panic", 3000)
-    }
-  }
+  }, [showRick])
 
   const showDescriptionWithTypewriter = (text: string, onComplete?: () => void) => {
     setDescriptionOverlay(text)
@@ -584,7 +558,104 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     }
   }
 
-  const mainMenuItems = ["FIGHT", "PkMn", "ITEM", "RUN"]
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    const { key } = event
+
+    // Skip intro on Enter or Space (only after text has finished typing)
+    if (showIntro) {
+      if ((key === CONFIRM_KEY || key === " ") && introTextFinished) {
+        event.preventDefault()
+        setIntroGoMessageShown(true)
+        setShowIntro(false)
+        setDescription("What will you do?")
+      }
+      return
+    }
+
+    const playerCanAct = isPlayerTurn && !gameOver && !showDescriptionOverlay
+    if (!playerCanAct) return
+
+    if (menuState === "main") {
+      if (GRID_NAVIGATION_KEYS.has(key)) {
+        event.preventDefault()
+        setSelectedMenuIndex(prev => moveWithinGrid(key, prev, MAIN_MENU_ITEMS.length))
+        return
+      }
+
+      if (key === CONFIRM_KEY) {
+        event.preventDefault()
+        handleMainMenuSelect(selectedMenuIndex)
+      }
+      return
+    }
+
+    if (menuState === "fight" && currentPlayer) {
+      if (GRID_NAVIGATION_KEYS.has(key)) {
+        event.preventDefault()
+        setSelectedAbilityIndex(prev => {
+          const totalAbilities = currentPlayer.abilities.length
+          return moveWithinGrid(key, prev, totalAbilities)
+        })
+        return
+      }
+
+      if (key === CONFIRM_KEY) {
+        event.preventDefault()
+        const ability = currentPlayer.abilities[selectedAbilityIndex]
+        if (ability) {
+          executeAbility(ability)
+        }
+        return
+      }
+
+      if (isBackKey(key)) {
+        event.preventDefault()
+        setMenuState("main")
+        setSelectedMenuIndex(0)
+      }
+      return
+    }
+
+    if (menuState === "pokemon") {
+      if (key === "ArrowUp" || key === "ArrowDown") {
+        event.preventDefault()
+        setSelectedPokemonIndex(prev => moveWithinList(key, prev, playerTeam.length))
+        return
+      }
+
+      if (key === CONFIRM_KEY) {
+        event.preventDefault()
+        switchToPokemon(selectedPokemonIndex)
+        return
+      }
+
+      if (isBackKey(key)) {
+        event.preventDefault()
+        setMenuState("main")
+        setSelectedMenuIndex(1)
+      }
+    }
+  }, [
+    showIntro,
+    introTextFinished,
+    isPlayerTurn,
+    gameOver,
+    showDescriptionOverlay,
+    menuState,
+    currentPlayer,
+    selectedMenuIndex,
+    selectedAbilityIndex,
+    selectedPokemonIndex,
+    playerTeam.length,
+    handleMainMenuSelect,
+    switchToPokemon,
+    executeAbility,
+  ])
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [handleKeyDown])
 
   return (
     <div className="pokemon-battle">
@@ -685,7 +756,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                   <div className="menu-panel">
                     {menuState === "main" && (
                       <div className="menu-grid">
-                        {mainMenuItems.map((item, index) => (
+                        {MAIN_MENU_ITEMS.map((item, index) => (
                           <div
                             key={index}
                             className={`menu-item ${index === selectedMenuIndex ? "selected" : ""}`}
@@ -741,7 +812,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                       {char.name}
                     </div>
                   </div>
-                  <div className="pokemon-stats">
+                  <div className="pokemon-selection-stats">
                     <div className="pokemon-name">{char.name}</div>
                     <div className="pokemon-level">{char.level}</div>
                     <div className="pokemon-hp">HP: {char.hp} / {char.maxHp}</div>
