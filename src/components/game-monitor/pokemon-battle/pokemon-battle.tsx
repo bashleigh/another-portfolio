@@ -64,9 +64,9 @@ const alienEntity: Character = {
   sprite: "virus",
   image: alienImageUrl,
   abilities: [
-    { name: "Terminal Attack", type: "attack", damage: { min: 50, max: 100 }, description: "The Alien machine attacks with malicious code!", soundEffect: "virus-attack" },
+    { name: "Terminal Attack", type: "attack", damage: { min: 50, max: 150 }, description: "The Alien machine attacks with malicious code!", soundEffect: "virus-attack" },
     { name: "System Override", type: "debuff", description: "The Alien machine overrides your systems!", soundEffect: "system-override" },
-    { name: "Spare Parts", type: "attack", damage: { min: 50, max: 150 }, description: "The Alien machine requires you for spare parts! Oxygenated tissues, vagus nerve...", soundEffect: "spare-parts" },
+    { name: "Spare Parts", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine requires you for spare parts! Oxygenated tissues, vagus nerve...", soundEffect: "spare-parts" },
     { name: "Machine Swarm", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine releases a swarm of machines to attack you!", soundEffect: "machine-swarm" },
   ],
 }
@@ -106,14 +106,26 @@ const moveWithinGrid = (key: string, currentIndex: number, totalItems: number, c
   }
 }
 
-const moveWithinList = (key: string, currentIndex: number, totalItems: number) => {
-  if (totalItems <= 0) return currentIndex
+const moveWithinList = (key: string, currentIndex: number, availableIndices: number[]) => {
+  if (availableIndices.length <= 0) return currentIndex
+
+  const currentAvailableIndex = availableIndices.indexOf(currentIndex)
+  if (currentAvailableIndex === -1) {
+    // Current index is not available, return first available
+    return availableIndices[0] ?? currentIndex
+  }
 
   switch (key) {
     case "ArrowUp":
-      return currentIndex > 0 ? currentIndex - 1 : totalItems - 1
+      const prevIndex = currentAvailableIndex > 0 
+        ? availableIndices[currentAvailableIndex - 1] 
+        : availableIndices[availableIndices.length - 1]
+      return prevIndex
     case "ArrowDown":
-      return currentIndex < totalItems - 1 ? currentIndex + 1 : 0
+      const nextIndex = currentAvailableIndex < availableIndices.length - 1
+        ? availableIndices[currentAvailableIndex + 1]
+        : availableIndices[0]
+      return nextIndex
     default:
       return currentIndex
   }
@@ -162,6 +174,8 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   onComplete,
 }) => {
   const { showRick } = useRickOverlay()
+  // Track if Bender has left the game
+  const [benderHasLeft, setBenderHasLeft] = useState(false)
   // Initialize team without Rick - he'll be added when alien entity appears
   const [playerTeam, setPlayerTeam] = useState<Character[]>(() => 
     playerCharacters.filter(char => char.id !== "rick")
@@ -185,7 +199,22 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   // Track hidden abilities per character (character id -> Set of ability indices)
   const [hiddenAbilities, setHiddenAbilities] = useState<Map<string, Set<number>>>(new Map())
 
-  const currentPlayer = playerTeam[currentPlayerIndex]
+  // Filter out Bender if he has left
+  const activePlayerTeam = benderHasLeft 
+    ? playerTeam.filter(char => char.id !== "Bender")
+    : playerTeam
+  
+  // Adjust currentPlayerIndex if Bender was removed
+  // Find the current player in activePlayerTeam
+  const currentPlayerInActiveTeam = benderHasLeft && currentPlayerIndex < playerTeam.length
+    ? activePlayerTeam.find(char => char.id === playerTeam[currentPlayerIndex]?.id)
+    : activePlayerTeam[currentPlayerIndex]
+  
+  const adjustedCurrentPlayerIndex = currentPlayerInActiveTeam
+    ? activePlayerTeam.findIndex(char => char.id === currentPlayerInActiveTeam.id)
+    : (currentPlayerIndex >= activePlayerTeam.length ? Math.max(0, activePlayerTeam.length - 1) : currentPlayerIndex)
+  
+  const currentPlayer = activePlayerTeam[adjustedCurrentPlayerIndex] || activePlayerTeam[0]
   
   // Get visible abilities for current player (filter out hidden ones)
   const visibleAbilities = currentPlayer ? currentPlayer.abilities.filter((_, index) => {
@@ -220,7 +249,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   // Show a "Go {character}!" message once after the intro text finishes
   useEffect(() => {
     if (introTextFinished && !introGoMessageShown) {
-      const firstCharacter = playerTeam[0]
+      const firstCharacter = activePlayerTeam[0]
       if (!firstCharacter) return
 
       setIntroGoMessageShown(true)
@@ -231,7 +260,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
         setDescription("What will you do?")
       })
     }
-  }, [introTextFinished, introGoMessageShown, playerTeam])
+  }, [introTextFinished, introGoMessageShown, activePlayerTeam])
 
   // Load background music when component mounts
   useEffect(() => {
@@ -245,12 +274,10 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
 
   // Start music when intro sequence completes
   useEffect(() => {
-    if (!showIntro) {
       battleMusicManager.play().catch(err => {
         console.warn("Failed to start background music:", err)
       })
-    }
-  }, [showIntro])
+  }, [])
 
   // Stop music when game ends
   useEffect(() => {
@@ -330,9 +357,13 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     const firstAliveIndex = team.findIndex(char => char.hp > 0)
     if (firstAliveIndex !== -1) {
       setSelectedPokemonIndex(firstAliveIndex)
+      setMenuState("pokemon")
+      setDescription("Choose a Pokemon!")
+    } else {
+      // No alive Pokemon - check for game over
+      checkGameOver(team)
     }
-    setMenuState("pokemon")
-  }, [])
+  }, [checkGameOver])
 
   // Helper: Handle spare parts healing
   const handleSparePartsHealing = useCallback((damageDealt: number) => {
@@ -440,7 +471,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   const handleOpponentAttack = useCallback((ability: Ability) => {
     if (!ability.damage) return
 
-    const currentPlayerChar = playerTeam[currentPlayerIndex]
+    const currentPlayerChar = activePlayerTeam[adjustedCurrentPlayerIndex]
     
     // Check for dodge
     if (checkDodge(currentPlayerChar)) {
@@ -460,6 +491,10 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     
     // Apply damage
     const updatedTeam = playerTeam.map((char, index) => {
+      // Skip Bender if he has left
+      if (benderHasLeft && char.id === "Bender") {
+        return char
+      }
       if (index === currentPlayerIndex) {
         const newHp = Math.max(0, char.hp - finalDamage)
         return { ...char, hp: newHp }
@@ -483,7 +518,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       // Player survived
       handleOpponentAttackDamage(finalDamage, isSpareParts)
     }
-  }, [playerTeam, currentPlayerIndex, opponentState, showDescriptionWithTypewriter, decrementAllStatusEffects, endOpponentTurn, handlePlayerFainting, handleOpponentAttackDamage])
+  }, [activePlayerTeam, adjustedCurrentPlayerIndex, opponentState, showDescriptionWithTypewriter, decrementAllStatusEffects, endOpponentTurn, handlePlayerFainting, handleOpponentAttackDamage, benderHasLeft])
 
   // Handle opponent debuff
   const handleOpponentDebuff = useCallback((ability: Ability) => {
@@ -620,21 +655,34 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       
       // Special case: Blackjack & hookers - Bender leaves the game
       if (ability.name === "Blackjack & hookers" && currentPlayer?.id === "Bender") {
-        // Remove Bender from the team (set HP to 0 without showing fainted message)
+        // Mark Bender as having left
+        setBenderHasLeft(true)
+        
+        // Remove Bender from the team entirely (filter him out)
         setPlayerTeam(prev => {
-          const updatedTeam = prev.map(char => 
-            char.id === "Bender" ? { ...char, hp: 0 } : char
-          )
+          const benderIndex = prev.findIndex(char => char.id === "Bender")
+          // Remove Bender from the team completely
+          const updatedTeam = prev.filter(char => char.id !== "Bender")
           
-          // If Bender was the current player, switch to another alive character
-          const firstAliveIndex = updatedTeam.findIndex(char => char.hp > 0)
-          
-          if (firstAliveIndex !== -1 && firstAliveIndex !== currentPlayerIndex) {
-            setCurrentPlayerIndex(firstAliveIndex)
-            setDescription(`Go! ${updatedTeam[firstAliveIndex].name}!`)
-          } else if (firstAliveIndex === -1) {
-            // All characters are gone - check for game over
-            checkGameOver(updatedTeam)
+          // If Bender was the current player, open Pokemon selection instead of auto-switching
+          if (adjustedCurrentPlayerIndex === benderIndex || currentPlayerIndex === benderIndex) {
+            const firstAliveIndex = updatedTeam.findIndex(char => char.hp > 0)
+            
+            if (firstAliveIndex !== -1) {
+              // Open Pokemon selection panel so user can choose
+              // Use setTimeout to ensure state update has completed
+              setTimeout(() => {
+                setSelectedPokemonIndex(firstAliveIndex)
+                setMenuState("pokemon")
+                setDescription("Choose a Pokemon!")
+              }, 0)
+            } else {
+              // All characters are gone - check for game over
+              checkGameOver(updatedTeam)
+            }
+          } else if (currentPlayerIndex > benderIndex) {
+            // If current player index was after Bender, adjust it
+            setCurrentPlayerIndex(prev => Math.max(0, prev - 1))
           }
           
           return updatedTeam
@@ -643,7 +691,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       
       endPlayerTurn()
     })
-  }, [showDescriptionWithTypewriter, endPlayerTurn, currentPlayer, currentPlayerIndex, checkGameOver])
+  }, [showDescriptionWithTypewriter, endPlayerTurn, currentPlayer, currentPlayerIndex, adjustedCurrentPlayerIndex, checkGameOver, benderHasLeft])
 
   const executeAbility = useCallback((ability: Ability) => {
     if (!isPlayerTurn || !currentPlayer) return
@@ -670,12 +718,24 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   }, [isPlayerTurn, currentPlayer, playAbilitySound, showDescriptionWithTypewriter, handlePlayerAttack, handlePlayerBuff, handlePlayerDebuff, handleJokeAbility])
 
   const switchToPokemon = (index: number) => {
-    // Allow switching if target is alive and it's a different pokemon
-    if (playerTeam[index].hp > 0 && index !== currentPlayerIndex) {
-      setCurrentPlayerIndex(index)
+    // Prevent switching if index is out of bounds
+    if (index < 0 || index >= activePlayerTeam.length) {
+      return
+    }
+    
+    const targetChar = activePlayerTeam[index]
+    
+    // Find the actual index in playerTeam (accounting for Bender removal)
+    const actualIndex = benderHasLeft 
+      ? playerTeam.findIndex(char => char.id === targetChar.id)
+      : index
+    
+    // Allow switching only if target is alive and it's a different pokemon
+    if (targetChar && targetChar.hp > 0 && actualIndex !== currentPlayerIndex) {
+      setCurrentPlayerIndex(actualIndex)
       setMenuState("main")
       setSelectedMenuIndex(0)
-      setDescription(`Go! ${playerTeam[index].name}!`)
+      setDescription(`Go! ${targetChar.name}!`)
     }
   }
 
@@ -738,15 +798,31 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     }
 
     if (menuState === "pokemon") {
+      // Get only alive Pokemon indices for navigation (using activePlayerTeam)
+      const aliveIndices = activePlayerTeam
+        .map((char, index) => char.hp > 0 ? index : -1)
+        .filter(index => index !== -1)
+
       if (key === "ArrowUp" || key === "ArrowDown") {
         event.preventDefault()
-        setSelectedPokemonIndex(prev => moveWithinList(key, prev, playerTeam.length))
+        // Adjust selectedPokemonIndex to activePlayerTeam if needed
+        setSelectedPokemonIndex(prev => {
+          const currentAdjusted = prev >= activePlayerTeam.length ? Math.max(0, activePlayerTeam.length - 1) : prev
+          return moveWithinList(key, currentAdjusted, aliveIndices)
+        })
         return
       }
 
       if (key === CONFIRM_KEY) {
         event.preventDefault()
-        switchToPokemon(selectedPokemonIndex)
+        // Only allow switching if selected Pokemon is alive
+        const adjustedIndex = selectedPokemonIndex >= activePlayerTeam.length 
+          ? Math.max(0, activePlayerTeam.length - 1)
+          : selectedPokemonIndex
+        const selectedChar = activePlayerTeam[adjustedIndex]
+        if (selectedChar && selectedChar.hp > 0) {
+          switchToPokemon(adjustedIndex)
+        }
         return
       }
 
@@ -788,6 +864,29 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       }
     }
   }, [menuState, visibleAbilities.length, selectedAbilityIndex])
+
+  // Ensure selectedPokemonIndex always points to an alive Pokemon when selection panel is open
+  useEffect(() => {
+    if (menuState === "pokemon" && activePlayerTeam.length > 0) {
+      // Check if current selection is valid (using activePlayerTeam)
+      if (selectedPokemonIndex >= 0 && selectedPokemonIndex < activePlayerTeam.length) {
+        const selectedChar = activePlayerTeam[selectedPokemonIndex]
+        // If selected Pokemon is fainted, find first alive Pokemon
+        if (!selectedChar || selectedChar.hp <= 0) {
+          const firstAliveIndex = activePlayerTeam.findIndex(char => char.hp > 0)
+          if (firstAliveIndex !== -1) {
+            setSelectedPokemonIndex(firstAliveIndex)
+          }
+        }
+      } else {
+        // Invalid index, find first alive Pokemon
+        const firstAliveIndex = activePlayerTeam.findIndex(char => char.hp > 0)
+        if (firstAliveIndex !== -1) {
+          setSelectedPokemonIndex(firstAliveIndex)
+        }
+      }
+    }
+  }, [menuState, activePlayerTeam, selectedPokemonIndex])
 
   return (
     <div className="pokemon-battle">
@@ -936,13 +1035,29 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
         {menuState === "pokemon" && (
           <div className="pokemon-selection-fullscreen">
             <div className="pokemon-list-fullscreen">
-              {playerTeam.map((char, index) => (
-                <div
-                  key={char.id}
-                  className={`pokemon-list-item ${index === selectedPokemonIndex ? "selected" : ""} ${char.hp === 0 ? "fainted" : ""}`}
-                  onClick={() => switchToPokemon(index)}
-                  onMouseEnter={() => setSelectedPokemonIndex(index)}
-                >
+              {activePlayerTeam.map((char, index) => {
+                const isFainted = char.hp === 0
+                const isSelected = index === selectedPokemonIndex
+                
+                return (
+                  <div
+                    key={char.id}
+                    className={`pokemon-list-item ${isSelected ? "selected" : ""} ${isFainted ? "fainted" : ""}`}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      if (!isFainted && char.hp > 0) {
+                        switchToPokemon(index)
+                      }
+                    }}
+                    onMouseEnter={() => {
+                      // Only allow hover selection if Pokemon is alive
+                      if (!isFainted && char.hp > 0) {
+                        setSelectedPokemonIndex(index)
+                      }
+                    }}
+                    style={{ cursor: isFainted ? "not-allowed" : "pointer" }}
+                  >
                   <div className="pokemon-icon">
                     {index === selectedPokemonIndex && <span className="cursor">▶</span>}
                     <div className="sprite-placeholder small">
@@ -955,7 +1070,8 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                     <div className="pokemon-hp">HP: {char.hp} / {char.maxHp}</div>
                   </div>
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         )}

@@ -35,8 +35,8 @@
       font-family: "Silkscreen", sans-serif;
       font-weight: bold;
 
-      &:hover:not(.completed),
-      &.selected:not(.completed) {
+      &:hover,
+      &.selected {
         background: var(--bulma-primary);
         
         .game-arrow,
@@ -46,19 +46,33 @@
       }
 
       &.completed {
-        opacity: 0.5;
-        cursor: not-allowed;
-        background: rgba(0, 0, 0, 0.5);
+        opacity: 0.7;
+        cursor: pointer;
         
         .game-arrow,
         .game-title {
-          color: rgba(255, 255, 255, 0.4);
+          color: rgba(255, 255, 255, 0.6);
         }
 
         .completed-badge {
-          color: rgba(0, 255, 0, 0.6);
+          color: rgba(0, 255, 0, 0.8);
           font-size: 0.9rem;
           margin-left: 0.5rem;
+        }
+
+        &:hover,
+        &.selected {
+          opacity: 1;
+          background: var(--bulma-primary);
+          
+          .game-arrow,
+          .game-title {
+            color: #000;
+          }
+
+          .completed-badge {
+            color: rgba(0, 200, 0, 1);
+          }
         }
       }
 

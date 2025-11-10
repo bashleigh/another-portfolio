@@ -317,13 +317,13 @@
     z-index: 1000;
 
     .game-over-screen {
-      background: rgba(255, 255, 255, 0.95);
-      border: 3px solid #000;
+      background: rgba(0, 0, 0, 0.95);
+      border: 1px solid var(--bulma-primary);
       padding: 2rem;
       text-align: center;
 
       h2 {
-        color: #000;
+        color: white;
         font-family: "Silkscreen", sans-serif;
         font-size: 2rem;
         margin: 0 0 1.5rem 0;
@@ -340,7 +340,7 @@
         font-weight: bold;
 
         &:hover {
-          background: var(--bulma-link);
+          background: lightgreen;
         }
       }
     }

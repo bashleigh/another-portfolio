@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import "./level-selection.scss"
 import { useRickOverlay } from "./rick-overlay-context"
 
@@ -34,21 +34,6 @@ export const LevelSelection: React.FC<LevelSelectionProps> = ({
   const { showRick, hideRick } = useRickOverlay()
   const [selectedIndex, setSelectedIndex] = useState(0)
 
-  // Get available (non-completed) games for navigation
-  const availableGames = useMemo(() => {
-    return games.filter(game => !completedGames.has(game.id))
-  }, [completedGames])
-
-  // Initialize selectedIndex to first available game
-  useEffect(() => {
-    if (availableGames.length > 0) {
-      const firstAvailableIndex = games.findIndex(g => g.id === availableGames[0].id)
-      if (firstAvailableIndex !== -1) {
-        setSelectedIndex(firstAvailableIndex)
-      }
-    }
-  }, [availableGames])
-
   useEffect(() => {
     showRick(
       "Alright Morty, pick a game! *burp* Any of these should help me escape... I think...",
@@ -61,7 +46,7 @@ export const LevelSelection: React.FC<LevelSelectionProps> = ({
     const game = games[selectedIndex]
     if (game) {
       if (completedGames.has(game.id)) {
-        showRick("You already completed this one, Morty! *burp* Pick something else!", "sarcastic", 3000)
+        showRick("You already beat this one, Morty! *burp* But hey, you can play it again if you want!", "sarcastic", 3000)
       } else {
         showRick(game.rickComment, "sarcastic", 3000)
       }
@@ -69,54 +54,37 @@ export const LevelSelection: React.FC<LevelSelectionProps> = ({
   }, [selectedIndex, showRick, completedGames])
 
   const handleGameSelect = useCallback((gameId: GameId) => {
-    // Don't allow selecting completed games
-    if (completedGames.has(gameId)) {
-      return
-    }
+    // Allow selecting any game, even if completed (for replay)
     hideRick()
     setTimeout(() => {
       onSelectGame(gameId)
     }, 300)
-  }, [onSelectGame, hideRick, completedGames])
+  }, [onSelectGame, hideRick])
 
-  const getNextAvailableIndex = useCallback((currentIndex: number, direction: "up" | "down"): number => {
-    let nextIndex = currentIndex
-    let attempts = 0
-    const maxAttempts = games.length
-
-    while (attempts < maxAttempts) {
-      if (direction === "down") {
-        nextIndex = (nextIndex + 1) % games.length
-      } else {
-        nextIndex = (nextIndex - 1 + games.length) % games.length
-      }
-
-      if (!completedGames.has(games[nextIndex].id)) {
-        return nextIndex
-      }
-
-      attempts++
+  const getNextIndex = useCallback((currentIndex: number, direction: "up" | "down"): number => {
+    // Allow navigation to all games, including completed ones
+    if (direction === "down") {
+      return (currentIndex + 1) % games.length
+    } else {
+      return (currentIndex - 1 + games.length) % games.length
     }
-
-    // If all games are completed, return current index
-    return currentIndex
-  }, [completedGames])
+  }, [])
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === "ArrowUp") {
       e.preventDefault()
-      setSelectedIndex(prev => getNextAvailableIndex(prev, "up"))
+      setSelectedIndex(prev => getNextIndex(prev, "up"))
     } else if (e.key === "ArrowDown") {
       e.preventDefault()
-      setSelectedIndex(prev => getNextAvailableIndex(prev, "down"))
+      setSelectedIndex(prev => getNextIndex(prev, "down"))
     } else if (e.key === "Enter") {
       e.preventDefault()
       const game = games[selectedIndex]
-      if (game && !completedGames.has(game.id)) {
+      if (game) {
         handleGameSelect(game.id)
       }
     }
-  }, [selectedIndex, handleGameSelect, completedGames, getNextAvailableIndex])
+  }, [selectedIndex, handleGameSelect, getNextIndex])
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown)
@@ -139,8 +107,8 @@ export const LevelSelection: React.FC<LevelSelectionProps> = ({
             <div
               key={game.id}
               className={`game-item ${isSelected ? "selected" : ""} ${isCompleted ? "completed" : ""}`}
-              onMouseEnter={() => !isCompleted && handleGameHover(index)}
-              onClick={() => !isCompleted && handleGameSelect(game.id)}
+              onMouseEnter={() => handleGameHover(index)}
+              onClick={() => handleGameSelect(game.id)}
             >
               <span className="game-arrow">&gt;</span>
               <span className="game-title">
