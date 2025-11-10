@@ -1,7 +1,12 @@
 // Sound effect generator for attack abilities using Web Audio API
+// Supports both audio files and programmatic sound generation
 
 class AttackSoundManager {
   private audioContext: AudioContext | null = null
+  // Cache for loaded audio files
+  private audioFileCache: Map<string, HTMLAudioElement> = new Map()
+  // Track which sound types have been attempted to load (to avoid repeated failed attempts)
+  private attemptedLoads: Set<string> = new Set()
 
   private initAudioContext() {
     try {
@@ -206,8 +211,94 @@ class AttackSoundManager {
     }
   }
 
+  // Try to load and play an audio file for the given sound type
+  // Returns true if file was found and played, false otherwise
+  private async playAttackSoundFile(soundType: string): Promise<boolean> {
+    // Check cache first
+    const cachedAudio = this.audioFileCache.get(soundType)
+    if (cachedAudio) {
+      try {
+        // Reset to start and play
+        cachedAudio.currentTime = 0
+        await cachedAudio.play()
+        return true
+      } catch (e) {
+        console.warn(`Failed to play cached audio for ${soundType}:`, e)
+        return false
+      }
+    }
+
+    // If we've already attempted to load this and it failed, skip
+    if (this.attemptedLoads.has(soundType)) {
+      return false
+    }
+
+  // Try to dynamically load the audio file
+  // Note: For attack sound files to work properly with Vite:
+  // Option 1: Place files in public/audio/ and use path like `/audio/${soundType}.ogg`
+  // Option 2: Import files statically using `?url` syntax (like music files)
+  // Option 3: Use import.meta.glob to preload files at build time
+  // Current implementation attempts to load from relative path and gracefully falls back
+  try {
+      // Try loading from the audio subfolder
+      // This will work if files are accessible at runtime
+      // If not found, will fall back to programmatic sounds
+      const audioPath = `./audio/${soundType}.ogg`
+      const audio = new Audio(audioPath)
+      
+      // Set up load promise with error handling
+      const loadPromise = new Promise<boolean>((resolve) => {
+        let resolved = false
+        
+        const resolveOnce = (value: boolean) => {
+          if (!resolved) {
+            resolved = true
+            resolve(value)
+          }
+        }
+        
+        audio.addEventListener("canplaythrough", () => {
+          this.audioFileCache.set(soundType, audio)
+          this.attemptedLoads.add(soundType)
+          audio.play()
+            .then(() => resolveOnce(true))
+            .catch(() => resolveOnce(false))
+        }, { once: true })
+        
+        audio.addEventListener("error", () => {
+          this.attemptedLoads.add(soundType)
+          resolveOnce(false)
+        }, { once: true })
+        
+        // Start loading
+        audio.load()
+        
+        // Timeout after 1 second if loading takes too long
+        setTimeout(() => {
+          if (!this.audioFileCache.has(soundType) && !resolved) {
+            this.attemptedLoads.add(soundType)
+            resolveOnce(false)
+          }
+        }, 1000)
+      })
+
+      return await loadPromise
+    } catch (e) {
+      this.attemptedLoads.add(soundType)
+      return false
+    }
+  }
+
   // Generate unique sound effects for different attacks
+  // First tries to play an audio file, then falls back to programmatic sounds
   async playAttackSound(soundType: string) {
+    // Try to play audio file first
+    const filePlayed = await this.playAttackSoundFile(soundType)
+    if (filePlayed) {
+      return // Audio file was successfully played
+    }
+
+    // Fallback to programmatic sound generation
     await this.ensureAudioContext()
     if (!this.audioContext) return
 

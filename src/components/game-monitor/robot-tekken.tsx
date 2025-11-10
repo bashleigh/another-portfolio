@@ -4,6 +4,7 @@ import { useRickOverlay } from "./rick-overlay-context"
 
 type RobotTekkenProps = {
   onBack: () => void
+  onComplete?: () => void
 }
 
 type Fighter = {
@@ -86,6 +87,7 @@ const fighters: Fighter[] = [
 
 export const RobotTekken: React.FC<RobotTekkenProps> = ({
   onBack,
+  onComplete,
 }) => {
   const { showRick } = useRickOverlay()
   const [playerFighter, setPlayerFighter] = useState<Fighter | null>(null)
@@ -132,6 +134,10 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
           if (newHp === 0) {
             setGameOver("win")
             showRick("YES! *burp* You won, Morty! Great job!", "excited", 5000)
+            // Call onComplete callback when game is won
+            if (onComplete) {
+              onComplete()
+            }
           }
           return { ...prev, hp: newHp }
         })

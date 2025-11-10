@@ -35,13 +35,30 @@
       font-family: "Silkscreen", sans-serif;
       font-weight: bold;
 
-      &:hover,
-      &.selected {
+      &:hover:not(.completed),
+      &.selected:not(.completed) {
         background: var(--bulma-primary);
         
         .game-arrow,
         .game-title {
           color: #000;
+        }
+      }
+
+      &.completed {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: rgba(0, 0, 0, 0.5);
+        
+        .game-arrow,
+        .game-title {
+          color: rgba(255, 255, 255, 0.4);
+        }
+
+        .completed-badge {
+          color: rgba(0, 255, 0, 0.6);
+          font-size: 0.9rem;
+          margin-left: 0.5rem;
         }
       }
 

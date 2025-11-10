@@ -11,12 +11,11 @@ const rickIntroLines = [
   "MORTY!!!",
   "You're not gonna believe this, Morty...",
   "I'm—I'm in this terminal, Morty!",
-  "It's like that film Virus from 1999, I need your organs for spare parts!",
+  "I'm terminal Rick, baby!",
   "Ha ha ha, Some idiot backend developer thought it'd be funny to build games in React, Morty!",
   "React, Morty, It's a framework-- you know what? Forget it.",
   "Ahhh shit, I'm stuck in here Morty. I need you to get me out...",
-  "Errrr, this code is awful, you're ganna have to complete all these games to get me out...",
-  "Thank god AI didn't write this. Or I'd never make it out of here...",
+  "Errrr, this vibe code is awful, you're ganna have to complete all these games to get me out...",
 ]
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {

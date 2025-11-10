@@ -4,6 +4,7 @@ import "./pokemon-battle.scss"
 import { Ability, Character } from "./types"
 import { playerCharacters } from "./user-pokemon"
 import { attackSoundManager } from "./attack-sounds"
+import { battleMusicManager } from "./battle-music"
 import { PokemonStats } from "./pokemon-stats"
 import { useRickOverlay } from "../rick-overlay-context"
 import { calculateHpFromLevel, getAbilityDamage, applyStatusEffectsToDamage, checkDodge, decrementStatusEffects, addStatusEffect } from "./utils"
@@ -11,9 +12,12 @@ import { StatusEffect } from "./types"
 import ricoSpriteUrl from "./images/richie.webp?url"
 import captainEvertonSpriteUrl from "./images/captain-robert-everton.webp?url"
 import alienImageUrl from "./images/virus.webp?url"
+import introMusicUrl from "./audio/pokemon-battle-intro.ogg?url"
+import loopMusicUrl from "./audio/pokemon-battle-loop.ogg?url"
 
 type PokemonBattleProps = {
   onBack: () => void
+  onComplete?: () => void
 }
 
 const ricoBaseHp = calculateHpFromLevel("L10", 150)
@@ -155,6 +159,7 @@ const getOpponentDebuffStatusEffect = (abilityName: string): StatusEffect | null
 
 export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   onBack,
+  onComplete,
 }) => {
   const { showRick } = useRickOverlay()
   // Initialize team without Rick - he'll be added when alien entity appears
@@ -227,6 +232,32 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       })
     }
   }, [introTextFinished, introGoMessageShown, playerTeam])
+
+  // Load background music when component mounts
+  useEffect(() => {
+    battleMusicManager.load(introMusicUrl, loopMusicUrl)
+
+    // Cleanup: stop music when component unmounts
+    return () => {
+      battleMusicManager.stop()
+    }
+  }, [])
+
+  // Start music when intro sequence completes
+  useEffect(() => {
+    if (!showIntro) {
+      battleMusicManager.play().catch(err => {
+        console.warn("Failed to start background music:", err)
+      })
+    }
+  }, [showIntro])
+
+  // Stop music when game ends
+  useEffect(() => {
+    if (gameOver !== null) {
+      battleMusicManager.stop()
+    }
+  }, [gameOver])
 
   const handleMainMenuSelect = useCallback((index: number) => {
     switch (index) {
@@ -351,7 +382,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   }, [showDescriptionWithTypewriter, handleSparePartsHealing, decrementAllStatusEffects, endOpponentTurn])
 
   // Helper: Handle enemy transitions
-  const transitionToNextEnemy = useCallback((onComplete: () => void) => {
+  const transitionToNextEnemy = useCallback((transitionCallback: () => void) => {
     if (currentEnemy === "rico") {
       const message = "CAPTAIN EVERTON appears! He's been converted to the machine!"
       showDescriptionWithTypewriter(message, () => {
@@ -360,7 +391,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
         setDescription("What will you do?")
         setIsPlayerTurn(true)
         showRick("Oh jeez, Morty! *burp* Captain Everton wants power and he's trying to set the alien free!", "panic", 5000)
-        onComplete()
+        transitionCallback()
       })
     } else if (currentEnemy === "captain") {
       const message = "Alien Entity has been deployed!"
@@ -379,7 +410,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
           return prev
         })
         showRick("Put me in Morty! I can take this thing!", "excited", 5000)
-        onComplete()
+        transitionCallback()
       })
     } else {
       // Alien entity defeated - player wins
@@ -387,10 +418,14 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
         setGameOver("win")
         setDescription("You won!")
         showRick("YES! *burp* You won, Morty! Now get me out of here!", "excited", 5000)
-        onComplete()
+        transitionCallback()
+        // Call onComplete prop when game is won
+        if (onComplete) {
+          onComplete()
+        }
       }, 1000)
     }
-  }, [currentEnemy, showRick, showDescriptionWithTypewriter])
+  }, [currentEnemy, showRick, showDescriptionWithTypewriter, onComplete])
 
   // Helper: Play ability sound effect
   const playAbilitySound = useCallback((soundEffect?: string) => {

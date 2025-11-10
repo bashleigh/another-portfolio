@@ -4,12 +4,14 @@ import { useRickOverlay } from "./rick-overlay-context"
 
 type JurassicParkGameProps = {
   onBack: () => void
+  onComplete?: () => void
 }
 
 const PASSWORD = "clever_girl"
 
 export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
   onBack,
+  onComplete,
 }) => {
   const { showRick } = useRickOverlay()
   const [password, setPassword] = useState("")
@@ -58,6 +60,10 @@ export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
         "excited",
         5000
       )
+      // Call onComplete callback when game is won
+      if (onComplete) {
+        onComplete()
+      }
     } else {
       setAttempts(prev => prev + 1)
       setPassword("")
