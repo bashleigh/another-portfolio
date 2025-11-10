@@ -177,13 +177,37 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   const [showIntro, setShowIntro] = useState(true)
   const [introTextFinished, setIntroTextFinished] = useState(false)
   const [introGoMessageShown, setIntroGoMessageShown] = useState(false)
+  // Track hidden abilities per character (character id -> Set of ability indices)
+  const [hiddenAbilities, setHiddenAbilities] = useState<Map<string, Set<number>>>(new Map())
 
   const currentPlayer = playerTeam[currentPlayerIndex]
+  
+  // Get visible abilities for current player (filter out hidden ones)
+  const visibleAbilities = currentPlayer ? currentPlayer.abilities.filter((_, index) => {
+    const hidden = hiddenAbilities.get(currentPlayer.id)
+    return !hidden || !hidden.has(index)
+  }) : []
+  
+  // Helper: Get actual ability index from visible index
+  const getActualAbilityIndex = useCallback((visibleIndex: number): number | null => {
+    if (!currentPlayer) return null
+    const hidden = hiddenAbilities.get(currentPlayer.id) || new Set<number>()
+    let visibleCount = 0
+    for (let i = 0; i < currentPlayer.abilities.length; i++) {
+      if (!hidden.has(i)) {
+        if (visibleCount === visibleIndex) {
+          return i
+        }
+        visibleCount++
+      }
+    }
+    return null
+  }, [currentPlayer, hiddenAbilities])
 
   useEffect(() => {
     showRick(
-      "Pokemon? Really? *burp* In 2025? Well, at least it's not another terminal command. Pick your character and fight!",
-      "sarcastic",
+      "This looks like a copyright nightmare... let's get this over with...",
+      "panic",
       5000
     )
   }, [showRick])
@@ -215,10 +239,10 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
         setSelectedPokemonIndex(0)
         break
       case 2: // ITEM/BAG
-        showRick("What you gonna do Morty? Hit it with your handbag? *burp*", "sarcastic", 3000)
+        showRick("What you gonna do Morty? Hit it with your handbag? *burp*", "panic", 3000)
         break
       case 3: // RUN
-        showRick("Morty, you can't run away from this fight!", "sarcastic", 3000)
+        showRick("Morty, you can't run away from this fight!", "panic", 3000)
         break
       default:
         break
@@ -435,11 +459,29 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       ))
     }
     
+    // Special case: System Override - hide a random attack ability for one turn
+    if (ability.name === "System Override" && currentPlayer) {
+      const attackAbilities = currentPlayer.abilities
+        .map((ability, index) => ({ ability, index }))
+        .filter(({ ability }) => ability.type === "attack")
+      
+      if (attackAbilities.length > 0) {
+        const randomAttack = attackAbilities[Math.floor(Math.random() * attackAbilities.length)]
+        setHiddenAbilities(prev => {
+          const newMap = new Map(prev)
+          const hiddenSet = newMap.get(currentPlayer.id) || new Set<number>()
+          hiddenSet.add(randomAttack.index)
+          newMap.set(currentPlayer.id, hiddenSet)
+          return newMap
+        })
+      }
+    }
+    
     decrementAllStatusEffects()
     showDescriptionWithTypewriter(ability.description, () => {
       endOpponentTurn()
     })
-  }, [currentPlayerIndex, showDescriptionWithTypewriter, decrementAllStatusEffects, endOpponentTurn])
+  }, [currentPlayerIndex, currentPlayer, showDescriptionWithTypewriter, decrementAllStatusEffects, endOpponentTurn])
 
   // Handle opponent joke ability
   const handleOpponentJoke = useCallback((ability: Ability) => {
@@ -470,6 +512,8 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
 
   // Helper: End player turn and start opponent turn
   const endPlayerTurn = useCallback(() => {
+    // Restore hidden abilities after player's turn (they were hidden for one turn)
+    setHiddenAbilities(new Map())
     setTimeout(() => {
       setIsPlayerTurn(false)
       opponentTurn()
@@ -635,7 +679,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       if (GRID_NAVIGATION_KEYS.has(key)) {
         event.preventDefault()
         setSelectedAbilityIndex(prev => {
-          const totalAbilities = currentPlayer.abilities.length
+          const totalAbilities = visibleAbilities.length
           return moveWithinGrid(key, prev, totalAbilities)
         })
         return
@@ -643,9 +687,9 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
 
       if (key === CONFIRM_KEY) {
         event.preventDefault()
-        const ability = currentPlayer.abilities[selectedAbilityIndex]
-        if (ability) {
-          executeAbility(ability)
+        const actualIndex = getActualAbilityIndex(selectedAbilityIndex)
+        if (actualIndex !== null && currentPlayer.abilities[actualIndex]) {
+          executeAbility(currentPlayer.abilities[actualIndex])
         }
         return
       }
@@ -689,15 +733,26 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     selectedAbilityIndex,
     selectedPokemonIndex,
     playerTeam.length,
+    visibleAbilities.length,
     handleMainMenuSelect,
     switchToPokemon,
     executeAbility,
+    getActualAbilityIndex,
   ])
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [handleKeyDown])
+
+  // Clamp selectedAbilityIndex when visible abilities change
+  useEffect(() => {
+    if (menuState === "fight" && visibleAbilities.length > 0) {
+      if (selectedAbilityIndex >= visibleAbilities.length) {
+        setSelectedAbilityIndex(Math.max(0, visibleAbilities.length - 1))
+      }
+    }
+  }, [menuState, visibleAbilities.length, selectedAbilityIndex])
 
   return (
     <div className="pokemon-battle">
@@ -817,14 +872,19 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
 
                     {menuState === "fight" && currentPlayer && (
                       <div className="menu-grid">
-                        {currentPlayer.abilities.map((ability, index) => (
+                        {visibleAbilities.map((ability, visibleIndex) => (
                           <div
-                            key={index}
-                            className={`menu-item ${index === selectedAbilityIndex ? "selected" : ""}`}
-                            onClick={() => executeAbility(ability)}
-                            onMouseEnter={() => setSelectedAbilityIndex(index)}
+                            key={visibleIndex}
+                            className={`menu-item ${visibleIndex === selectedAbilityIndex ? "selected" : ""}`}
+                            onClick={() => {
+                              const actualIndex = getActualAbilityIndex(visibleIndex)
+                              if (actualIndex !== null) {
+                                executeAbility(currentPlayer.abilities[actualIndex])
+                              }
+                            }}
+                            onMouseEnter={() => setSelectedAbilityIndex(visibleIndex)}
                           >
-                            {index === selectedAbilityIndex && <span className="cursor">▶</span>}
+                            {visibleIndex === selectedAbilityIndex && <span className="cursor">▶</span>}
                             {ability.name}
                           </div>
                         ))}

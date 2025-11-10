@@ -5,7 +5,12 @@ import { Character, StatusEffect } from "./types"
 export const calculateHpFromLevel = (level: string, baseHp: number = 100): number => {
   const levelNum = parseInt(level.replace("L", ""), 10)
   // Scale HP: level 5 = 0.5x, level 10 = 1x, level 15 = 1.5x, etc.
-  const multiplier = levelNum / 10
+  // Use diminishing returns for high levels to prevent excessive HP
+  let multiplier = levelNum / 10
+  if (levelNum > 50) {
+    // Much slower scaling after level 50: 5x base + very reduced scaling
+    multiplier = 5 + (levelNum - 50) / 30 // Flatter curve for high levels
+  }
   return Math.round(baseHp * multiplier)
 }
 

@@ -198,13 +198,12 @@
   .pokemon-list-fullscreen {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     overflow-y: auto;
     flex: 1;
 
     .pokemon-list-item {
       border: 2px solid #000;
-      padding: 1rem;
+      padding: .25rem;
       display: flex;
       align-items: center;
       gap: 1rem;

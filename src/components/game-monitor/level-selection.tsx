@@ -9,18 +9,21 @@ type LevelSelectionProps = {
 const games = [
   {
     id: "jurassic-park" as const,
-    title: "Jurassic Park Game",
+    title: "Not without the magic word",
     rickComment: "Oh great, a password game. *burp* Just what I needed while trapped in here...",
+    completed: false,
   },
   {
     id: "pokemon-battle" as const,
-    title: "Pokemon Virus",
+    title: "YOU ARE VIRUS",
     rickComment: "Pokemon? Really? In 2025? *burp* At least it's not another terminal command...",
+    completed: false,
   },
   {
     id: "robot-tekken" as const,
     title: "Johnny five Tekken",
     rickComment: "Now THIS is more like it! *burp* Robots fighting robots! Classic!",
+    completed: false,
   },
 ]
 

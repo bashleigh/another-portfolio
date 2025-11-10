@@ -8,13 +8,14 @@
   align-items: flex-end;
   gap: 0.5rem;
   pointer-events: none;
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--bulma-primary);
 
   .rick-sprite {
     position: relative;
     z-index: 2;
 
     pre {
-      background: none;
       font-family: "Courier New", monospace;
       font-size: 0.5rem;
       line-height: 1;
@@ -24,14 +25,13 @@
   }
 
   .rick-speech-bubble {
-    background: rgba(0, 0, 0, 0.9);
-    border: 2px solid var(--bulma-primary);
+    background: none;
     border-radius: 8px;
     padding: 0.75rem 1rem;
     position: relative;
     max-width: 300px;
     margin-top: -2rem; // Position over Rick's lower half
-    z-index: 1;
+    z-index: 100;
 
     p {
       color: var(--bulma-primary);
