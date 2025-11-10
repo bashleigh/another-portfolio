@@ -71,9 +71,10 @@ export const playerCharacters: Character[] = [
     sprite: "placeholder",
     image: pikachuSpriteUrl,
     abilities: [
-      { name: "Thunderbolt", type: "attack", damage: { min: 18, max: 22 }, description: "A thunderbolt ripped through the enemy!", soundEffect: "default" },
-      { name: "Quick Attack", type: "attack", damage: { min: 8, max: 12 }, description: "Quick Attack!", soundEffect: "buff" },
+      { name: "Thunderbolt", type: "attack", damage: { min: 20, max: 50 }, description: "A thunderbolt ripped through the enemy!", soundEffect: "default" },
+      { name: "Quick Attack", type: "attack", damage: { min: 10, max: 30 }, description: "Quick Attack!", soundEffect: "buff" },
       { name: "Sand Attack", type: "debuff", description: "The enemy's accuracy fell!", soundEffect: "buff" },
+      { name: "Thunder", type: "attack", damage: { min: 60, max: 100 }, description: "A thunderbolt ripped through the enemy!", soundEffect: "default" },
     ],
   },
   {

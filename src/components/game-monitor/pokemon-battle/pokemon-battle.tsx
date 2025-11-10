@@ -117,6 +117,42 @@ const moveWithinList = (key: string, currentIndex: number, totalItems: number) =
 
 const MAIN_MENU_ITEMS = ["FIGHT", "PkMn", "ITEM", "RUN"] as const
 
+// Status effect mappings for player buff abilities
+const getPlayerBuffStatusEffect = (abilityName: string): StatusEffect | null => {
+  const effects: Record<string, StatusEffect> = {
+    "Dodge": { type: "dodge", value: 50, duration: 2 },
+    "Bullet Time": { type: "dodge", value: 40, duration: 3 },
+    "I Know Kung Fu": { type: "attackBoost", value: 25, duration: 1 },
+    "Translate": { type: "defenseBoost", value: 20, duration: 3 },
+    "Philosophy": { type: "attackBoost", value: 15, duration: 1 },
+    "Borg Shield": { type: "defenseBoost", value: 30, duration: 2 },
+    "Robot Agro": { type: "attackBoost", value: 20, duration: 2 },
+    "Shields": { type: "defenseBoost", value: 25, duration: 2 },
+  }
+  return effects[abilityName] || null
+}
+
+// Status effect mappings for player debuff abilities (applied to opponent)
+const getPlayerDebuffStatusEffect = (abilityName: string): StatusEffect | null => {
+  const effects: Record<string, StatusEffect> = {
+    "Hack": { type: "attackReduction", value: 20, duration: 2 },
+    "Virus Conversion": { type: "attackReduction", value: 15, duration: 3 },
+    "System Override": { type: "defenseReduction", value: 25, duration: 2 },
+    "What If": { type: "attackReduction", value: 10, duration: 2 },
+    "Resistance is Futile": { type: "defenseReduction", value: 20, duration: 2 },
+  }
+  return effects[abilityName] || null
+}
+
+// Status effect mappings for opponent debuff abilities (applied to player)
+const getOpponentDebuffStatusEffect = (abilityName: string): StatusEffect | null => {
+  const effects: Record<string, StatusEffect> = {
+    "Machine Conversion": { type: "attackReduction", value: 15, duration: 3 },
+    "System Override": { type: "defenseReduction", value: 25, duration: 2 },
+  }
+  return effects[abilityName] || null
+}
+
 export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   onBack,
 }) => {
@@ -179,7 +215,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
         showRick("What you gonna do Morty? Hit it with your handbag? *burp*", "sarcastic", 3000)
         break
       case 3: // RUN
-        showRick("Morty, you can't run away from this fight! Man up for christ sake! *burp*", "panic", 3000)
+        showRick("Morty, you can't run away from this fight!", "sarcastic", 3000)
         break
       default:
         break
@@ -203,7 +239,298 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     }, typeTime + displayTime)
   }
 
-  const executeAbility = (ability: Ability) => {
+  // Helper: Decrement status effects for both player and opponent
+  const decrementAllStatusEffects = useCallback(() => {
+    setPlayerTeam(prev => prev.map((char, idx) => 
+      idx === currentPlayerIndex ? decrementStatusEffects(char) : char
+    ))
+    setOpponentState(prev => decrementStatusEffects(prev))
+  }, [currentPlayerIndex])
+
+  // Helper: End opponent turn and return to player
+  const endOpponentTurn = useCallback(() => {
+    setCharacterAnimating(null)
+    setIsPlayerTurn(true)
+    setDescription("What will you do?")
+  }, [])
+
+  // Helper: Check if all players are fainted and handle game over
+  const checkGameOver = useCallback((team: Character[]) => {
+    if (team.every(char => char.hp === 0)) {
+      setTimeout(() => {
+        setGameOver("lose")
+        setDescription("You lost!")
+        showRick("Oh no, Morty! *burp* You lost! Try again!", "panic", 5000)
+      }, 1000)
+      return true
+    }
+    return false
+  }, [showRick])
+
+  // Helper: Open pokemon selection when current player faints
+  const openPokemonSelection = useCallback((team: Character[]) => {
+    const firstAliveIndex = team.findIndex(char => char.hp > 0)
+    if (firstAliveIndex !== -1) {
+      setSelectedPokemonIndex(firstAliveIndex)
+    }
+    setMenuState("pokemon")
+  }, [])
+
+  // Helper: Handle spare parts healing
+  const handleSparePartsHealing = useCallback((damageDealt: number) => {
+    setOpponentState(prev => ({
+      ...prev,
+      hp: Math.min(prev.maxHp, prev.hp + damageDealt),
+    }))
+    const healMessage = `${opponentState.name} restored ${damageDealt} HP!`
+    return healMessage
+  }, [opponentState])
+
+  // Helper: Handle player fainting from opponent attack
+  const handlePlayerFainting = useCallback((updatedTeam: Character[], damageDealt: number, isSpareParts: boolean) => {
+    if (isSpareParts) {
+      const healMessage = handleSparePartsHealing(damageDealt)
+      showDescriptionWithTypewriter(healMessage, () => {
+        endOpponentTurn()
+        if (!checkGameOver(updatedTeam)) {
+          decrementAllStatusEffects()
+          openPokemonSelection(updatedTeam)
+        }
+      })
+    } else {
+      endOpponentTurn()
+      if (!checkGameOver(updatedTeam)) {
+        decrementAllStatusEffects()
+        openPokemonSelection(updatedTeam)
+      }
+    }
+  }, [handleSparePartsHealing, showDescriptionWithTypewriter, endOpponentTurn, checkGameOver, decrementAllStatusEffects, openPokemonSelection])
+
+  // Helper: Handle opponent attack damage (non-fainting)
+  const handleOpponentAttackDamage = useCallback((finalDamage: number, isSpareParts: boolean) => {
+    const damageMessage = `It deals ${finalDamage} damage!`
+    showDescriptionWithTypewriter(damageMessage, () => {
+      if (isSpareParts) {
+        const healMessage = handleSparePartsHealing(finalDamage)
+        showDescriptionWithTypewriter(healMessage, () => {
+          decrementAllStatusEffects()
+          endOpponentTurn()
+        })
+      } else {
+        decrementAllStatusEffects()
+        endOpponentTurn()
+      }
+    })
+  }, [showDescriptionWithTypewriter, handleSparePartsHealing, decrementAllStatusEffects, endOpponentTurn])
+
+  // Helper: Handle enemy transitions
+  const transitionToNextEnemy = useCallback((onComplete: () => void) => {
+    if (currentEnemy === "rico") {
+      const message = "CAPTAIN EVERTON appears! He's been converted to the machine!"
+      showDescriptionWithTypewriter(message, () => {
+        setCurrentEnemy("captain")
+        setOpponentState(captainEverton)
+        setDescription("What will you do?")
+        setIsPlayerTurn(true)
+        showRick("Oh jeez, Morty! *burp* Captain Everton wants power and he's trying to set the alien free!", "panic", 5000)
+        onComplete()
+      })
+    } else if (currentEnemy === "captain") {
+      const message = "Alien Entity has been deployed!"
+      showDescriptionWithTypewriter(message, () => {
+        setCurrentEnemy("alien-entity")
+        setOpponentState(alienEntity)
+        setDescription("What will you do?")
+        setIsPlayerTurn(true)
+        showRick("Put me in Morty! I can take this thing!", "excited", 5000)
+        onComplete()
+      })
+    } else {
+      // Alien entity defeated - player wins
+      setTimeout(() => {
+        setGameOver("win")
+        setDescription("You won!")
+        showRick("YES! *burp* You won, Morty! Now get me out of here!", "excited", 5000)
+        onComplete()
+      }, 1000)
+    }
+  }, [currentEnemy, showRick, showDescriptionWithTypewriter])
+
+  // Helper: Play ability sound effect
+  const playAbilitySound = useCallback((soundEffect?: string) => {
+    if (soundEffect) {
+      attackSoundManager.playAttackSound(soundEffect).catch(err => {
+        console.warn("Failed to play attack sound:", err)
+      })
+    }
+  }, [])
+
+  // Handle opponent attack
+  const handleOpponentAttack = useCallback((ability: Ability) => {
+    if (!ability.damage) return
+
+    const currentPlayerChar = playerTeam[currentPlayerIndex]
+    
+    // Check for dodge
+    if (checkDodge(currentPlayerChar)) {
+      const dodgeMessage = `${currentPlayerChar.name} dodged the attack!`
+      showDescriptionWithTypewriter(dodgeMessage, () => {
+        decrementAllStatusEffects()
+        endOpponentTurn()
+      })
+      return
+    }
+    
+    // Calculate damage
+    let baseDamage = getAbilityDamage(ability.damage)
+    baseDamage = applyStatusEffectsToDamage(baseDamage, opponentState, true)
+    const finalDamage = applyStatusEffectsToDamage(baseDamage, currentPlayerChar, false)
+    const isSpareParts = ability.name === "Spare Parts"
+    
+    // Apply damage
+    const updatedTeam = playerTeam.map((char, index) => {
+      if (index === currentPlayerIndex) {
+        const newHp = Math.max(0, char.hp - finalDamage)
+        return { ...char, hp: newHp }
+      }
+      return char
+    })
+    setPlayerTeam(updatedTeam)
+    
+    const damagedChar = updatedTeam[currentPlayerIndex]
+    if (damagedChar.hp === 0) {
+      // Player fainted
+      const faintMessage = `${damagedChar.name} fainted!`
+      showDescriptionWithTypewriter(faintMessage, () => {
+        const damageMessage = `It deals ${finalDamage} damage!`
+        showDescriptionWithTypewriter(damageMessage, () => {
+          const damageDealt = Math.min(finalDamage, currentPlayerChar.hp)
+          handlePlayerFainting(updatedTeam, damageDealt, isSpareParts)
+        })
+      })
+    } else {
+      // Player survived
+      handleOpponentAttackDamage(finalDamage, isSpareParts)
+    }
+  }, [playerTeam, currentPlayerIndex, opponentState, showDescriptionWithTypewriter, decrementAllStatusEffects, endOpponentTurn, handlePlayerFainting, handleOpponentAttackDamage])
+
+  // Handle opponent debuff
+  const handleOpponentDebuff = useCallback((ability: Ability) => {
+    const statusEffect = getOpponentDebuffStatusEffect(ability.name)
+    if (statusEffect) {
+      setPlayerTeam(prev => prev.map((char, idx) => 
+        idx === currentPlayerIndex ? addStatusEffect(char, statusEffect) : char
+      ))
+    }
+    
+    decrementAllStatusEffects()
+    showDescriptionWithTypewriter(ability.description, () => {
+      endOpponentTurn()
+    })
+  }, [currentPlayerIndex, showDescriptionWithTypewriter, decrementAllStatusEffects, endOpponentTurn])
+
+  // Handle opponent joke ability
+  const handleOpponentJoke = useCallback((ability: Ability) => {
+    decrementAllStatusEffects()
+    showDescriptionWithTypewriter(ability.description, () => {
+      endOpponentTurn()
+    })
+  }, [showDescriptionWithTypewriter, decrementAllStatusEffects, endOpponentTurn])
+
+  const opponentTurn = useCallback(() => {
+    const opponentAbility = opponentState.abilities[Math.floor(Math.random() * opponentState.abilities.length)]
+    setCharacterAnimating(opponentState.id)
+    setDescription("")
+    
+    playAbilitySound(opponentAbility.soundEffect)
+    
+    const firstMessage = `${opponentState.name} uses ${opponentAbility.name}!`
+    showDescriptionWithTypewriter(firstMessage, () => {
+      if (opponentAbility.type === "attack" && opponentAbility.damage) {
+        handleOpponentAttack(opponentAbility)
+      } else if (opponentAbility.type === "debuff") {
+        handleOpponentDebuff(opponentAbility)
+      } else {
+        handleOpponentJoke(opponentAbility)
+      }
+    })
+  }, [opponentState, playAbilitySound, showDescriptionWithTypewriter, handleOpponentAttack, handleOpponentDebuff, handleOpponentJoke])
+
+  // Helper: End player turn and start opponent turn
+  const endPlayerTurn = useCallback(() => {
+    setTimeout(() => {
+      setIsPlayerTurn(false)
+      opponentTurn()
+    }, 500)
+  }, [opponentTurn])
+
+  // Handle player attack ability
+  const handlePlayerAttack = useCallback((ability: Ability) => {
+    if (!currentPlayer || !ability.damage) return
+
+    let baseDamage = getAbilityDamage(ability.damage)
+    baseDamage = applyStatusEffectsToDamage(baseDamage, currentPlayer, true)
+    const finalDamage = applyStatusEffectsToDamage(baseDamage, opponentState, false)
+    const newHp = Math.max(0, opponentState.hp - finalDamage)
+    
+    setOpponentState(prev => ({ ...prev, hp: newHp }))
+    
+    const damageMessage = `It deals ${finalDamage} damage!`
+    showDescriptionWithTypewriter(damageMessage, () => {
+      setCharacterAnimating(null)
+      
+      if (newHp <= 0) {
+        const defeatMessage = `${opponentState.name} fainted!`
+        showDescriptionWithTypewriter(defeatMessage, () => {
+          transitionToNextEnemy(() => {})
+        })
+        return
+      }
+
+      decrementAllStatusEffects()
+      endPlayerTurn()
+    })
+  }, [currentPlayer, opponentState, showDescriptionWithTypewriter, transitionToNextEnemy, decrementAllStatusEffects, endPlayerTurn])
+
+  // Handle player buff ability
+  const handlePlayerBuff = useCallback((ability: Ability) => {
+    if (!currentPlayer) return
+
+    const statusEffect = getPlayerBuffStatusEffect(ability.name)
+    if (statusEffect) {
+      setPlayerTeam(prev => prev.map((char, idx) => 
+        idx === currentPlayerIndex ? addStatusEffect(char, statusEffect) : char
+      ))
+    }
+    
+    showDescriptionWithTypewriter(ability.description, () => {
+      setCharacterAnimating(null)
+      endPlayerTurn()
+    })
+  }, [currentPlayer, currentPlayerIndex, showDescriptionWithTypewriter, endPlayerTurn])
+
+  // Handle player debuff ability
+  const handlePlayerDebuff = useCallback((ability: Ability) => {
+    const statusEffect = getPlayerDebuffStatusEffect(ability.name)
+    if (statusEffect) {
+      setOpponentState(prev => addStatusEffect(prev, statusEffect))
+    }
+    
+    showDescriptionWithTypewriter(ability.description, () => {
+      setCharacterAnimating(null)
+      endPlayerTurn()
+    })
+  }, [showDescriptionWithTypewriter, endPlayerTurn])
+
+  // Handle joke ability (no effect)
+  const handleJokeAbility = useCallback((ability: Ability) => {
+    showDescriptionWithTypewriter(ability.description, () => {
+      setCharacterAnimating(null)
+      endPlayerTurn()
+    })
+  }, [showDescriptionWithTypewriter, endPlayerTurn])
+
+  const executeAbility = useCallback((ability: Ability) => {
     if (!isPlayerTurn || !currentPlayer) return
 
     setMenuState("main")
@@ -211,343 +538,21 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     setCharacterAnimating(currentPlayer.id)
     setDescription("")
     
-    // Play attack sound effect
-    if (ability.soundEffect) {
-      attackSoundManager.playAttackSound(ability.soundEffect).catch(err => {
-        console.warn("Failed to play attack sound:", err)
-      })
-    }
+    playAbilitySound(ability.soundEffect)
     
     const firstMessage = `${currentPlayer.name} uses ${ability.name}!`
     showDescriptionWithTypewriter(firstMessage, () => {
       if (ability.type === "attack" && ability.damage) {
-        let baseDamage = getAbilityDamage(ability.damage)
-        // Apply attack boosts from status effects
-        baseDamage = applyStatusEffectsToDamage(baseDamage, currentPlayer, true)
-        const finalDamage = applyStatusEffectsToDamage(baseDamage, opponentState, false)
-        const newHp = Math.max(0, opponentState.hp - finalDamage)
-        setOpponentState(prev => ({
-          ...prev,
-          hp: newHp,
-        }))
-        
-        const damageMessage = `It deals ${finalDamage} damage!`
-        showDescriptionWithTypewriter(damageMessage, () => {
-          setCharacterAnimating(null)
-          
-          if (newHp <= 0) {
-            const defeatMessage = `${opponentState.name} fainted!`
-            showDescriptionWithTypewriter(defeatMessage, () => {
-              if (currentEnemy === "rico") {
-                // Rico is defeated, transition to Captain Everton
-                const captainDeployMessage = "CAPTAIN EVERTON appears! He's been converted to the machine!"
-                showDescriptionWithTypewriter(captainDeployMessage, () => {
-                  setCurrentEnemy("captain")
-                  setOpponentState(captainEverton)
-                  setDescription("What will you do?")
-                  setIsPlayerTurn(true)
-                  showRick("Oh jeez, Morty! *burp* Captain Everton wants power and he's trying to set the alien free!", "panic", 5000)
-                })
-                return
-              } else if (currentEnemy === "captain") {
-                // Captain Everton is defeated, transition to Virus
-                const virusDeployMessage = "VIRUS has been deployed!"
-                showDescriptionWithTypewriter(virusDeployMessage, () => {
-                  setCurrentEnemy("alien-entity")
-                  setOpponentState(alienEntity)
-                  setDescription("What will you do?")
-                  setIsPlayerTurn(true)
-                  showRick("Oh crap, Morty! *burp* Now the alien entity is here! This is bad!", "panic", 5000)
-                })
-                return
-              } else {
-                // Virus is defeated, player wins
-                setTimeout(() => {
-                  setGameOver("win")
-                  setDescription("You won!")
-                  showRick("YES! *burp* You won, Morty! Now get me out of here!", "excited", 5000)
-                }, 1000)
-                return
-              }
-            })
-            return
-          }
-
-          // Decrement status effects after attack
-          setPlayerTeam(prev => prev.map((char, idx) => 
-            idx === currentPlayerIndex ? decrementStatusEffects(char) : char
-          ))
-          
-          setTimeout(() => {
-            setIsPlayerTurn(false)
-            opponentTurn()
-          }, 500)
-        })
+        handlePlayerAttack(ability)
       } else if (ability.type === "buff") {
-        // Handle buff abilities
-        let statusEffect: StatusEffect | null = null
-        
-        if (ability.name === "Dodge") {
-          statusEffect = { type: "dodge", value: 50, duration: 2 } // 50% dodge chance for 2 turns
-        } else if (ability.name === "Bullet Time") {
-          statusEffect = { type: "dodge", value: 40, duration: 3 } // 40% dodge chance for 3 turns
-        } else if (ability.name === "I Know Kung Fu") {
-          statusEffect = { type: "attackBoost", value: 25, duration: 1 } // +25% attack for next turn only
-        } else if (ability.name === "Translate") {
-          statusEffect = { type: "defenseBoost", value: 20, duration: 3 } // +20% defense for 3 turns
-        } else if (ability.name === "Philosophy") {
-          statusEffect = { type: "attackBoost", value: 15, duration: 1 } // +15% attack for next turn only
-        } else if (ability.name === "Borg Shield") {
-          statusEffect = { type: "defenseBoost", value: 30, duration: 2 } // +30% defense for 2 turns
-        }
-        
-        if (statusEffect) {
-          setPlayerTeam(prev => prev.map((char, idx) => 
-            idx === currentPlayerIndex ? addStatusEffect(char, statusEffect!) : char
-          ))
-        }
-        
-        // Use original ability description
-        showDescriptionWithTypewriter(ability.description, () => {
-          setCharacterAnimating(null)
-          setTimeout(() => {
-            setIsPlayerTurn(false)
-            opponentTurn()
-          }, 500)
-        })
+        handlePlayerBuff(ability)
       } else if (ability.type === "debuff") {
-        // Handle debuff abilities - apply effects to opponent
-        let statusEffect: StatusEffect | null = null
-        
-        if (ability.name === "Hack") {
-          statusEffect = { type: "attackReduction", value: 20, duration: 2 } // -20% attack for 2 turns
-        } else if (ability.name === "Virus Conversion") {
-          statusEffect = { type: "attackReduction", value: 15, duration: 3 } // -15% attack for 3 turns
-        } else if (ability.name === "System Override") {
-          statusEffect = { type: "defenseReduction", value: 25, duration: 2 } // -25% defense for 2 turns
-        } else if (ability.name === "What If") {
-          statusEffect = { type: "attackReduction", value: 10, duration: 2 } // -10% attack for 2 turns
-        } else if (ability.name === "Resistance is Futile") {
-          statusEffect = { type: "defenseReduction", value: 20, duration: 2 } // -20% defense for 2 turns
-        }
-        
-        if (statusEffect) {
-          setOpponentState(prev => addStatusEffect(prev, statusEffect!))
-        }
-        
-        // Use original ability description
-        showDescriptionWithTypewriter(ability.description, () => {
-          setCharacterAnimating(null)
-          setTimeout(() => {
-            setIsPlayerTurn(false)
-            opponentTurn()
-          }, 500)
-        })
+        handlePlayerDebuff(ability)
       } else {
-        // Joke abilities - no effect
-        showDescriptionWithTypewriter(ability.description, () => {
-          setCharacterAnimating(null)
-          setTimeout(() => {
-            setIsPlayerTurn(false)
-            opponentTurn()
-          }, 500)
-        })
+        handleJokeAbility(ability)
       }
     })
-  }
-
-  const opponentTurn = () => {
-    const opponentAbility = opponentState.abilities[Math.floor(Math.random() * opponentState.abilities.length)]
-    setCharacterAnimating(opponentState.id)
-    setDescription("")
-    
-    // Play attack sound effect
-    if (opponentAbility.soundEffect) {
-      attackSoundManager.playAttackSound(opponentAbility.soundEffect).catch(err => {
-        console.warn("Failed to play attack sound:", err)
-      })
-    }
-    
-    const firstMessage = `${opponentState.name} uses ${opponentAbility.name}!`
-    showDescriptionWithTypewriter(firstMessage, () => {
-      if (opponentAbility.type === "attack" && opponentAbility.damage) {
-        // Check for dodge first
-        const currentPlayerChar = playerTeam[currentPlayerIndex]
-        if (checkDodge(currentPlayerChar)) {
-          const dodgeMessage = `${currentPlayerChar.name} dodged the attack!`
-          showDescriptionWithTypewriter(dodgeMessage, () => {
-            // Decrement all status effects (dodge effect remains if duration > 0)
-            setPlayerTeam(prev => prev.map((char, idx) => 
-              idx === currentPlayerIndex ? decrementStatusEffects(char) : char
-            ))
-            setOpponentState(prev => decrementStatusEffects(prev))
-            
-            setCharacterAnimating(null)
-            setIsPlayerTurn(true)
-            setDescription("What will you do?")
-          })
-          return
-        }
-        
-        let baseDamage = getAbilityDamage(opponentAbility.damage)
-        // Apply attack boosts from opponent's status effects
-        baseDamage = applyStatusEffectsToDamage(baseDamage, opponentState, true)
-        const finalDamage = applyStatusEffectsToDamage(baseDamage, currentPlayerChar, false)
-        const isSpareParts = opponentAbility.name === "Spare Parts"
-        const updatedTeam = playerTeam.map((char, index) => {
-          if (index === currentPlayerIndex) {
-            const newHp = Math.max(0, char.hp - finalDamage)
-            if (newHp === 0) {
-              const faintMessage = `${char.name} fainted!`
-              showDescriptionWithTypewriter(faintMessage, () => {
-                const damageMessage = `It deals ${finalDamage} damage!`
-                showDescriptionWithTypewriter(damageMessage, () => {
-                  // Heal virus if it's Spare Parts
-                  if (isSpareParts) {
-                    const damageDealt = Math.min(finalDamage, char.hp)
-                    setOpponentState(prev => ({
-                      ...prev,
-                      hp: Math.min(prev.maxHp, prev.hp + damageDealt),
-                    }))
-                    const healMessage = `${opponentState.name} restored ${damageDealt} HP!`
-                    showDescriptionWithTypewriter(healMessage, () => {
-                      setCharacterAnimating(null)
-                      setIsPlayerTurn(true)
-                      
-                      if (updatedTeam.every(char => char.hp === 0)) {
-                        setTimeout(() => {
-                          setGameOver("lose")
-                          setDescription("You lost!")
-                          showRick("Oh no, Morty! *burp* You lost! Try again!", "panic", 5000)
-                        }, 1000)
-                        return
-                      }
-
-                      // Decrement status effects
-                      setPlayerTeam(prev => prev.map((char, idx) => 
-                        idx === currentPlayerIndex ? decrementStatusEffects(char) : char
-                      ))
-                      setOpponentState(prev => decrementStatusEffects(prev))
-                      
-                      // Open pokemon selection panel
-                      const firstAliveIndex = updatedTeam.findIndex(char => char.hp > 0)
-                      if (firstAliveIndex !== -1) {
-                        setSelectedPokemonIndex(firstAliveIndex)
-                      }
-                      setMenuState("pokemon")
-                    })
-                  } else {
-                    setCharacterAnimating(null)
-                    setIsPlayerTurn(true)
-                    
-                    // Decrement status effects
-                    setPlayerTeam(prev => prev.map((char, idx) => 
-                      idx === currentPlayerIndex ? decrementStatusEffects(char) : char
-                    ))
-                    setOpponentState(prev => decrementStatusEffects(prev))
-                    
-                    if (updatedTeam.every(char => char.hp === 0)) {
-                      setTimeout(() => {
-                        setGameOver("lose")
-                        setDescription("You lost!")
-                        showRick("Oh no, Morty! *burp* You lost! Try again!", "panic", 5000)
-                      }, 1000)
-                      return
-                    }
-
-                    // Open pokemon selection panel
-                    const firstAliveIndex = updatedTeam.findIndex(char => char.hp > 0)
-                    if (firstAliveIndex !== -1) {
-                      setSelectedPokemonIndex(firstAliveIndex)
-                    }
-                    setMenuState("pokemon")
-                  }
-                })
-              })
-            } else {
-              const damageMessage = `It deals ${finalDamage} damage!`
-              showDescriptionWithTypewriter(damageMessage, () => {
-                // Heal virus if it's Spare Parts
-                if (isSpareParts) {
-                  const damageDealt = finalDamage
-                  setOpponentState(prev => ({
-                    ...prev,
-                    hp: Math.min(prev.maxHp, prev.hp + damageDealt),
-                  }))
-                  const healMessage = `${opponentState.name} restored ${damageDealt} HP!`
-                  showDescriptionWithTypewriter(healMessage, () => {
-                    // Decrement status effects
-                    setPlayerTeam(prev => prev.map((char, idx) => 
-                      idx === currentPlayerIndex ? decrementStatusEffects(char) : char
-                    ))
-                    setOpponentState(prev => decrementStatusEffects(prev))
-                    
-                    setCharacterAnimating(null)
-                    setIsPlayerTurn(true)
-                    setDescription("What will you do?")
-                  })
-                } else {
-                  // Decrement status effects
-                  setPlayerTeam(prev => prev.map((char, idx) => 
-                    idx === currentPlayerIndex ? decrementStatusEffects(char) : char
-                  ))
-                  setOpponentState(prev => decrementStatusEffects(prev))
-                  
-                  setCharacterAnimating(null)
-                  setIsPlayerTurn(true)
-                  setDescription("What will you do?")
-                }
-              })
-            }
-            return { ...char, hp: newHp }
-          }
-          return char
-        })
-        setPlayerTeam(updatedTeam)
-      } else if (opponentAbility.type === "debuff") {
-        // Handle opponent debuff abilities - apply effects to player
-        let statusEffect: StatusEffect | null = null
-        
-        if (opponentAbility.name === "Machine Conversion") {
-          statusEffect = { type: "attackReduction", value: 15, duration: 3 } // -15% attack for 3 turns
-        } else if (opponentAbility.name === "System Override") {
-          statusEffect = { type: "defenseReduction", value: 25, duration: 2 } // -25% defense for 2 turns
-        }
-        
-        if (statusEffect) {
-          setPlayerTeam(prev => prev.map((char, idx) => 
-            idx === currentPlayerIndex ? addStatusEffect(char, statusEffect!) : char
-          ))
-        }
-        
-        // Decrement status effects
-        setPlayerTeam(prev => prev.map((char, idx) => 
-          idx === currentPlayerIndex ? decrementStatusEffects(char) : char
-        ))
-        setOpponentState(prev => decrementStatusEffects(prev))
-        
-        // Use original ability description
-        showDescriptionWithTypewriter(opponentAbility.description, () => {
-          setCharacterAnimating(null)
-          setIsPlayerTurn(true)
-          setDescription("What will you do?")
-        })
-      } else {
-        // Joke or other abilities
-        // Decrement status effects
-        setPlayerTeam(prev => prev.map((char, idx) => 
-          idx === currentPlayerIndex ? decrementStatusEffects(char) : char
-        ))
-        setOpponentState(prev => decrementStatusEffects(prev))
-        
-        showDescriptionWithTypewriter(opponentAbility.description, () => {
-          setCharacterAnimating(null)
-          setIsPlayerTurn(true)
-          setDescription("What will you do?")
-        })
-      }
-    })
-  }
+  }, [isPlayerTurn, currentPlayer, playAbilitySound, showDescriptionWithTypewriter, handlePlayerAttack, handlePlayerBuff, handlePlayerDebuff, handleJokeAbility])
 
   const switchToPokemon = (index: number) => {
     // Allow switching if target is alive and it's a different pokemon
