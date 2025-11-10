@@ -10,7 +10,7 @@ import { calculateHpFromLevel, getAbilityDamage, applyStatusEffectsToDamage, che
 import { StatusEffect } from "./types"
 import ricoSpriteUrl from "./images/richie.webp?url"
 import captainEvertonSpriteUrl from "./images/captain-robert-everton.webp?url"
-import virusImageUrl from "./images/virus.webp?url"
+import alienImageUrl from "./images/virus.webp?url"
 
 type PokemonBattleProps = {
   onBack: () => void
@@ -44,25 +44,26 @@ const captainEverton: Character = {
   image: captainEvertonSpriteUrl,
   abilities: [
     { name: "Power Grab", type: "attack", damage: { min: 10, max: 50 }, description: "Captain Everton reaches for power!", soundEffect: "power-grab" },
-    { name: "Virus Conversion", type: "debuff", description: "Captain Everton tries to convert you to the virus!", soundEffect: "virus-conversion" },
-    { name: "Release the Virus", type: "attack", damage: { min: 40, max: 75 }, description: "Captain Everton attempts to set the virus free!", soundEffect: "release-virus" },
+    { name: "Machine Conversion", type: "debuff", description: "Captain Everton submits to the Alien Entity!", soundEffect: "virus-conversion" },
+    { name: "Release the Alien Entity", type: "attack", damage: { min: 40, max: 75 }, description: "Captain Everton attempts to set the Alien Entity free!", soundEffect: "release-virus" },
     { name: "World Domination", type: "attack", damage: { min: 30, max: 100 }, description: "Captain Everton seeks to escape and rule the world!", soundEffect: "world-domination" },
   ],
 }
 
-const virusBaseHp = calculateHpFromLevel("L99", 200)
-const virus: Character = {
-  id: "virus",
-  name: "VIRUS",
+const alienEntityHp = calculateHpFromLevel("L99", 200)
+const alienEntity: Character = {
+  id: "alien-entity",
+  name: "Alien Entity",
   level: "L99",
-  hp: virusBaseHp,
-  maxHp: virusBaseHp,
+  hp: alienEntityHp,
+  maxHp: alienEntityHp,
   sprite: "virus",
-  image: virusImageUrl,
+  image: alienImageUrl,
   abilities: [
-    { name: "Virus Attack", type: "attack", damage: { min: 23, max: 27 }, description: "The virus machine attacks with malicious code!", soundEffect: "virus-attack" },
-    { name: "System Override", type: "debuff", description: "The virus overrides your systems!", soundEffect: "system-override" },
-    { name: "Spare Parts", type: "attack", damage: { min: 28, max: 32 }, description: "The virus machine demands spare parts! Oxygenated tissues, vagus nerve...", soundEffect: "spare-parts" },
+    { name: "Terminal Attack", type: "attack", damage: { min: 50, max: 100 }, description: "The Alien machine attacks with malicious code!", soundEffect: "virus-attack" },
+    { name: "System Override", type: "debuff", description: "The Alien machine overrides your systems!", soundEffect: "system-override" },
+    { name: "Spare Parts", type: "attack", damage: { min: 50, max: 150 }, description: "The Alien machine requires you for spare parts! Oxygenated tissues, vagus nerve...", soundEffect: "spare-parts" },
+    { name: "Machine Swarm", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine releases a swarm of machines to attack you!", soundEffect: "machine-swarm" },
   ],
 }
 
@@ -122,7 +123,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   const { showRick } = useRickOverlay()
   const [playerTeam, setPlayerTeam] = useState<Character[]>(playerCharacters)
   const [opponentState, setOpponentState] = useState<Character>(rico)
-  const [currentEnemy, setCurrentEnemy] = useState<"rico" | "captain" | "virus">("rico")
+  const [currentEnemy, setCurrentEnemy] = useState<"rico" | "captain" | "alien-entity">("rico")
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0)
   const [description, setDescription] = useState<string>("")
   const [descriptionOverlay, setDescriptionOverlay] = useState<string>("")
@@ -239,24 +240,24 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
             showDescriptionWithTypewriter(defeatMessage, () => {
               if (currentEnemy === "rico") {
                 // Rico is defeated, transition to Captain Everton
-                const captainDeployMessage = "CAPTAIN EVERTON appears! He's been converted to the virus!"
+                const captainDeployMessage = "CAPTAIN EVERTON appears! He's been converted to the machine!"
                 showDescriptionWithTypewriter(captainDeployMessage, () => {
                   setCurrentEnemy("captain")
                   setOpponentState(captainEverton)
                   setDescription("What will you do?")
                   setIsPlayerTurn(true)
-                  showRick("Oh jeez, Morty! *burp* Captain Everton wants power and he's trying to set the virus free!", "panic", 5000)
+                  showRick("Oh jeez, Morty! *burp* Captain Everton wants power and he's trying to set the alien free!", "panic", 5000)
                 })
                 return
               } else if (currentEnemy === "captain") {
                 // Captain Everton is defeated, transition to Virus
                 const virusDeployMessage = "VIRUS has been deployed!"
                 showDescriptionWithTypewriter(virusDeployMessage, () => {
-                  setCurrentEnemy("virus")
-                  setOpponentState(virus)
+                  setCurrentEnemy("alien-entity")
+                  setOpponentState(alienEntity)
                   setDescription("What will you do?")
                   setIsPlayerTurn(true)
-                  showRick("Oh crap, Morty! *burp* Now the virus is here! This is bad!", "panic", 5000)
+                  showRick("Oh crap, Morty! *burp* Now the alien entity is here! This is bad!", "panic", 5000)
                 })
                 return
               } else {
@@ -507,7 +508,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
         // Handle opponent debuff abilities - apply effects to player
         let statusEffect: StatusEffect | null = null
         
-        if (opponentAbility.name === "Virus Conversion") {
+        if (opponentAbility.name === "Machine Conversion") {
           statusEffect = { type: "attackReduction", value: 15, duration: 3 } // -15% attack for 3 turns
         } else if (opponentAbility.name === "System Override") {
           statusEffect = { type: "defenseReduction", value: 25, duration: 2 } // -25% defense for 2 turns
