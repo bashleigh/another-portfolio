@@ -10,7 +10,7 @@ import { PokemonStats } from "./pokemon-stats"
 import { useRickOverlay } from "../rick-overlay-context"
 import { getAbilityDamage, applyStatusEffectsToDamage, checkDodge, decrementStatusEffects, addStatusEffect } from "./utils"
 import { StatusEffect } from "./types"
-import ricoSpriteUrl from "./images/richie.webp?url"
+import ricoSpriteUrl from "./images/rico.webp?url"
 import captainEvertonSpriteUrl from "./images/captain-robert-everton.webp?url"
 import alienImageUrl from "./images/virus.webp?url"
 import introMusicUrl from "./audio/pokemon-battle-intro.ogg?url"
@@ -34,9 +34,9 @@ const rico: Character = {
   faintSound: "rico-faint",
   abilities: [
     { name: "Steve", type: "attack", damage: { min: 3, max: 7 }, description: "Steve!", soundEffect: "steve" },
-    { name: "STEVE", type: "attack", damage: { min: 8, max: 12 }, description: "STEVE!", soundEffect: "steve-loud" },
-    { name: "Steve...", type: "attack", damage: { min: 1, max: 3 }, description: "Steve...", soundEffect: "steve-soft" },
-    { name: "STEVE!!!", type: "attack", damage: { min: 9, max: 13 }, description: "STEVE!!!", soundEffect: "steve-excited" },
+    { name: "STEVE", type: "attack", damage: { min: 8, max: 12 }, description: "STEVE!", soundEffect: "steve" },
+    { name: "Steve...", type: "attack", damage: { min: 1, max: 3 }, description: "Steve...", soundEffect: "steve" },
+    { name: "STEVE!!!", type: "attack", damage: { min: 9, max: 13 }, description: "STEVE!!!", soundEffect: "steve" },
   ],
 }
 

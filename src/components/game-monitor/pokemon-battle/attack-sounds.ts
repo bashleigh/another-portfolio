@@ -3,6 +3,7 @@ import { AbilitySoundName } from "./types"
 
 class AttackSoundManager {
   private audioFileCache: Map<AbilitySoundName, HTMLAudioElement> = new Map()
+  private volume: number = 0.3
 
   private getAudio(soundType: AbilitySoundName): HTMLAudioElement | null {
     const cached = this.audioFileCache.get(soundType)
@@ -25,6 +26,7 @@ class AttackSoundManager {
   async playAttackSound(soundType: AbilitySoundName) {
     const audio = this.getAudio(soundType)
     if (!audio) return
+    audio.volume = this.volume
 
     try {
       audio.currentTime = 0
