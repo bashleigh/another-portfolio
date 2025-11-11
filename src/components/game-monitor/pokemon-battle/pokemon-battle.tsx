@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback, useRef } from "react"
 import Typewriter from "typewriter-effect"
 import "./pokemon-battle.scss"
 import { Ability, Character } from "./types"
 import { playerCharacters } from "./user-pokemon"
 import { attackSoundManager } from "./attack-sounds"
 import { battleMusicManager } from "./battle-music"
+import { pokemonSoundManager } from "./pokemon-sounds"
 import { PokemonStats } from "./pokemon-stats"
 import { useRickOverlay } from "../rick-overlay-context"
-import { calculateHpFromLevel, getAbilityDamage, applyStatusEffectsToDamage, checkDodge, decrementStatusEffects, addStatusEffect } from "./utils"
+import { getAbilityDamage, applyStatusEffectsToDamage, checkDodge, decrementStatusEffects, addStatusEffect } from "./utils"
 import { StatusEffect } from "./types"
 import ricoSpriteUrl from "./images/richie.webp?url"
 import captainEvertonSpriteUrl from "./images/captain-robert-everton.webp?url"
@@ -20,15 +21,17 @@ type PokemonBattleProps = {
   onComplete?: () => void
 }
 
-const ricoBaseHp = calculateHpFromLevel("L10", 150)
+
 const rico: Character = {
   id: "rico",
   name: "RICO",
   level: "L10",
-  hp: ricoBaseHp,
-  maxHp: ricoBaseHp,
+  hp: 70,
+  maxHp: 70,
   sprite: "rico",
   image: ricoSpriteUrl,
+  entranceSound: "rico-entrance",
+  faintSound: "rico-faint",
   abilities: [
     { name: "Steve", type: "attack", damage: { min: 3, max: 7 }, description: "Steve!", soundEffect: "steve" },
     { name: "STEVE", type: "attack", damage: { min: 8, max: 12 }, description: "STEVE!", soundEffect: "steve-loud" },
@@ -37,15 +40,17 @@ const rico: Character = {
   ],
 }
 
-const captainEvertonBaseHp = calculateHpFromLevel("L50", 175)
+
 const captainEverton: Character = {
   id: "captain-everton",
   name: "CAPTAIN EVERTON",
   level: "L50",
-  hp: captainEvertonBaseHp,
-  maxHp: captainEvertonBaseHp,
+  hp: 150,
+  maxHp: 150,
   sprite: "captain-everton",
   image: captainEvertonSpriteUrl,
+  entranceSound: "captain-everton-entrance",
+  faintSound: "captain-everton-faint",
   abilities: [
     { name: "Power Grab", type: "attack", damage: { min: 10, max: 50 }, description: "Captain Everton reaches for power!", soundEffect: "power-grab" },
     { name: "Machine Conversion", type: "debuff", description: "Captain Everton submits to the Alien Entity!", soundEffect: "virus-conversion" },
@@ -54,19 +59,20 @@ const captainEverton: Character = {
   ],
 }
 
-const alienEntityHp = calculateHpFromLevel("L99", 200)
 const alienEntity: Character = {
   id: "alien-entity",
   name: "Alien Entity",
   level: "L99",
-  hp: alienEntityHp,
-  maxHp: alienEntityHp,
+  hp: 200,
+  maxHp: 200,
   sprite: "virus",
   image: alienImageUrl,
+  entranceSound: "alien-entity-entrance",
+  faintSound: "alien-entity-faint",
   abilities: [
     { name: "Terminal Attack", type: "attack", damage: { min: 50, max: 150 }, description: "The Alien machine attacks with malicious code!", soundEffect: "virus-attack" },
     { name: "System Override", type: "debuff", description: "The Alien machine overrides your systems!", soundEffect: "system-override" },
-    { name: "Spare Parts", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine requires you for spare parts! Oxygenated tissues, vagus nerve...", soundEffect: "spare-parts" },
+    { name: "Spare Parts", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine requires you for spare parts! Oxygenated tissues, vagus nerve...", soundEffect: "absorb" },
     { name: "Machine Swarm", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine releases a swarm of machines to attack you!", soundEffect: "machine-swarm" },
   ],
 }
@@ -199,6 +205,8 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   // Track hidden abilities per character (character id -> Set of ability indices)
   const [hiddenAbilities, setHiddenAbilities] = useState<Map<string, Set<number>>>(new Map())
 
+  const lastOpponentIdRef = useRef<string | null>(null)
+
   // Filter out Bender if he has left
   const activePlayerTeam = benderHasLeft 
     ? playerTeam.filter(char => char.id !== "Bender")
@@ -246,6 +254,13 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     )
   }, [showRick])
 
+  useEffect(() => {
+    if (lastOpponentIdRef.current !== opponentState.id) {
+      lastOpponentIdRef.current = opponentState.id
+      pokemonSoundManager.playEntranceSound(opponentState.entranceSound)
+    }
+  }, [opponentState.id, opponentState.entranceSound])
+
   // Show a "Go {character}!" message once after the intro text finishes
   useEffect(() => {
     if (introTextFinished && !introGoMessageShown) {
@@ -254,6 +269,9 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
 
       setIntroGoMessageShown(true)
       const goMessage = `Go ${firstCharacter.name}!`
+
+      // Play entrance sound for the first character
+      pokemonSoundManager.playEntranceSound(firstCharacter.entranceSound)
 
       showDescriptionWithTypewriter(goMessage, () => {
         setShowIntro(false)
@@ -459,9 +477,9 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   }, [currentEnemy, showRick, showDescriptionWithTypewriter, onComplete])
 
   // Helper: Play ability sound effect
-  const playAbilitySound = useCallback((soundEffect?: string) => {
-    if (soundEffect) {
-      attackSoundManager.playAttackSound(soundEffect).catch(err => {
+  const playAbilitySound = useCallback((ability: Ability) => {
+    if (ability.soundEffect) {
+      attackSoundManager.playAttackSound(ability.soundEffect).catch(err => {
         console.warn("Failed to play attack sound:", err)
       })
     }
@@ -507,6 +525,9 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     if (damagedChar.hp === 0) {
       // Player fainted
       const faintMessage = `${damagedChar.name} fainted!`
+      
+      pokemonSoundManager.playFaintSound(damagedChar.faintSound)
+      
       showDescriptionWithTypewriter(faintMessage, () => {
         const damageMessage = `It deals ${finalDamage} damage!`
         showDescriptionWithTypewriter(damageMessage, () => {
@@ -566,7 +587,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     setCharacterAnimating(opponentState.id)
     setDescription("")
     
-    playAbilitySound(opponentAbility.soundEffect)
+    playAbilitySound(opponentAbility)
     
     const firstMessage = `${opponentState.name} uses ${opponentAbility.name}!`
     showDescriptionWithTypewriter(firstMessage, () => {
@@ -606,6 +627,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       setCharacterAnimating(null)
       
       if (newHp <= 0) {
+        pokemonSoundManager.playFaintSound(opponentState.faintSound)
         const defeatMessage = `${opponentState.name} fainted!`
         showDescriptionWithTypewriter(defeatMessage, () => {
           transitionToNextEnemy(() => {})
@@ -701,7 +723,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     setCharacterAnimating(currentPlayer.id)
     setDescription("")
     
-    playAbilitySound(ability.soundEffect)
+    playAbilitySound(ability)
     
     const firstMessage = `${currentPlayer.name} uses ${ability.name}!`
     showDescriptionWithTypewriter(firstMessage, () => {
@@ -736,6 +758,8 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       setMenuState("main")
       setSelectedMenuIndex(0)
       setDescription(`Go! ${targetChar.name}!`)
+      
+      pokemonSoundManager.playEntranceSound(targetChar.entranceSound)
     }
   }
 
@@ -972,7 +996,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                         typewriter
                           .typeString("Rico bursts through the wall! He wants your organs for spare parts!")
                           .callFunction(() => {
-                            setIntroTextFinished(true)
+                            setTimeout(() => setIntroTextFinished(true), 3000)
                           })
                           .start()
                       }}
