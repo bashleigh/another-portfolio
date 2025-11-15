@@ -18,10 +18,10 @@ export const playerCharacters: Character[] = [
     entranceSound: "bender-entrance",
     faintSound: "bender-faint",
     abilities: [
-      { name: "Bending", type: "attack", damage: { min: 18, max: 25 }, description: "Bender bends the enemy!", soundEffect: "protocol-attack" },
+      { name: "Bending", type: "attack", damage: { min: 18, max: 25 }, description: "Bender bends the enemy!", soundEffect: "im-a-bender" },
       { name: "Alcohol consumption", type: "buff", description: "Chug, Chug, Chug!", soundEffect: "buff" },
       { name: "Blackjack & hookers", type: "joke", description: "Bender leaves, saying he's going to build his own pokemon game.", soundEffect: "blackjack-hookers" },
-      { name: "Panic attack", type: "debuff", description: "Bender starts rambling about his life, confusing the enemy.", soundEffect: "debuff" },
+      { name: "Panic attack", type: "debuff", description: "Bender starts rambling about his life, confusing the enemy.", soundEffect: "bender-panic" },
     ],
   },
   {
@@ -103,7 +103,7 @@ export const playerCharacters: Character[] = [
     entranceSound: "rick-entrance",
     faintSound: "rick-faint",
     abilities: [
-      { name: "Go Go gadget arms", type: "attack", damage: { min: 50, max: 100 }, description: "Rick's Go Go gadget arms attack the enemy!", soundEffect: "beep-attack" },
+      { name: "Go science!", type: "attack", damage: { min: 70, max: 110 }, description: "Rick uses science. it's super effective!", soundEffect: "beep-attack" },
       { name: "Portal Gun", type: "buff", description: "Rick goes home to grab some stuff. Totally still needs you to get him out.", soundEffect: "portal-gun" },
       { name: "Arm rocket", type: "attack", damage: { min: 10, max: 120 }, description: "Rick's Arm Rocket attacks the enemy!", soundEffect: "sparks" },
       { name: "Woo Vu Luvub dub dub", type: "joke", description: "Yea I said it. Happy now?", soundEffect: "woo-vu-luvub-dub-dub" },

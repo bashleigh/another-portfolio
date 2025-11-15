@@ -9,20 +9,20 @@
 
   .back-button {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
+    top: 0rem;
+    left: 0rem;
     background: var(--bulma-primary);
     color: #000;
+    font-size: .6rem;
     border: none;
     padding: 0.5rem 1rem;
     font-family: "Silkscreen", sans-serif;
     cursor: pointer;
     border-radius: 4px;
     z-index: 100;
-    font-size: 0.8rem;
 
     &:hover {
-      background: var(--bulma-link);
+      background-color: rgba(15, 240, 15, 1);
     }
   }
 
@@ -57,6 +57,15 @@
 
       &.bursting-through {
         animation: burstThroughWall 1s ease-out;
+      }
+
+      &.fainted {
+        filter: grayscale(40%) brightness(0.9);
+        opacity: 0.8;
+
+        .sprite-image {
+          filter: grayscale(40%) brightness(0.9);
+        }
       }
 
       .sprite-image {
@@ -100,11 +109,11 @@
       }
 
       &.fainted {
-        filter: grayscale(100%) brightness(0.4);
-        opacity: 0.6;
+        filter: grayscale(40%) brightness(0.9);
+        opacity: 0.8;
 
         .sprite-image {
-          filter: grayscale(100%) brightness(0.4);
+          filter: grayscale(40%) brightness(0.9);
         }
       }
 

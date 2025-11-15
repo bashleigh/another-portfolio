@@ -93,12 +93,12 @@ const rickExpressions = {
 }
 
 export const RickOverlay: React.FC = () => {
-  const { narration, expression } = useRickOverlay()
+  const { narration, expression, overlayPosition } = useRickOverlay()
 
   if (!narration) return null
 
   return (
-    <div className="rick-overlay">
+    <div className={`rick-overlay ${overlayPosition}`}>
       <div className="rick-sprite">
         <pre>{rickExpressions[expression].join("\n")}</pre>
       </div>

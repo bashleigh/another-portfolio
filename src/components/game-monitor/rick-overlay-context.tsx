@@ -5,15 +5,18 @@ export type RickExpression = "normal" | "panic" | "excited" | "sarcastic" | "sho
 interface RickOverlayContextType {
   narration: string | null
   expression: RickExpression
+  overlayPosition: "top-left"| "top-center" | "bottom-right"
+  setOverlayPosition: (position: "top-left"| "top-center" | "bottom-right") => void
   showRick: (narration: string, expression?: RickExpression, duration?: number) => void
   hideRick: () => void
 }
 
 const RickOverlayContext = createContext<RickOverlayContextType | undefined>(undefined)
 
-export const RickOverlayProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const RickOverlayProvider: React.FC<{ children: React.ReactNode, initialOverlayPosition: "top-left"| "top-center" | "bottom-right" }> = ({ children, initialOverlayPosition }) => {
   const [narration, setNarration] = useState<string | null>(null)
   const [expression, setExpression] = useState<RickExpression>("normal")
+  const [overlayPosition, setOverlayPosition] = useState<"top-left"| "top-center" | "bottom-right">(initialOverlayPosition || 'bottom-right')
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const showRick = useCallback((narration: string, expression: RickExpression = "normal", duration: number = 4000) => {
@@ -52,7 +55,7 @@ export const RickOverlayProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }, [])
 
   return (
-    <RickOverlayContext.Provider value={{ narration, expression, showRick, hideRick }}>
+    <RickOverlayContext.Provider value={{ narration, expression, showRick, hideRick, overlayPosition, setOverlayPosition }}>
       {children}
     </RickOverlayContext.Provider>
   )

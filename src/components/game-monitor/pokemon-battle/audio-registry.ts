@@ -34,7 +34,8 @@ import { AbilitySoundName, EntranceSoundName, FaintSoundName } from "./types"
 export const abilitySoundMap: Record<AbilitySoundName, string> = {
   absorb: absorbUrl,
   assimilate: resistantIsFutileUrl,
-  "beep-attack": programmedToDoUrl,
+  "beep-attack": biteUrl,
+  "im-a-bender": programmedToDoUrl,
   bite: biteUrl,
   "blackjack-hookers": blackjackHookersUrl,
   blizzard: blizzardUrl,
@@ -72,6 +73,7 @@ export const abilitySoundMap: Record<AbilitySoundName, string> = {
   "portal-gun": portalGunUrl,
   "woo-vu-luvub-dub-dub": wooVuLuvubDubDubDubUrl,
   "borg-tractor-beam": borgTractorBeamUrl,
+  "bender-panic": benderPanicUrl,
 }
 
 export const entranceSoundMap: Record<EntranceSoundName, string> = {

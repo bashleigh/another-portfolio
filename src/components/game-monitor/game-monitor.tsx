@@ -62,7 +62,7 @@ export const GameMonitor = () => {
   }
 
   return (
-    <RickOverlayProvider>
+    <RickOverlayProvider initialOverlayPosition="bottom-right">
       <div id="game-monitor" className="is-fullscreen">
         <img className="monitor-image" src="/images/monitor.png" alt="Monitor" />
         

@@ -70,7 +70,7 @@ const alienEntity: Character = {
   entranceSound: "alien-entity-entrance",
   faintSound: "alien-entity-faint",
   abilities: [
-    { name: "Terminal Attack", type: "attack", damage: { min: 50, max: 100 }, description: "The Alien machine attacks with malicious code!", soundEffect: "virus-attack" },
+    { name: "Terminal Attack", type: "attack", damage: { min: 50, max: 80 }, description: "The Alien machine attacks with malicious code!", soundEffect: "virus-attack" },
     { name: "System Override", type: "debuff", description: "The Alien machine overrides your systems!", soundEffect: "system-override" },
     { name: "Spare Parts", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine requires you for spare parts! Oxygenated tissues, vagus nerve...", soundEffect: "absorb" },
     { name: "Machine Swarm", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine releases a swarm of machines to attack you!", soundEffect: "machine-swarm" },
@@ -179,7 +179,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   onBack,
   onComplete,
 }) => {
-  const { showRick } = useRickOverlay()
+  const { showRick, setOverlayPosition } = useRickOverlay()
   // Track if Bender has left the game
   const [benderHasLeft, setBenderHasLeft] = useState(false)
   // Initialize team without Rick - he'll be added when alien entity appears
@@ -299,10 +299,12 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   // Load background music when component mounts
   useEffect(() => {
     battleMusicManager.load(introMusicUrl, loopMusicUrl)
+    setOverlayPosition("top-center")
 
     // Cleanup: stop music when component unmounts
     return () => {
       battleMusicManager.stop()
+      setOverlayPosition("bottom-right")
     }
   }, [])
 
@@ -945,7 +947,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   return (
     <div className="pokemon-battle">
       <button className="back-button" onClick={onBack}>
-        ← Back
+        ← Exit
       </button>
 
       <div className="battle-arena">
@@ -966,7 +968,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
           <PokemonStats opponentState={opponentState} isOpponent={true} />
 
           {/* Enemy Sprite - Top Right */}
-          <div className={`enemy-sprite ${characterAnimating === opponentState.id ? "attacking" : ""} ${showIntro && currentEnemy === "rico" ? "bursting-through" : ""}`}>
+          <div className={`enemy-sprite ${characterAnimating === opponentState.id ? "attacking" : ""} ${showIntro && currentEnemy === "rico" ? "bursting-through" : ""} ${opponentState.hp === 0 ? "fainted" : ""}`}>
             {opponentState.image ? (
               <img src={opponentState.image} alt={opponentState.name} className="sprite-image" />
             ) : (

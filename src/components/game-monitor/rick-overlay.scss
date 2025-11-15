@@ -11,6 +11,18 @@
   background: rgba(0, 0, 0, 0.9);
   border: 2px solid var(--bulma-primary);
 
+  &.top-center {
+    top: 10vh;
+    right: 50%;
+    bottom: auto;
+    transform: translateX(50%);
+  }
+
+  &.bottom-right {
+    bottom: 15vh;
+    right: 8vw;
+  }
+
   .rick-sprite {
     position: relative;
     z-index: 2;
