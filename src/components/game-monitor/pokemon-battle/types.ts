@@ -44,6 +44,7 @@ export const ABILITY_SOUND_NAMES = [
   "i-know-kung-fu",
   "portal-gun",
   "woo-vu-luvub-dub-dub",
+  "borg-tractor-beam",
 ] as const
 
 export const ENTRANCE_SOUND_NAMES = [

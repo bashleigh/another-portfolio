@@ -27,6 +27,7 @@ import steveUrl from "./audio/steve.ogg?url"
 import portalGunUrl from "./audio/portal-gun.ogg?url"
 import wooVuLuvubDubDubDubUrl from "./audio/woo_vu_luvub_dub_dub.ogg?url"
 import imRickUrl from "./audio/im-rick.ogg?url"
+import borgTractorBeamUrl from "./audio/borg-tractor-beam.ogg?url"
 
 import { AbilitySoundName, EntranceSoundName, FaintSoundName } from "./types"
 
@@ -70,6 +71,7 @@ export const abilitySoundMap: Record<AbilitySoundName, string> = {
   "terminate": youHaveBeenTerminatedUrl,
   "portal-gun": portalGunUrl,
   "woo-vu-luvub-dub-dub": wooVuLuvubDubDubDubUrl,
+  "borg-tractor-beam": borgTractorBeamUrl,
 }
 
 export const entranceSoundMap: Record<EntranceSoundName, string> = {

@@ -35,7 +35,7 @@ export const playerCharacters: Character[] = [
     entranceSound: "locutus-entrance",
     faintSound: "locutus-faint",
     abilities: [
-      { name: "Assimilate", type: "attack", damage: { min: 48, max: 52 }, description: "Locutus attempts to assimilate the enemy!", soundEffect: "assimilate" },
+      { name: "Assimilate", type: "attack", damage: { min: 48, max: 52 }, description: "Locutus attempts to assimilate the enemy!", soundEffect: "borg-tractor-beam" },
       { name: "Resistance is Futile", type: "debuff", description: "Locutus states the obvious. Enemy loses hope.", soundEffect: "resistance-is-futile" },
       { name: "Borg Shield", type: "buff", description: "Borg technology adapts. Defense increases!", soundEffect: "buff" },
       { name: "We are Borg", type: "joke", description: "Locutus states 'We are Borg'. Everyone is slightly confused.", soundEffect: "we-are-the-borg" },
