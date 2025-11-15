@@ -202,10 +202,12 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   const [showIntro, setShowIntro] = useState(true)
   const [introTextFinished, setIntroTextFinished] = useState(false)
   const [introGoMessageShown, setIntroGoMessageShown] = useState(false)
+  const [playerSpriteVisible, setPlayerSpriteVisible] = useState(false)
   // Track hidden abilities per character (character id -> Set of ability indices)
   const [hiddenAbilities, setHiddenAbilities] = useState<Map<string, Set<number>>>(new Map())
 
   const lastOpponentIdRef = useRef<string | null>(null)
+  const playerSpriteRef = useRef<HTMLDivElement>(null)
 
   // Filter out Bender if he has left
   const activePlayerTeam = benderHasLeft 
@@ -272,6 +274,20 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
 
       // Play entrance sound for the first character
       pokemonSoundManager.playEntranceSound(firstCharacter.entranceSound)
+      
+      // Show sprite and trigger entrance animation
+      setPlayerSpriteVisible(true)
+      // Use setTimeout to ensure DOM has updated and ref is available
+      setTimeout(() => {
+        if (playerSpriteRef.current) {
+          playerSpriteRef.current.classList.add("entering")
+          setTimeout(() => {
+            if (playerSpriteRef.current) {
+              playerSpriteRef.current.classList.remove("entering")
+            }
+          }, 800) // Animation duration
+        }
+      }, 10) // Small delay to ensure DOM update
 
       showDescriptionWithTypewriter(goMessage, () => {
         setShowIntro(false)
@@ -760,6 +776,20 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       setDescription(`Go! ${targetChar.name}!`)
       
       pokemonSoundManager.playEntranceSound(targetChar.entranceSound)
+      
+      // Show sprite and trigger entrance animation (in case it was hidden)
+      setPlayerSpriteVisible(true)
+      // Use setTimeout to ensure DOM has updated and ref is available
+      setTimeout(() => {
+        if (playerSpriteRef.current) {
+          playerSpriteRef.current.classList.add("entering")
+          setTimeout(() => {
+            if (playerSpriteRef.current) {
+              playerSpriteRef.current.classList.remove("entering")
+            }
+          }, 800) // Animation duration
+        }
+      }, 10) // Small delay to ensure DOM update
     }
   }
 
@@ -948,7 +978,11 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
           </div>
 
           {/* Player Sprite - Bottom Left */}
-          <div className={`player-sprite ${characterAnimating === currentPlayer?.id ? "attacking" : ""}`}>
+          {playerSpriteVisible && (
+            <div 
+              ref={playerSpriteRef}
+              className={`player-sprite ${characterAnimating === currentPlayer?.id ? "attacking" : ""} ${currentPlayer?.hp === 0 ? "fainted" : ""}`}
+            >
             {currentPlayer?.image ? (
               <img src={currentPlayer.image} alt={currentPlayer.name} className="sprite-image" />
             ) : (
@@ -957,7 +991,8 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                 <p className="small">(Sprite placeholder)</p>
               </div>
             )}
-          </div>
+            </div>
+          )}
           <PokemonStats opponentState={currentPlayer} isOpponent={false} />
 
         </div>

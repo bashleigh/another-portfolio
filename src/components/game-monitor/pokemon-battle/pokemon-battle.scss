@@ -95,6 +95,19 @@
         animation: attackAnimation 0.5s;
       }
 
+      &.entering {
+        animation: slideInFromLeft 0.8s ease-out;
+      }
+
+      &.fainted {
+        filter: grayscale(100%) brightness(0.4);
+        opacity: 0.6;
+
+        .sprite-image {
+          filter: grayscale(100%) brightness(0.4);
+        }
+      }
+
       .sprite-image {
         width: 100%;
         height: 100%;
@@ -366,6 +379,17 @@
   }
   100% {
     transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
     opacity: 1;
   }
 }
