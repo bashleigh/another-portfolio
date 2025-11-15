@@ -3,8 +3,8 @@ import pikachuSpriteUrl from "./images/pikachu.webp?url"
 import locutusImageUrl from "./images/locutus.webp?url"
 import rickImageUrl from "./images/rick.webp?url"
 import neoImageUrl from "./images/neo.webp?url"
-import morpheusImageUrl from "./images/morpheus.webp?url"
 import benderImageUrl from "./images/bender.webp?url"
+import t800ImageUrl from "./images/t800.webp?url"
 
 export const playerCharacters: Character[] = [
   {
@@ -36,26 +36,26 @@ export const playerCharacters: Character[] = [
     faintSound: "locutus-faint",
     abilities: [
       { name: "Assimilate", type: "attack", damage: { min: 48, max: 52 }, description: "Locutus attempts to assimilate the enemy!", soundEffect: "assimilate" },
-      { name: "Resistance is Futile", type: "debuff", description: "Locutus states the obvious. Enemy loses hope.", soundEffect: "debuff" },
+      { name: "Resistance is Futile", type: "debuff", description: "Locutus states the obvious. Enemy loses hope.", soundEffect: "resistance-is-futile" },
       { name: "Borg Shield", type: "buff", description: "Borg technology adapts. Defense increases!", soundEffect: "buff" },
-      { name: "We are Borg", type: "joke", description: "Locutus states 'We are Borg'. Everyone is slightly confused.", soundEffect: "joke" },
+      { name: "We are Borg", type: "joke", description: "Locutus states 'We are Borg'. Everyone is slightly confused.", soundEffect: "we-are-the-borg" },
     ],
   },
   {
-    id: "morpheus",
-    name: "MORPHEUS",
+    id: "t800",
+    name: "T-800",
     level: "L32",
     hp: 91,
     maxHp: 91,
-    sprite: "morpheus",
-    image: morpheusImageUrl,
-    entranceSound: "morpheus-entrance",
-    faintSound: "morpheus-faint",
+    sprite: "t800",
+    image: t800ImageUrl,
+    entranceSound: "terminator-entrance",
+    faintSound: "terminator-faint",
     abilities: [
-      { name: "Red Pill", type: "attack", damage: { min: 33, max: 37 }, description: "Morpheus offers the red pill. Reality hits hard!", soundEffect: "red-pill" },
-      { name: "Philosophy", type: "buff", description: "Morpheus gives a speech. Team morale increases!", soundEffect: "buff" },
-      { name: "What If", type: "debuff", description: "Morpheus asks 'What if I told you...' Enemy is confused.", soundEffect: "debuff" },
-      { name: "Spoon", type: "joke", description: "There is no spoon. Nothing happens, but it's deep.", soundEffect: "joke" },
+      { name: "I'll Be Back", type: "buff", description: "T-800's iconic phrase hits hard! Arnie's attack increases", soundEffect: "ill-be-back" },
+      { name: "Machine gun", type: "attack", damage: { min: 20, max: 35 }, description: "Arnie's machine gun attacks the enemy!", soundEffect: "machine-gun" },
+      { name: "Targeting information", type: "debuff", description: "T-800 gets the enemy's targetting information.", soundEffect: "targeting-information" },
+      { name: "Terminate", type: "attack", damage: { min: 10, max: 45 }, description: "You have been terminated...", soundEffect: "terminate" },
     ],
   },
   {
@@ -72,7 +72,7 @@ export const playerCharacters: Character[] = [
       { name: "Matrix Punch", type: "attack", damage: { min: 38, max: 42 }, description: "Neo bends reality and punches through the matrix!", soundEffect: "matrix-punch" },
       { name: "Dodge", type: "buff", description: "Neo dodges like in the matrix, increasing evasion!", soundEffect: "buff" },
       { name: "Bullet Time", type: "attack", damage: { min: 28, max: 32 }, description: "Neo slows time and attacks multiple times!", soundEffect: "bullet-time" },
-      { name: "I Know Kung Fu", type: "buff", description: "Neo remembers he knows kung fu. Attack power increases!", soundEffect: "buff" },
+      { name: "I Know Kung Fu", type: "buff", description: "Neo remembers he knows kung fu. Attack power increases!", soundEffect: "i-know-kung-fu" },
     ],
   },
   {
@@ -89,7 +89,7 @@ export const playerCharacters: Character[] = [
       { name: "Thunderbolt", type: "attack", damage: { min: 20, max: 50 }, description: "A thunderbolt ripped through the enemy!", soundEffect: "thunderbolt" },
       { name: "Quick Attack", type: "attack", damage: { min: 10, max: 30 }, description: "Quick Attack!", soundEffect: "quick-attack" },
       { name: "Sand Attack", type: "debuff", description: "The enemy's accuracy fell!", soundEffect: "defensive-curl" },
-      { name: "Thunder", type: "attack", damage: { min: 60, max: 100 }, description: "A thunderbolt ripped through the enemy!", soundEffect: "thunder" },
+      { name: "Thunder", type: "attack", damage: { min: 50, max: 80 }, description: "A thunderbolt ripped through the enemy!", soundEffect: "thunder" },
     ],
   },
   {
@@ -103,10 +103,10 @@ export const playerCharacters: Character[] = [
     entranceSound: "rick-entrance",
     faintSound: "rick-faint",
     abilities: [
-      { name: "Go Go gadget arms", type: "attack", damage: { min: 50, max: 200 }, description: "Rick's Go Go gadget arms attack the enemy!", soundEffect: "beep-attack" },
-      { name: "Shields", type: "debuff", description: "Rick creates a shield to protect himself, reducing the enemy's attack!", soundEffect: "debuff" },
-      { name: "Arm rocket", type: "attack", damage: { min: 10, max: 200 }, description: "Rick's Arm Rocket attacks the enemy!", soundEffect: "sparks" },
-      { name: "Morty", type: "joke", description: "Shut up Morty I'm battling this guy! Pick an attack!", soundEffect: "joke" },
+      { name: "Go Go gadget arms", type: "attack", damage: { min: 50, max: 100 }, description: "Rick's Go Go gadget arms attack the enemy!", soundEffect: "beep-attack" },
+      { name: "Portal Gun", type: "buff", description: "Rick goes home to grab some stuff. Totally still needs you to get him out.", soundEffect: "portal-gun" },
+      { name: "Arm rocket", type: "attack", damage: { min: 10, max: 120 }, description: "Rick's Arm Rocket attacks the enemy!", soundEffect: "sparks" },
+      { name: "Woo Vu Luvub dub dub", type: "joke", description: "Yea I said it. Happy now?", soundEffect: "woo-vu-luvub-dub-dub" },
     ],
   },
 ]

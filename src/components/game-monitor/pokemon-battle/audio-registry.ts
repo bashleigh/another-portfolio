@@ -18,6 +18,15 @@ import resistantIsFutileUrl from "./audio/resistant-is-futile.ogg?url"
 import thunderUrl from "./audio/Thunder.ogg?url"
 import thunderboltUrl from "./audio/Thunderbolt.ogg?url"
 import weAreTheBorgUrl from "./audio/we_are_the_borg.ogg?url"
+import terminatorEntranceUrl from "./audio/dun-dun-dun-dun-dun.ogg?url"
+import terminatorFaintUrl from "./audio/dun-dun-dun-dun-dun.ogg?url"
+import illBeBackUrl from "./audio/ill-be-back.ogg?url"
+import youHaveBeenTerminatedUrl from "./audio/you-are-terminated.ogg?url"
+import iKnowKungFuUrl from "./audio/i-know-kung-fu.ogg?url"
+import steveUrl from "./audio/steve.ogg?url"
+import portalGunUrl from "./audio/portal-gun.ogg?url"
+import wooVuLuvubDubDubDubUrl from "./audio/woo_vu_luvub_dub_dub.ogg?url"
+import imRickUrl from "./audio/im-rick.ogg?url"
 
 import { AbilitySoundName, EntranceSoundName, FaintSoundName } from "./types"
 
@@ -36,15 +45,16 @@ export const abilitySoundMap: Record<AbilitySoundName, string> = {
   joke: blackjackHookersUrl,
   "machine-swarm": fireSpinUrl,
   "matrix-punch": quickAttackUrl,
+  "i-know-kung-fu": iKnowKungFuUrl,
   "power-grab": fireSpinUrl,
   "protocol-attack": benderEntranceUrl,
   "red-pill": recoverUrl,
   "release-virus": fireSpinUrl,
   sparks: fireSpinUrl,
-  steve: imaBenderUrl,
-  "steve-excited": imaBenderUrl,
-  "steve-loud": imaBenderUrl,
-  "steve-soft": imaBenderUrl,
+  steve: steveUrl,
+  "steve-excited": steveUrl,
+  "steve-loud": steveUrl,
+  "steve-soft": steveUrl,
   "system-override": programmedToDoUrl,
   thunder: thunderUrl,
   thunderbolt: thunderboltUrl,
@@ -52,10 +62,18 @@ export const abilitySoundMap: Record<AbilitySoundName, string> = {
   "virus-conversion": recoverUrl,
   "world-domination": fireSpinUrl,
   "quick-attack": quickAttackUrl,
+  "resistance-is-futile": resistantIsFutileUrl,
+  "we-are-the-borg": weAreTheBorgUrl,
+  "ill-be-back": illBeBackUrl,
+  "machine-gun": fireSpinUrl,
+  "targeting-information": fireSpinUrl,
+  "terminate": youHaveBeenTerminatedUrl,
+  "portal-gun": portalGunUrl,
+  "woo-vu-luvub-dub-dub": wooVuLuvubDubDubDubUrl,
 }
 
 export const entranceSoundMap: Record<EntranceSoundName, string> = {
-  "rico-entrance": programmedToDoUrl,
+  "rico-entrance": steveUrl,
   "captain-everton-entrance": recoverUrl,
   "alien-entity-entrance": fireSpinUrl,
   "bender-entrance": benderEntranceUrl,
@@ -63,11 +81,12 @@ export const entranceSoundMap: Record<EntranceSoundName, string> = {
   "morpheus-entrance": weAreTheBorgUrl,
   "neo-entrance": quickAttackUrl,
   "pikachu-entrance": pikachuEntranceUrl,
-  "rick-entrance": programmedToDoUrl,
+  "terminator-entrance": terminatorEntranceUrl,
+  "rick-entrance": imRickUrl,
 }
 
 export const faintSoundMap: Record<FaintSoundName, string> = {
-  "rico-faint": programmedToDoUrl,
+  "rico-faint": steveUrl,
   "captain-everton-faint": recoverUrl,
   "alien-entity-faint": absorbUrl,
   "bender-faint": benderPanicUrl,
@@ -75,5 +94,6 @@ export const faintSoundMap: Record<FaintSoundName, string> = {
   "morpheus-faint": imaBenderUrl,
   "neo-faint": quickAttackUrl,
   "pikachu-faint": pikachuFaintUrl,
-  "rick-faint": programmedToDoUrl,
+  "rick-faint": steveUrl,
+  "terminator-faint": terminatorFaintUrl,
 }

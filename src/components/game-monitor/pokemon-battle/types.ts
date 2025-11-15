@@ -35,6 +35,15 @@ export const ABILITY_SOUND_NAMES = [
   "virus-conversion",
   "world-domination",
   "quick-attack",
+  "resistance-is-futile",
+  "we-are-the-borg",
+  "ill-be-back",
+  "machine-gun",
+  "targeting-information",
+  "terminate",
+  "i-know-kung-fu",
+  "portal-gun",
+  "woo-vu-luvub-dub-dub",
 ] as const
 
 export const ENTRANCE_SOUND_NAMES = [
@@ -47,6 +56,7 @@ export const ENTRANCE_SOUND_NAMES = [
   "neo-entrance",
   "pikachu-entrance",
   "rick-entrance",
+  "terminator-entrance",
 ] as const
 
 export const FAINT_SOUND_NAMES = [
@@ -59,6 +69,7 @@ export const FAINT_SOUND_NAMES = [
   "neo-faint",
   "pikachu-faint",
   "rick-faint",
+  "terminator-faint",
 ] as const
 
 export type AbilitySoundName = typeof ABILITY_SOUND_NAMES[number]

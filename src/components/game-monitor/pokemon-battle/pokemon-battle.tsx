@@ -70,7 +70,7 @@ const alienEntity: Character = {
   entranceSound: "alien-entity-entrance",
   faintSound: "alien-entity-faint",
   abilities: [
-    { name: "Terminal Attack", type: "attack", damage: { min: 50, max: 150 }, description: "The Alien machine attacks with malicious code!", soundEffect: "virus-attack" },
+    { name: "Terminal Attack", type: "attack", damage: { min: 50, max: 100 }, description: "The Alien machine attacks with malicious code!", soundEffect: "virus-attack" },
     { name: "System Override", type: "debuff", description: "The Alien machine overrides your systems!", soundEffect: "system-override" },
     { name: "Spare Parts", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine requires you for spare parts! Oxygenated tissues, vagus nerve...", soundEffect: "absorb" },
     { name: "Machine Swarm", type: "attack", damage: { min: 25, max: 50 }, description: "The Alien machine releases a swarm of machines to attack you!", soundEffect: "machine-swarm" },
