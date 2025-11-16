@@ -36,7 +36,7 @@ export const BlockBuster = () => {
           <h5 className="title late-fees">NO MORE< br/>LATE FEES</h5>
           <div className="blockbuster-content">
             <p>&quot;Excuse me, old person. But <br />
-              <a href="https://en.wikipedia.org/wiki/Blockbuster_(retailer)" className="link">Wtf is blockbuster?</a>
+              <a target="_blank" href="https://en.wikipedia.org/wiki/Blockbuster_(retailer)" className="link">Wtf is blockbuster?</a>
             &quot;</p>
           </div>
         </div>
