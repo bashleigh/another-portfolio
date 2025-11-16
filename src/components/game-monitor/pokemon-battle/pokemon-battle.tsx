@@ -182,6 +182,8 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   const { showRick, setOverlayPosition } = useRickOverlay()
   // Track if Bender has left the game
   const [benderHasLeft, setBenderHasLeft] = useState(false)
+  // Track if we need to end player turn after Pokemon selection (when Bender leaves)
+  const [pendingTurnEnd, setPendingTurnEnd] = useState(false)
   // Initialize team without Rick - he'll be added when alien entity appears
   const [playerTeam, setPlayerTeam] = useState<Character[]>(() => 
     playerCharacters.filter(char => char.id !== "rick")
@@ -601,6 +603,12 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   }, [showDescriptionWithTypewriter, decrementAllStatusEffects, endOpponentTurn])
 
   const opponentTurn = useCallback(() => {
+    // Skip opponent turn if Pokemon selection screen is open
+    if (menuState === "pokemon") {
+      endOpponentTurn()
+      return
+    }
+    
     const opponentAbility = opponentState.abilities[Math.floor(Math.random() * opponentState.abilities.length)]
     setCharacterAnimating(opponentState.id)
     setDescription("")
@@ -617,7 +625,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
         handleOpponentJoke(opponentAbility)
       }
     })
-  }, [opponentState, playAbilitySound, showDescriptionWithTypewriter, handleOpponentAttack, handleOpponentDebuff, handleOpponentJoke])
+  }, [menuState, opponentState, playAbilitySound, showDescriptionWithTypewriter, handleOpponentAttack, handleOpponentDebuff, handleOpponentJoke, endOpponentTurn])
 
   // Helper: End player turn and start opponent turn
   const endPlayerTurn = useCallback(() => {
@@ -715,7 +723,11 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
                 setSelectedPokemonIndex(firstAliveIndex)
                 setMenuState("pokemon")
                 setDescription("Choose a Pokemon!")
+                // Mark that we need to end the turn after Pokemon selection
+                setPendingTurnEnd(true)
               }, 0)
+              // Don't end player turn here - wait until Pokemon is selected
+              return updatedTeam
             } else {
               // All characters are gone - check for game over
               checkGameOver(updatedTeam)
@@ -727,6 +739,8 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
           
           return updatedTeam
         })
+        // Don't end player turn if Pokemon selection was opened
+        return
       }
       
       endPlayerTurn()
@@ -772,6 +786,11 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     
     // Allow switching only if target is alive and it's a different pokemon
     if (targetChar && targetChar.hp > 0 && actualIndex !== currentPlayerIndex) {
+      const shouldEndTurn = pendingTurnEnd
+      if (shouldEndTurn) {
+        setPendingTurnEnd(false)
+      }
+      
       setCurrentPlayerIndex(actualIndex)
       setMenuState("main")
       setSelectedMenuIndex(0)
@@ -789,7 +808,14 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
             if (playerSpriteRef.current) {
               playerSpriteRef.current.classList.remove("entering")
             }
+            // End player turn after animation if we were waiting for Pokemon selection
+            if (shouldEndTurn) {
+              endPlayerTurn()
+            }
           }, 800) // Animation duration
+        } else if (shouldEndTurn) {
+          // If sprite ref is not available, end turn immediately
+          endPlayerTurn()
         }
       }, 10) // Small delay to ensure DOM update
     }
@@ -943,6 +969,19 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
       }
     }
   }, [menuState, activePlayerTeam, selectedPokemonIndex])
+
+  // Handle case where player cancels Pokemon selection after Bender leaves
+  useEffect(() => {
+    if (pendingTurnEnd && menuState !== "pokemon" && isPlayerTurn) {
+      // If menu state changed away from pokemon and we're still waiting for turn end,
+      // end the turn after a short delay (player canceled selection)
+      const timer = setTimeout(() => {
+        setPendingTurnEnd(false)
+        endPlayerTurn()
+      }, 500)
+      return () => clearTimeout(timer)
+    }
+  }, [menuState, pendingTurnEnd, isPlayerTurn, endPlayerTurn])
 
   return (
     <div className="pokemon-battle">
