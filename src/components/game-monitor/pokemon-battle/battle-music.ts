@@ -32,11 +32,11 @@ class BattleMusicManager {
     })
 
     // Handle errors
-    this.introAudio.addEventListener("error", (e) => {
+    this.introAudio.addEventListener("error", e => {
       console.warn("Failed to load intro music:", e)
     })
 
-    this.loopAudio.addEventListener("error", (e) => {
+    this.loopAudio.addEventListener("error", e => {
       console.warn("Failed to load loop music:", e)
     })
   }
@@ -101,7 +101,10 @@ class BattleMusicManager {
 
     if (this.isPlaying) {
       // Resume based on which track should be playing
-      if (this.introAudio.currentTime > 0 && this.introAudio.currentTime < this.introAudio.duration) {
+      if (
+        this.introAudio.currentTime > 0 &&
+        this.introAudio.currentTime < this.introAudio.duration
+      ) {
         this.introAudio.play().catch(err => {
           console.warn("Failed to resume intro music:", err)
         })
@@ -115,7 +118,7 @@ class BattleMusicManager {
 
   setVolume(volume: number) {
     this.volume = Math.max(0, Math.min(1, volume))
-    
+
     if (this.introAudio) {
       this.introAudio.volume = this.volume
     }
@@ -131,4 +134,3 @@ class BattleMusicManager {
 
 // Export a singleton instance
 export const battleMusicManager = new BattleMusicManager()
-

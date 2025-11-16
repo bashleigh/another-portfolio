@@ -1,4 +1,11 @@
-import React, { FC, useEffect, useRef, useState, useContext, useCallback } from "react"
+import React, {
+  FC,
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+  useCallback,
+} from "react"
 import "./space-invaders.scss"
 import { AchievementContext } from "../achievements"
 import { soundManager } from "./sounds"
@@ -92,7 +99,16 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
     const wordSpacing = 10
     const rowSpacing = 50
 
-    const colors = ["#0f0", "#0ff", "#ff0", "#f0f", "#f00", "#0ff", "#ff0", "#0f0"]
+    const colors = [
+      "#0f0",
+      "#0ff",
+      "#ff0",
+      "#f0f",
+      "#f00",
+      "#0ff",
+      "#ff0",
+      "#0f0",
+    ]
     const newWords: Word[] = []
     let wordIndex = 0
 
@@ -176,17 +192,16 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
     }
   }, [])
 
-
   const shootBullet = useCallback(() => {
     if (gameArea.height === 0) return
     const now = Date.now()
     // Allow shooting every 150ms (increased fire rate)
     if (now - lastShotTimeRef.current < 150) return
     lastShotTimeRef.current = now
-    
+
     // Play pew pew sound!
     soundManager.playShootSound()
-    
+
     setBullets(prev => {
       // Allow multiple bullets (increased fire rate)
       return [...prev, { x: playerX, y: gameArea.height - 40, active: true }]
@@ -238,35 +253,46 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
       // Enemies shoot every 1-2 seconds (randomized)
       if (now - lastEnemyShotTimeRef.current > 1000 + Math.random() * 1000) {
         lastEnemyShotTimeRef.current = now
-        
+
         // Find a random active letter to shoot from
-        const activeLetters: { wordIdx: number; letterIdx: number; x: number; y: number }[] = []
+        const activeLetters: {
+          wordIdx: number
+          letterIdx: number
+          x: number
+          y: number
+        }[] = []
         wordsForShooting.forEach((word, wordIdx) => {
           word.letters.forEach((letter, letterIdx) => {
             if (!letter.destroyed) {
-              activeLetters.push({ wordIdx, letterIdx, x: letter.x, y: letter.y })
+              activeLetters.push({
+                wordIdx,
+                letterIdx,
+                x: letter.x,
+                y: letter.y,
+              })
             }
           })
         })
-        
+
         if (activeLetters.length > 0) {
           // Pick a random letter from the bottom rows (more dangerous!)
           const bottomLetters = activeLetters.filter(l => {
             const letter = wordsForShooting[l.wordIdx].letters[l.letterIdx]
             return letter.y > gameArea.height * 0.3 // Only bottom 70% of screen
           })
-          const sourceLetter = bottomLetters.length > 0 
-            ? bottomLetters[Math.floor(Math.random() * bottomLetters.length)]
-            : activeLetters[Math.floor(Math.random() * activeLetters.length)]
-          
+          const sourceLetter =
+            bottomLetters.length > 0
+              ? bottomLetters[Math.floor(Math.random() * bottomLetters.length)]
+              : activeLetters[Math.floor(Math.random() * activeLetters.length)]
+
           // Play enemy shoot sound
           soundManager.playEnemyShootSound()
-          
+
           setEnemyBullets(prev => {
             const newBullet = {
               x: sourceLetter.x,
               y: sourceLetter.y + 20,
-              active: true
+              active: true,
             }
             enemyBulletsRef.current = [...prev, newBullet]
             return [...prev, newBullet]
@@ -372,7 +398,11 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
         let hit = false
         for (let wordIdx = 0; wordIdx < newWords.length; wordIdx++) {
           const word = newWords[wordIdx]
-          for (let letterIdx = 0; letterIdx < word.letters.length; letterIdx++) {
+          for (
+            let letterIdx = 0;
+            letterIdx < word.letters.length;
+            letterIdx++
+          ) {
             const letter = word.letters[letterIdx]
             if (
               !letter.destroyed &&
@@ -405,7 +435,7 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
 
         let playerHit = false
         const updatedEnemyBullets: Bullet[] = []
-        
+
         // Process bullets and check for collision - only process first hit
         for (const bullet of currentEnemyBullets) {
           if (!bullet.active) {
@@ -431,15 +461,15 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
         if (playerHit) {
           // Play hit sound
           soundManager.playPlayerHitSound()
-          
+
           // Start blinking and invincibility immediately
           setIsBlinking(true)
           setIsInvincible(true)
-          
+
           // Remove hit enemy bullets
           enemyBulletsRef.current = updatedEnemyBullets
           setEnemyBullets(updatedEnemyBullets)
-          
+
           // Lose a life (only once per hit)
           setLives(prevLives => {
             const newLives = prevLives - 1
@@ -447,12 +477,13 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
               setGameOver(true)
               addAchievement({
                 title: "Defeated",
-                description: "The skills got the better of you this time. Better luck next time!",
+                description:
+                  "The skills got the better of you this time. Better luck next time!",
               })
             }
             return newLives
           })
-          
+
           // Stop blinking and invincibility after 2 seconds
           setTimeout(() => {
             setIsBlinking(false)
@@ -464,16 +495,19 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
           setEnemyBullets(updatedEnemyBullets)
         }
       }
-      // Note: Enemy bullets are already updated earlier in the game loop, 
+      // Note: Enemy bullets are already updated earlier in the game loop,
       // so we don't need to update them again when invincible
 
       if (wordsUpdated) {
         wordsDataRef.current = newWords
         setWordsData(newWords)
       }
-      const bulletsChanged = newBullets.some((bullet, idx) => 
-        !currentBullets[idx] || bullet.active !== currentBullets[idx].active || 
-        bullet.x !== currentBullets[idx].x || bullet.y !== currentBullets[idx].y
+      const bulletsChanged = newBullets.some(
+        (bullet, idx) =>
+          !currentBullets[idx] ||
+          bullet.active !== currentBullets[idx].active ||
+          bullet.x !== currentBullets[idx].x ||
+          bullet.y !== currentBullets[idx].y,
       )
       if (bulletsChanged || newBullets.length !== currentBullets.length) {
         bulletsRef.current = newBullets
@@ -498,7 +532,8 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
               setGameOver(true)
               addAchievement({
                 title: "Defeated",
-                description: "The skills got the better of you this time. Better luck next time!",
+                description:
+                  "The skills got the better of you this time. Better luck next time!",
               })
             }
             return newLives
@@ -511,7 +546,7 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
       // Check if all letters destroyed
       setWordsData(prev => {
         const allDestroyed = prev.every(word =>
-          word.letters.every(letter => letter.destroyed)
+          word.letters.every(letter => letter.destroyed),
         )
         if (allDestroyed && prev.length > 0 && !gameWon) {
           setGameWon(true)
@@ -533,7 +568,18 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
         cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [keys, gameOver, gameWon, gameArea, direction, moveDown, shootBullet, addAchievement, gameStarted, wordsData.length])
+  }, [
+    keys,
+    gameOver,
+    gameWon,
+    gameArea,
+    direction,
+    moveDown,
+    shootBullet,
+    addAchievement,
+    gameStarted,
+    wordsData.length,
+  ])
 
   const handleClose = () => {
     onGameEnd()
@@ -580,12 +626,15 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
             <div className="instruction-item">
               <p className="instruction-text">
                 Destroy all the letters to win! Each letter is worth 10 points.
-                You have 3 lives - game over if you lose all your lives or the words reach the bottom.
+                You have 3 lives - game over if you lose all your lives or the
+                words reach the bottom.
                 <br />
                 <br />
-                <strong>Desktop:</strong> Use arrow keys (or A/D) to move, SPACE to shoot.
+                <strong>Desktop:</strong> Use arrow keys (or A/D) to move, SPACE
+                to shoot.
                 <br />
-                <strong>Mobile:</strong> Use the on-screen buttons at the bottom.
+                <strong>Mobile:</strong> Use the on-screen buttons at the
+                bottom.
               </p>
             </div>
           </div>
@@ -630,8 +679,8 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
               >
                 {letter.char}
               </div>
-            ) : null
-          )
+            ) : null,
+          ),
         )}
         {bullets.map(
           (bullet, idx) =>
@@ -644,7 +693,7 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
                   top: `${bullet.y}px`,
                 }}
               />
-            )
+            ),
         )}
         {enemyBullets.map(
           (bullet, idx) =>
@@ -657,10 +706,10 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
                   top: `${bullet.y}px`,
                 }}
               />
-            )
+            ),
         )}
         <div
-          className={`player-ship ${isBlinking ? 'blinking' : ''}`}
+          className={`player-ship ${isBlinking ? "blinking" : ""}`}
           style={{
             left: `${playerX}px`,
             bottom: "20px",
@@ -695,27 +744,27 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
       <div className="mobile-controls">
         <button
           className="control-button left-button"
-          onTouchStart={(e) => {
+          onTouchStart={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, left: true }))
           }}
-          onTouchEnd={(e) => {
+          onTouchEnd={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, left: false }))
           }}
-          onTouchCancel={(e) => {
+          onTouchCancel={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, left: false }))
           }}
-          onMouseDown={(e) => {
+          onMouseDown={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, left: true }))
           }}
-          onMouseUp={(e) => {
+          onMouseUp={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, left: false }))
           }}
-          onMouseLeave={(e) => {
+          onMouseLeave={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, left: false }))
           }}
@@ -724,27 +773,27 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
         </button>
         <button
           className="control-button shoot-button"
-          onTouchStart={(e) => {
+          onTouchStart={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, shoot: true }))
           }}
-          onTouchEnd={(e) => {
+          onTouchEnd={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, shoot: false }))
           }}
-          onTouchCancel={(e) => {
+          onTouchCancel={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, shoot: false }))
           }}
-          onMouseDown={(e) => {
+          onMouseDown={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, shoot: true }))
           }}
-          onMouseUp={(e) => {
+          onMouseUp={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, shoot: false }))
           }}
-          onMouseLeave={(e) => {
+          onMouseLeave={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, shoot: false }))
           }}
@@ -753,27 +802,27 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
         </button>
         <button
           className="control-button right-button"
-          onTouchStart={(e) => {
+          onTouchStart={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, right: true }))
           }}
-          onTouchEnd={(e) => {
+          onTouchEnd={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, right: false }))
           }}
-          onTouchCancel={(e) => {
+          onTouchCancel={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, right: false }))
           }}
-          onMouseDown={(e) => {
+          onMouseDown={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, right: true }))
           }}
-          onMouseUp={(e) => {
+          onMouseUp={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, right: false }))
           }}
-          onMouseLeave={(e) => {
+          onMouseLeave={e => {
             e.preventDefault()
             setKeys(prev => ({ ...prev, right: false }))
           }}
@@ -784,4 +833,3 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
     </div>
   )
 }
-

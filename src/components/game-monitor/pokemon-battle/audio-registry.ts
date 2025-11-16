@@ -69,7 +69,7 @@ export const abilitySoundMap: Record<AbilitySoundName, string> = {
   "ill-be-back": illBeBackUrl,
   "machine-gun": fireSpinUrl,
   "targeting-information": fireSpinUrl,
-  "terminate": youHaveBeenTerminatedUrl,
+  terminate: youHaveBeenTerminatedUrl,
   "portal-gun": portalGunUrl,
   "woo-vu-luvub-dub-dub": wooVuLuvubDubDubDubUrl,
   "borg-tractor-beam": borgTractorBeamUrl,

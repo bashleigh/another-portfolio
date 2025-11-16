@@ -42,8 +42,16 @@ const fighters: Fighter[] = [
     maxHp: 120,
     sprite: "walle",
     moves: [
-      { name: "Trash Compress", damage: 20, description: "Wall-E compresses trash at opponent!" },
-      { name: "Eva Call", damage: 25, description: "Wall-E calls Eva for help!" },
+      {
+        name: "Trash Compress",
+        damage: 20,
+        description: "Wall-E compresses trash at opponent!",
+      },
+      {
+        name: "Eva Call",
+        damage: 25,
+        description: "Wall-E calls Eva for help!",
+      },
       { name: "Solar Charge", damage: 15, description: "Wall-E charges up!" },
     ],
   },
@@ -54,9 +62,21 @@ const fighters: Fighter[] = [
     maxHp: 110,
     sprite: "johnny-five",
     moves: [
-      { name: "Laser Beam", damage: 30, description: "Johnny Five shoots laser!" },
-      { name: "Data Input", damage: 20, description: "Johnny Five processes data attack!" },
-      { name: "No Disassemble", damage: 25, description: "Johnny Five refuses to disassemble!" },
+      {
+        name: "Laser Beam",
+        damage: 30,
+        description: "Johnny Five shoots laser!",
+      },
+      {
+        name: "Data Input",
+        damage: 20,
+        description: "Johnny Five processes data attack!",
+      },
+      {
+        name: "No Disassemble",
+        damage: 25,
+        description: "Johnny Five refuses to disassemble!",
+      },
     ],
   },
   {
@@ -66,8 +86,16 @@ const fighters: Fighter[] = [
     maxHp: 130,
     sprite: "matilda",
     moves: [
-      { name: "Flipper Attack", damage: 25, description: "Matilda flips opponent!" },
-      { name: "Robot Wars", damage: 35, description: "Matilda's signature move!" },
+      {
+        name: "Flipper Attack",
+        damage: 25,
+        description: "Matilda flips opponent!",
+      },
+      {
+        name: "Robot Wars",
+        damage: 35,
+        description: "Matilda's signature move!",
+      },
       { name: "Crush", damage: 30, description: "Matilda crushes opponent!" },
     ],
   },
@@ -78,9 +106,21 @@ const fighters: Fighter[] = [
     maxHp: 150,
     sprite: "t800",
     moves: [
-      { name: "I'll Be Back", damage: 40, description: "T-800's iconic phrase hits hard!" },
-      { name: "Metal Punch", damage: 30, description: "T-800's metal fist strikes!" },
-      { name: "Terminate", damage: 35, description: "T-800 terminates opponent!" },
+      {
+        name: "I'll Be Back",
+        damage: 40,
+        description: "T-800's iconic phrase hits hard!",
+      },
+      {
+        name: "Metal Punch",
+        damage: 30,
+        description: "T-800's metal fist strikes!",
+      },
+      {
+        name: "Terminate",
+        damage: 35,
+        description: "T-800 terminates opponent!",
+      },
     ],
   },
 ]
@@ -103,19 +143,24 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
     showRick(
       "Now THIS is more like it! *burp* Robots fighting robots! Classic! Pick your fighter, Morty!",
       "excited",
-      5000
+      5000,
     )
   }, [showRick])
 
   const selectFighter = (fighter: Fighter) => {
     setPlayerFighter({ ...fighter })
-    const randomOpponent = fighters[Math.floor(Math.random() * fighters.filter(f => f.id !== fighter.id).length)]
+    const randomOpponent =
+      fighters[
+        Math.floor(
+          Math.random() * fighters.filter(f => f.id !== fighter.id).length,
+        )
+      ]
     setOpponentFighter({ ...randomOpponent })
     setGameStarted(true)
     showRick(
       `Alright Morty! *burp* ${fighter.name} vs ${randomOpponent.name}! Let's see who wins!`,
       "excited",
-      4000
+      4000,
     )
   }
 
@@ -124,7 +169,10 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
 
     if (isPlayer) {
       setPlayerAnimating(true)
-      setBattleLog(prev => [...prev, `${playerFighter.name} uses ${move.name}!`])
+      setBattleLog(prev => [
+        ...prev,
+        `${playerFighter.name} uses ${move.name}!`,
+      ])
       setBattleLog(prev => [...prev, move.description])
 
       setTimeout(() => {
@@ -156,9 +204,15 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
   const opponentTurn = () => {
     if (!opponentFighter || !playerFighter) return
 
-    const randomMove = opponentFighter.moves[Math.floor(Math.random() * opponentFighter.moves.length)]
+    const randomMove =
+      opponentFighter.moves[
+        Math.floor(Math.random() * opponentFighter.moves.length)
+      ]
     setOpponentAnimating(true)
-    setBattleLog(prev => [...prev, `${opponentFighter.name} uses ${randomMove.name}!`])
+    setBattleLog(prev => [
+      ...prev,
+      `${opponentFighter.name} uses ${randomMove.name}!`,
+    ])
     setBattleLog(prev => [...prev, randomMove.description])
 
     setTimeout(() => {
@@ -213,7 +267,9 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
 
       <div className="battle-arena">
         <div className="fighter opponent">
-          <div className={`sprite-container ${opponentAnimating ? "attacking" : ""}`}>
+          <div
+            className={`sprite-container ${opponentAnimating ? "attacking" : ""}`}
+          >
             <div className="sprite-placeholder">
               <p>{opponentFighter?.name}</p>
               <p className="small">(Sprite placeholder)</p>
@@ -224,10 +280,14 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
             <div className="hp-bar">
               <div
                 className="hp-fill"
-                style={{ width: `${opponentFighter ? (opponentFighter.hp / opponentFighter.maxHp) * 100 : 0}%` }}
+                style={{
+                  width: `${opponentFighter ? (opponentFighter.hp / opponentFighter.maxHp) * 100 : 0}%`,
+                }}
               />
             </div>
-            <p>{opponentFighter?.hp} / {opponentFighter?.maxHp}</p>
+            <p>
+              {opponentFighter?.hp} / {opponentFighter?.maxHp}
+            </p>
           </div>
         </div>
 
@@ -238,7 +298,9 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
         </div>
 
         <div className="fighter player">
-          <div className={`sprite-container ${playerAnimating ? "attacking" : ""}`}>
+          <div
+            className={`sprite-container ${playerAnimating ? "attacking" : ""}`}
+          >
             <div className="sprite-placeholder">
               <p>{playerFighter?.name}</p>
               <p className="small">(Sprite placeholder)</p>
@@ -249,10 +311,14 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
             <div className="hp-bar">
               <div
                 className="hp-fill"
-                style={{ width: `${playerFighter ? (playerFighter.hp / playerFighter.maxHp) * 100 : 0}%` }}
+                style={{
+                  width: `${playerFighter ? (playerFighter.hp / playerFighter.maxHp) * 100 : 0}%`,
+                }}
               />
             </div>
-            <p>{playerFighter?.hp} / {playerFighter?.maxHp}</p>
+            <p>
+              {playerFighter?.hp} / {playerFighter?.maxHp}
+            </p>
           </div>
         </div>
 
@@ -289,4 +355,3 @@ export const RobotTekken: React.FC<RobotTekkenProps> = ({
     </div>
   )
 }
-

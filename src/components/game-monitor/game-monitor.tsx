@@ -9,7 +9,13 @@ import { RobotTekken } from "./robot-tekken"
 import { RickOverlay } from "./rick-overlay"
 import { RickOverlayProvider } from "./rick-overlay-context"
 
-export type Screen = "boot" | "intro" | "level-select" | "jurassic-park" | "pokemon-battle" | "robot-tekken"
+export type Screen =
+  | "boot"
+  | "intro"
+  | "level-select"
+  | "jurassic-park"
+  | "pokemon-battle"
+  | "robot-tekken"
 
 export type GameState = {
   screen: Screen
@@ -33,7 +39,10 @@ const loadCompletedGames = (): Set<GameId> => {
 
 const saveCompletedGames = (completed: Set<GameId>) => {
   try {
-    localStorage.setItem(COMPLETED_GAMES_KEY, JSON.stringify(Array.from(completed)))
+    localStorage.setItem(
+      COMPLETED_GAMES_KEY,
+      JSON.stringify(Array.from(completed)),
+    )
   } catch (e) {
     console.warn("Failed to save completed games to localStorage", e)
   }
@@ -43,7 +52,9 @@ export const GameMonitor = () => {
   const [gameState, setGameState] = useState<GameState>({
     screen: "boot",
   })
-  const [completedGames, setCompletedGames] = useState<Set<GameId>>(() => loadCompletedGames())
+  const [completedGames, setCompletedGames] = useState<Set<GameId>>(() =>
+    loadCompletedGames(),
+  )
 
   useEffect(() => {
     saveCompletedGames(completedGames)
@@ -64,40 +75,44 @@ export const GameMonitor = () => {
   return (
     <RickOverlayProvider initialOverlayPosition="bottom-right">
       <div id="game-monitor" className="is-fullscreen">
-        <img className="monitor-image" src="/images/monitor.png" alt="Monitor" />
-        
+        <img
+          className="monitor-image"
+          src="/images/monitor.png"
+          alt="Monitor"
+        />
+
         <div className="screen-container">
           {gameState.screen === "boot" && (
             <BootScreen onComplete={() => navigateToScreen("intro")} />
           )}
-          
+
           {gameState.screen === "intro" && (
             <IntroScreen onComplete={() => navigateToScreen("level-select")} />
           )}
-          
+
           {gameState.screen === "level-select" && (
             <LevelSelection
               completedGames={completedGames}
-              onSelectGame={(game: "jurassic-park" | "pokemon-battle" | "robot-tekken") =>
-                navigateToScreen(game)
-              }
+              onSelectGame={(
+                game: "jurassic-park" | "pokemon-battle" | "robot-tekken",
+              ) => navigateToScreen(game)}
             />
           )}
-          
+
           {gameState.screen === "jurassic-park" && (
             <JurassicParkGame
               onBack={() => navigateToScreen("level-select")}
               onComplete={() => markGameCompleted("jurassic-park")}
             />
           )}
-          
+
           {gameState.screen === "pokemon-battle" && (
             <PokemonBattle
               onBack={() => navigateToScreen("level-select")}
               onComplete={() => markGameCompleted("pokemon-battle")}
             />
           )}
-          
+
           {gameState.screen === "robot-tekken" && (
             <RobotTekken
               onBack={() => navigateToScreen("level-select")}
@@ -111,4 +126,3 @@ export const GameMonitor = () => {
     </RickOverlayProvider>
   )
 }
-

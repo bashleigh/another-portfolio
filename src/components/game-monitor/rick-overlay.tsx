@@ -108,4 +108,3 @@ export const RickOverlay: React.FC = () => {
     </div>
   )
 }
-

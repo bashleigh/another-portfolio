@@ -1,5 +1,10 @@
 export type StatusEffect = {
-  type: "attackBoost" | "defenseBoost" | "attackReduction" | "defenseReduction" | "dodge"
+  type:
+    | "attackBoost"
+    | "defenseBoost"
+    | "attackReduction"
+    | "defenseReduction"
+    | "dodge"
   value: number // Percentage or flat value depending on effect type
   duration: number // Number of turns remaining
 }
@@ -75,9 +80,9 @@ export const FAINT_SOUND_NAMES = [
   "terminator-faint",
 ] as const
 
-export type AbilitySoundName = typeof ABILITY_SOUND_NAMES[number]
-export type EntranceSoundName = typeof ENTRANCE_SOUND_NAMES[number]
-export type FaintSoundName = typeof FAINT_SOUND_NAMES[number]
+export type AbilitySoundName = (typeof ABILITY_SOUND_NAMES)[number]
+export type EntranceSoundName = (typeof ENTRANCE_SOUND_NAMES)[number]
+export type FaintSoundName = (typeof FAINT_SOUND_NAMES)[number]
 
 export type Character = {
   id: string

@@ -293,7 +293,8 @@ export const RoleModels = () => {
                 <button
                   className="carousel-button"
                   onClick={() =>
-                    currentPage < pages.length - 1 && setCurrentPage(currentPage + 1)
+                    currentPage < pages.length - 1 &&
+                    setCurrentPage(currentPage + 1)
                   }
                 >
                   &gt;
@@ -315,14 +316,18 @@ export const RoleModels = () => {
           ))}
         </div>
         <div className="mobile-controls">
-          <button className="carousel-button" onClick={() =>
-                    currentPage > 0 && setCurrentPage(currentPage - 1)
-                  }>
+          <button
+            className="carousel-button"
+            onClick={() => currentPage > 0 && setCurrentPage(currentPage - 1)}
+          >
             <ChevronLeft />
           </button>
-          <button className="carousel-button" onClick={() =>
-                    currentPage < pages.length - 1 && setCurrentPage(currentPage + 1)
-                  }>
+          <button
+            className="carousel-button"
+            onClick={() =>
+              currentPage < pages.length - 1 && setCurrentPage(currentPage + 1)
+            }
+          >
             <ChevronRight />
           </button>
         </div>

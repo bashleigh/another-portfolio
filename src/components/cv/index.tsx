@@ -130,7 +130,7 @@ export const CV = () => {
                 <h3 className="title">What do I know?</h3>
                 <div className="navbar-end">
                   <div className="navbar-item">
-                    <form onSubmit={(event) => event.preventDefault()}>
+                    <form onSubmit={event => event.preventDefault()}>
                       <div className="field">
                         <div className="control">
                           <input
@@ -164,7 +164,10 @@ export const CV = () => {
           </>
         )}
         {gameActive ? (
-          <SpaceInvaders words={allWords} onGameEnd={() => setGameActive(false)} />
+          <SpaceInvaders
+            words={allWords}
+            onGameEnd={() => setGameActive(false)}
+          />
         ) : (
           <WhatIKnow searchPhrase={searchPhrase} />
         )}

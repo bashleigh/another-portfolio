@@ -35,4 +35,3 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
     </div>
   )
 }
-

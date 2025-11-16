@@ -5,16 +5,17 @@ class SoundManager {
 
   constructor() {
     // Initialize audio context on first user interaction
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       this.initAudioContext()
     }
   }
 
   private initAudioContext() {
     try {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+      this.audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)()
     } catch (e) {
-      console.warn('Web Audio API not supported')
+      console.warn("Web Audio API not supported")
     }
   }
 
@@ -23,7 +24,7 @@ class SoundManager {
       this.initAudioContext()
     }
     // Resume audio context if suspended (browser autoplay policy)
-    if (this.audioContext?.state === 'suspended') {
+    if (this.audioContext?.state === "suspended") {
       this.audioContext.resume()
     }
   }
@@ -40,13 +41,19 @@ class SoundManager {
     gainNode.connect(this.audioContext.destination)
 
     // High-pitched, short laser sound
-    oscillator.type = 'sine'
+    oscillator.type = "sine"
     oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime)
-    oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.1)
+    oscillator.frequency.exponentialRampToValueAtTime(
+      400,
+      this.audioContext.currentTime + 0.1,
+    )
 
     // Quick fade out
     gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime)
-    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1)
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      this.audioContext.currentTime + 0.1,
+    )
 
     oscillator.start(this.audioContext.currentTime)
     oscillator.stop(this.audioContext.currentTime + 0.1)
@@ -64,13 +71,19 @@ class SoundManager {
     gainNode.connect(this.audioContext.destination)
 
     // Lower pitched, quick burst
-    oscillator.type = 'sawtooth'
+    oscillator.type = "sawtooth"
     oscillator.frequency.setValueAtTime(200, this.audioContext.currentTime)
-    oscillator.frequency.exponentialRampToValueAtTime(100, this.audioContext.currentTime + 0.15)
+    oscillator.frequency.exponentialRampToValueAtTime(
+      100,
+      this.audioContext.currentTime + 0.15,
+    )
 
     // Quick fade out
     gainNode.gain.setValueAtTime(0.2, this.audioContext.currentTime)
-    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.15)
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      this.audioContext.currentTime + 0.15,
+    )
 
     oscillator.start(this.audioContext.currentTime)
     oscillator.stop(this.audioContext.currentTime + 0.15)
@@ -88,13 +101,19 @@ class SoundManager {
     gainNode.connect(this.audioContext.destination)
 
     // Harsh, alarming sound for player damage
-    oscillator.type = 'square'
+    oscillator.type = "square"
     oscillator.frequency.setValueAtTime(150, this.audioContext.currentTime)
-    oscillator.frequency.exponentialRampToValueAtTime(80, this.audioContext.currentTime + 0.2)
+    oscillator.frequency.exponentialRampToValueAtTime(
+      80,
+      this.audioContext.currentTime + 0.2,
+    )
 
     // Quick fade out
     gainNode.gain.setValueAtTime(0.4, this.audioContext.currentTime)
-    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2)
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      this.audioContext.currentTime + 0.2,
+    )
 
     oscillator.start(this.audioContext.currentTime)
     oscillator.stop(this.audioContext.currentTime + 0.2)
@@ -112,13 +131,19 @@ class SoundManager {
     gainNode.connect(this.audioContext.destination)
 
     // Lower-pitched, more menacing enemy laser sound
-    oscillator.type = 'triangle'
+    oscillator.type = "triangle"
     oscillator.frequency.setValueAtTime(300, this.audioContext.currentTime)
-    oscillator.frequency.exponentialRampToValueAtTime(200, this.audioContext.currentTime + 0.12)
+    oscillator.frequency.exponentialRampToValueAtTime(
+      200,
+      this.audioContext.currentTime + 0.12,
+    )
 
     // Quick fade out
     gainNode.gain.setValueAtTime(0.25, this.audioContext.currentTime)
-    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.12)
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      this.audioContext.currentTime + 0.12,
+    )
 
     oscillator.start(this.audioContext.currentTime)
     oscillator.stop(this.audioContext.currentTime + 0.12)
@@ -127,4 +152,3 @@ class SoundManager {
 
 // Export a singleton instance
 export const soundManager = new SoundManager()
-

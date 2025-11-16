@@ -28,9 +28,9 @@ export const Statement = () => {
                 </h3>
                 <p className="has-text-white has-text-weight-semibold has-text-shadow">
                   I often find myself asking the question &quot;How did I end up
-                  here?&quot;. Well my friend, this carousel will look into
-                  the films, games and programmes that influenced me as a kid to
-                  get into tech.
+                  here?&quot;. Well my friend, this carousel will look into the
+                  films, games and programmes that influenced me as a kid to get
+                  into tech.
                 </p>
               </div>
               <div className="column">

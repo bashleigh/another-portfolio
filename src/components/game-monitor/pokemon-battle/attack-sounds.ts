@@ -38,4 +38,3 @@ class AttackSoundManager {
 }
 
 export const attackSoundManager = new AttackSoundManager()
-

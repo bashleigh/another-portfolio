@@ -28,7 +28,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
     const timer = setTimeout(() => {
       setShowContinue(true)
     }, totalTime)
-    
+
     return () => clearTimeout(timer)
   }, [])
 
@@ -53,7 +53,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
       <div className="intro-content">
         <div className="rick-ascii">
           <pre>
-{`⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⣄⠀⠀⠀⠀⢀⣴⡀
+            {`⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⣄⠀⠀⠀⠀⢀⣴⡀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣄⠀⣠⣾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢆
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⢸⠿⣛⣛⣛⡻⢿⣇⣤⣤⣶⠆⠀⠀⠀⠀⠀⠀⠀⠀⠈⡳⣴⡄
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⡟⣵⣿⣿⣿⣿⣿⣷⡝⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⢿⣿⣷
@@ -71,34 +71,34 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣯⢿⣿⢸⣿⣇⠿⠿⠻`}
           </pre>
         </div>
-        
+
         <div className="dialogue-container">
           <div className="dialogue-box">
-            {rickIntroLines.slice(0, currentLineIndex + 1).map((line, index) => (
-              <div key={index} className="dialogue-line">
-                {index === currentLineIndex ? (
-                  <Typewriter
-                    key={`typewriter-${index}`}
-                    options={{
-                      delay: 10,
-                      cursor: "",
-                    }}
-                    onInit={typewriter => {
-                      typewriter
-                        .typeString(line)
-                        .start()
-                    }}
-                  />
-                ) : (
-                  <span>{line}</span>
-                )}
-              </div>
-            ))}
+            {rickIntroLines
+              .slice(0, currentLineIndex + 1)
+              .map((line, index) => (
+                <div key={index} className="dialogue-line">
+                  {index === currentLineIndex ? (
+                    <Typewriter
+                      key={`typewriter-${index}`}
+                      options={{
+                        delay: 10,
+                        cursor: "",
+                      }}
+                      onInit={typewriter => {
+                        typewriter.typeString(line).start()
+                      }}
+                    />
+                  ) : (
+                    <span>{line}</span>
+                  )}
+                </div>
+              ))}
           </div>
 
           {showContinue && (
-            <button 
-              className="continue-button" 
+            <button
+              className="continue-button"
               onClick={() => {
                 onComplete()
               }}
@@ -111,4 +111,3 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
     </div>
   )
 }
-

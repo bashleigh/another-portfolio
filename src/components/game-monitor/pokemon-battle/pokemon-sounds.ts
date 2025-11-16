@@ -18,7 +18,7 @@ class PokemonSoundManager {
     audio.volume = this.volume
     audio.preload = "auto"
 
-    audio.addEventListener("error", (e) => {
+    audio.addEventListener("error", e => {
       console.warn(`Failed to load sound '${cacheKey}':`, e)
     })
 
@@ -26,9 +26,15 @@ class PokemonSoundManager {
     return audio
   }
 
-  private async playFromMap(prefix: string, soundId: string | undefined, url: string | undefined) {
+  private async playFromMap(
+    prefix: string,
+    soundId: string | undefined,
+    url: string | undefined,
+  ) {
     if (!soundId || !url) {
-      console.warn(`No audio file registered for ${prefix} sound '${soundId ?? "unknown"}'`)
+      console.warn(
+        `No audio file registered for ${prefix} sound '${soundId ?? "unknown"}'`,
+      )
       return
     }
 
@@ -43,7 +49,11 @@ class PokemonSoundManager {
   }
 
   async playEntranceSound(entranceSound: EntranceSoundName) {
-    await this.playFromMap("entrance", entranceSound, entranceSoundMap[entranceSound])
+    await this.playFromMap(
+      "entrance",
+      entranceSound,
+      entranceSoundMap[entranceSound],
+    )
   }
 
   async playFaintSound(faintSound: FaintSoundName) {
@@ -53,7 +63,7 @@ class PokemonSoundManager {
   setVolume(volume: number) {
     this.volume = Math.max(0, Math.min(1, volume))
 
-    this.audioCache.forEach((audio) => {
+    this.audioCache.forEach(audio => {
       audio.volume = this.volume
     })
   }
@@ -64,4 +74,3 @@ class PokemonSoundManager {
 }
 
 export const pokemonSoundManager = new PokemonSoundManager()
-

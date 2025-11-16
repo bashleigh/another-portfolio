@@ -26,7 +26,7 @@ export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
     showRick(
       "Oh great, a password game. *burp* Just what I needed. Look Morty, there's an IT guy in the middle. You need to guess the password. Solve puzzles to get clues!",
       "sarcastic",
-      6000
+      6000,
     )
   }, [showRick])
 
@@ -58,7 +58,7 @@ export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
       showRick(
         "YES! *burp* You did it Morty! The password was correct! Now get me out of here!",
         "excited",
-        5000
+        5000,
       )
       // Call onComplete callback when game is won
       if (onComplete) {
@@ -70,7 +70,7 @@ export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
       showRick(
         `Wrong password, Morty! *burp* You've tried ${attempts + 1} times. Maybe solve some puzzles for clues?`,
         "panic",
-        4000
+        4000,
       )
     }
   }
@@ -82,7 +82,11 @@ export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
       setClues(prev => [...prev, puzzle.clue])
       setShowPuzzle(false)
       setCurrentPuzzle(null)
-      showRick(`Good job Morty! *burp* Here's a clue: ${puzzle.clue}`, "normal", 4000)
+      showRick(
+        `Good job Morty! *burp* Here's a clue: ${puzzle.clue}`,
+        "normal",
+        4000,
+      )
     } else {
       showRick("Wrong answer, Morty! *burp* Try again!", "sarcastic", 3000)
     }
@@ -206,4 +210,3 @@ export const JurassicParkGame: React.FC<JurassicParkGameProps> = ({
     </div>
   )
 }
-
