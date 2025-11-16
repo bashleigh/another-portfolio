@@ -6,6 +6,7 @@ import { Statement } from "./components/statement"
 import { CV } from "./components/cv"
 import { AchievementProvider, Achievements } from "./components/achievements"
 import { RoleModels } from "./components/role-models"
+import { BlockBuster } from "./components/blockbuster"
 
 const root = document.getElementById("root")
 
@@ -20,6 +21,9 @@ const hideLoadingScreen = () => {
   const loadingScreen = document.getElementById("initial-loading")
   if (loadingScreen) {
     loadingScreen.classList.add("hidden")
+    // Remove loading class from html and body to restore scrolling
+    document.documentElement.classList.remove("loading")
+    document.body.classList.remove("loading")
     // Remove from DOM after fade out
     setTimeout(() => {
       loadingScreen.remove()
@@ -32,7 +36,8 @@ createRoot(root).render(
   <>
     <AchievementProvider>
       <GameMonitor />
-      <Statement />
+      <BlockBuster />
+      {/* <Statement /> */}
       <CV />
       <RoleModels />
       <Achievements />

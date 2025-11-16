@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="loading">
   <head>
     <meta charSet="utf-8" />
     <meta httpEquiv="x-ua-compatible" content="ie=edge" />
@@ -34,12 +34,23 @@
     
     <!-- Inline CSS for immediate loading screen -->
     <style>
+      /* Prevent body overflow while loading */
+      body.loading {
+        overflow: hidden;
+        height: 100vh;
+      }
+      
+      html.loading {
+        overflow: hidden;
+        height: 100%;
+      }
+      
       #initial-loading {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
         background-color: #000;
         color: #00d1b2;
         display: flex;
@@ -47,14 +58,18 @@
         justify-content: center;
         align-items: center;
         font-family: 'Courier New', monospace;
-        z-index: 9999;
+        z-index: 99999;
         opacity: 1;
         transition: opacity 0.3s ease-out;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
       
       #initial-loading.hidden {
         opacity: 0;
         pointer-events: none;
+        visibility: hidden;
       }
       
       #initial-loading .loading-title {
@@ -107,7 +122,7 @@
       }
     </script>
   </head>
-  <body class="theme-dark">
+  <body class="theme-dark loading">
     <!-- Initial loading screen - shows immediately before React loads -->
     <div id="initial-loading">
       <div class="loading-title">Ashleigh_OS</div>

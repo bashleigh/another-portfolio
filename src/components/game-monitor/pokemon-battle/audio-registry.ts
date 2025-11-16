@@ -59,7 +59,7 @@ export const abilitySoundMap: Record<AbilitySoundName, string> = {
   "steve-excited": steveUrl,
   "steve-loud": steveUrl,
   "steve-soft": steveUrl,
-  "system-override": programmedToDoUrl,
+  "system-override": defenseCurlUrl,
   thunder: thunderUrl,
   thunderbolt: thunderboltUrl,
   "virus-attack": absorbUrl,
