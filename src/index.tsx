@@ -1,4 +1,3 @@
-import React from "react"
 import { createRoot } from "react-dom/client"
 import { GameMonitor } from "./components/game-monitor"
 import "./styles/index.scss"
@@ -16,6 +15,18 @@ console.log(
 console.log("That'll save you some time!")
 console.log("I'll be here. Waiting for you to get back...")
 
+// Hide initial loading screen once React is ready
+const hideLoadingScreen = () => {
+  const loadingScreen = document.getElementById("initial-loading")
+  if (loadingScreen) {
+    loadingScreen.classList.add("hidden")
+    // Remove from DOM after fade out
+    setTimeout(() => {
+      loadingScreen.remove()
+    }, 300)
+  }
+}
+
 createRoot(root).render(
   // <React.StrictMode>
   <>
@@ -30,3 +41,11 @@ createRoot(root).render(
   </>,
   // </React.StrictMode>,
 )
+
+// Hide loading screen after React renders
+// Use requestAnimationFrame to ensure DOM is ready
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    hideLoadingScreen()
+  })
+})

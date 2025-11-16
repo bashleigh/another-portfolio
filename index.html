@@ -26,6 +26,69 @@
     <meta name="keywords" content="" />
     <meta name="authors" content="Ashleigh Simonelli" />
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/images/monitor.png" as="image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Inline CSS for immediate loading screen -->
+    <style>
+      #initial-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        color: #00d1b2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Courier New', monospace;
+        z-index: 9999;
+        opacity: 1;
+        transition: opacity 0.3s ease-out;
+      }
+      
+      #initial-loading.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      #initial-loading .loading-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        animation: blink 1.4s infinite;
+      }
+      
+      #initial-loading .loading-dots {
+        font-size: 1.5rem;
+        letter-spacing: 0.5rem;
+      }
+      
+      #initial-loading .loading-dots span {
+        animation: blink 1.4s infinite;
+      }
+      
+      #initial-loading .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      
+      #initial-loading .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      
+      @keyframes blink {
+        0%, 100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+    </style>
     <!-- Google Analytics 4 - Only loads in production builds -->
     <script type="module">
       // Only initialize GA4 in production builds with a valid tracking ID
@@ -45,6 +108,16 @@
     </script>
   </head>
   <body class="theme-dark">
+    <!-- Initial loading screen - shows immediately before React loads -->
+    <div id="initial-loading">
+      <div class="loading-title">Ashleigh_OS</div>
+      <div class="loading-dots">
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </div>
+    </div>
+    
     <div id="root"></div>
     <script type="module" src="src/index.tsx"></script>
     <!-- <script type="text/javascript" src="https://js-dos.com/cdn/js-dos-api.js"></script> -->
