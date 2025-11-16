@@ -26,6 +26,23 @@
     <meta name="keywords" content="" />
     <meta name="authors" content="Ashleigh Simonelli" />
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <!-- Google Analytics 4 - Only loads in production builds -->
+    <script type="module">
+      // Only initialize GA4 in production builds with a valid tracking ID
+      if (import.meta.env.PROD && import.meta.env.VITE_GA_TRACKING_ID) {
+        // Load gtag.js
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', import.meta.env.VITE_GA_TRACKING_ID);
+        
+        // Inject the script
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + import.meta.env.VITE_GA_TRACKING_ID;
+        document.head.appendChild(script);
+      }
+    </script>
   </head>
   <body class="theme-dark">
     <div id="root"></div>
