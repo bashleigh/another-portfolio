@@ -7,15 +7,13 @@ type IntroScreenProps = {
 }
 
 const rickIntroLines = [
-  "Morty!",
   "MORTY!!!",
   "You're not gonna believe this, Morty...",
   "I'm—I'm in this terminal, Morty!",
   "I'm terminal Rick, baby!",
-  "Ha ha ha, Some idiot backend developer thought it'd be funny to build games in React, Morty!",
-  "React, Morty, It's a framework-- you know what? Forget it.",
-  "Ahhh shit, I'm stuck in here Morty. I need you to get me out...",
-  "Errrr, this vibe code is awful, you're ganna have to complete all these games to get me out...",
+  "Oh no Morty! I'm stuck in here! I need you to get me out...",
+  "You're going to have to play some old games to get me out...",
+  "It looks like AI code Morty, this is going to be a pain in the ass...",
 ]
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
@@ -24,7 +22,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
 
   // Calculate total time needed and show button after
   useEffect(() => {
-    const totalTime = rickIntroLines.length * 3000 // 3 seconds per line
+    const totalTime = 2000 // 3 seconds per line
     const timer = setTimeout(() => {
       setShowContinue(true)
     }, totalTime)
@@ -53,7 +51,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
       <div className="intro-content">
         <div className="rick-ascii">
           <pre>
-            {`⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⣄⠀⠀⠀⠀⢀⣴⡀
+            {`⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⣄⠀⠀⠀⠀⢀⣴⡀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣄⠀⣠⣾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢆
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⢸⠿⣛⣛⣛⡻⢿⣇⣤⣤⣶⠆⠀⠀⠀⠀⠀⠀⠀⠀⠈⡳⣴⡄
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⡟⣵⣿⣿⣿⣿⣿⣷⡝⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⢿⣿⣷

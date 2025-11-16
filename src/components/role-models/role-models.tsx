@@ -50,7 +50,7 @@ type RoleModel = {
 const roleModels: RoleModel[] = [
   {
     name: "Dr Samantha Carter",
-    image: "images/samanthacarter.png",
+    image: "images/role-models/samanthacarter.webp",
     programOrFilm: "Stargate SG1",
     description: [
       "Dr Samantha Carter, a theoretical astrophysicist and USAF pilot that brought quantum physics to the sci-fi action program.",
@@ -59,7 +59,7 @@ const roleModels: RoleModel[] = [
   },
   {
     name: "Seven of Nine",
-    image: "images/sevenofnine.png",
+    image: "images/role-models/sevenofnine.webp",
     programOrFilm: "Star Trek: Voyager",
     description: [
       "A former Borg drone who joined the federation that struggled with assimilating with the illogical culture of humanoid species.",
@@ -68,7 +68,7 @@ const roleModels: RoleModel[] = [
   },
   {
     name: "Ellen Ripley",
-    image: "images/ellenripley.png",
+    image: "images/role-models/ellenripley.webp",
     programOrFilm: "Aliens",
     description: [
       "Although Ripley was not a predominantly scientist or into tech I can't deny that Ripley had an influence on me.",
@@ -77,7 +77,7 @@ const roleModels: RoleModel[] = [
   },
   {
     name: "Ellie Sattler",
-    image: "images/elliesattler.png",
+    image: "images/role-models/elliesattler.webp",
     programOrFilm: "Jurassic Park",
     description: [
       "A paleobotanist turned velociraptor bait, Ellie inspired me to become a scientist and a fighter no matter the situation.",
@@ -91,7 +91,7 @@ const roleModels: RoleModel[] = [
   // },
   {
     name: "Lisa Simpson",
-    image: "images/lisasimpson.png",
+    image: "images/role-models/lisasimpson.webp",
     programOrFilm: "The Simpsons",
     description: [
       "As much as I hate to admit it, Lisa Simpson had a big impact on me as a child. She played the saxophone, I played guitar, she was a massive science nerd, I was a massive science nerd.",
@@ -99,7 +99,7 @@ const roleModels: RoleModel[] = [
   },
   {
     name: "Dexter",
-    image: "images/dexter.png",
+    image: "images/role-models/dexter.webp",
     programOrFilm: "Dexter's Laboratory",
     description: [
       "There weren't many strong female role models from the 90s that I could find so I've had to include Dexter!",
@@ -108,7 +108,7 @@ const roleModels: RoleModel[] = [
   },
   {
     name: "Velma Dinkley",
-    image: "images/velmadinkley.png",
+    image: "images/role-models/velmadinkley.webp",
     programOrFilm: "Scooby Doo",
     description: [],
   },
@@ -120,7 +120,7 @@ const roleModels: RoleModel[] = [
   // },
   {
     name: "Lara Croft",
-    image: "images/laracroft.jpg",
+    image: "images/role-models/laracroft.webp",
     programOrFilm: "Tomb Raider",
     description: [
       "Ah yes, triangle boobed Lara Croft. You didn't think you'd see her here did you? I had the demo for Tomb Raider back in 1997.",
@@ -129,7 +129,7 @@ const roleModels: RoleModel[] = [
   },
   {
     name: "Commander Data",
-    image: "images/data.jpg",
+    image: "images/role-models/data.webp",
     programOrFilm: "Star Trek: The Next Generation",
     description: [
       "Another Star Trek character that was robotic and struggled with human interaction. There's a theme here?",
