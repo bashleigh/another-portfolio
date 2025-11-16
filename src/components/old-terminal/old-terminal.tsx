@@ -539,7 +539,7 @@ export const OldTerminal = () => {
 
   return (
     <div id="old-terminal" className="is-fullscreen">
-      <img className="monitor-image" src="/images/monitor.png" />
+      <img className="monitor-image" src="/images/monitor.webp" />
       <div className={`boot-screen${showBoot ? " show-boot" : ""}`}>
         <div>
           <h1 className="title is-size-1">Ashleigh_OS</h1>

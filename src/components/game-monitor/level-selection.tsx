@@ -15,6 +15,7 @@ const games = [
     title: "Not without the magic word",
     rickComment:
       "Oh great, a password game. *burp* Just what I needed while trapped in here...",
+    disabled: true,
   },
   {
     id: "pokemon-battle" as const,
@@ -27,6 +28,7 @@ const games = [
     title: "Johnny 5 street fighter",
     rickComment:
       "Now THIS is more like it! *burp* Robots fighting robots! Classic!",
+    disabled: true,
   },
 ]
 
@@ -94,7 +96,7 @@ export const LevelSelection: React.FC<LevelSelectionProps> = ({
       } else if (e.key === "Enter") {
         e.preventDefault()
         const game = games[selectedIndex]
-        if (game) {
+        if (game && !game.disabled) {
           handleGameSelect(game.id)
         }
       }
@@ -122,9 +124,9 @@ export const LevelSelection: React.FC<LevelSelectionProps> = ({
           return (
             <div
               key={game.id}
-              className={`game-item ${isSelected ? "selected" : ""} ${isCompleted ? "completed" : ""}`}
-              onMouseEnter={() => handleGameHover(index)}
-              onClick={() => handleGameSelect(game.id)}
+              className={`game-item ${isSelected ? "selected" : ""} ${isCompleted ? "completed" : ""} ${game.disabled ? "disabled" : ""}`}
+              onMouseEnter={() => !game.disabled && handleGameHover(index)}
+              onClick={() => !game.disabled && handleGameSelect(game.id)}
             >
               <span className="game-arrow">&gt;</span>
               <span className="game-title">

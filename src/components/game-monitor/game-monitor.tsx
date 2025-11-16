@@ -77,7 +77,7 @@ export const GameMonitor = () => {
       <div id="game-monitor" className="is-fullscreen">
         <img
           className="monitor-image"
-          src="/images/monitor.png"
+          src="/images/monitor.webp"
           alt="Monitor"
         />
 

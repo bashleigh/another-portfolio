@@ -35,6 +35,11 @@
       font-family: "Silkscreen", sans-serif;
       font-weight: bold;
 
+      &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
       &:hover,
       &.selected {
         background: var(--bulma-primary);
