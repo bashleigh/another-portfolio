@@ -159,8 +159,6 @@
 
 .role-model-container {
   margin: 1rem 0;
-  // position: relative;
-  // height: 70vh;
 
   @media only screen and (max-width: 750px) {
     margin: 0;
@@ -169,11 +167,6 @@
   .role-group {
     flex-direction: row;
     display: none;
-    // position: absolute;
-    // top: 0;
-    // bottom: 0;
-    // left: 0;
-    // right: 0;
 
     &.active {
       display: flex;
