@@ -27,7 +27,7 @@
     "react-dom": "^19.0.0",
     "react-helmet": "^6.1.0",
     "react-highlight-words": "^0.17.0",
-    "react-swipeable": "^6.0.1",
+    "react-swipeable": "^7.0.2",
     "shleemy": "^1.2.2",
     "typescript": "^4.1.3",
     "typewriter-effect": "^2.21.0"

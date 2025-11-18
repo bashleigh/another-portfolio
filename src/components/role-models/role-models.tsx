@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
+import { useSwipeable } from "react-swipeable"
 import "./styles.scss"
 import { GlitchImage, GlitchText } from "./glitch"
 
@@ -216,10 +217,10 @@ function* chunkCards<T>(arr: T[], splitBy: number): Generator<T[], void> {
 }
 
 const resolveCardsPerPage = (): 1 | 2 | 3 => {
-  const outerWidth = window.outerWidth
+  const innerWidth = window.innerWidth
 
-  if (outerWidth <= 750) return 1
-  else if (outerWidth <= 1032) return 2
+  if (innerWidth <= 750) return 1
+  else if (innerWidth <= 1032) return 2
   return 3
 }
 
@@ -249,6 +250,21 @@ export const RoleModels = () => {
       setCurrentPage(pages.length - 1)
     }
   }, [pages.length, currentPage])
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (currentPage < pages.length - 1) {
+        setCurrentPage(currentPage + 1)
+      }
+    },
+    onSwipedRight: () => {
+      if (currentPage > 0) {
+        setCurrentPage(currentPage - 1)
+      }
+    },
+    trackMouse: false,
+    delta: 10,
+  })
 
   return (
     <div className="role-models hero is-fullheight">
@@ -297,7 +313,7 @@ export const RoleModels = () => {
             </div>
           </div>
         </div>
-        <div className="role-model-container">
+        <div className="role-model-container" {...swipeHandlers}>
           {pages.map((page, index) => (
             <RoleModelGroup
               key={page.map(role => role.name).join("-")}
