@@ -29,7 +29,7 @@ import wooVuLuvubDubDubDubUrl from "./audio/woo_vu_luvub_dub_dub.ogg?url"
 import imRickUrl from "./audio/im-rick.ogg?url"
 import borgTractorBeamUrl from "./audio/borg-tractor-beam.ogg?url"
 import notLikeThisUrl from "./audio/not-like-this.ogg?url"
-import begginingToBelieveUrl from "./audio/beginning-to-believe.ogg?url"
+import beginningToBelieveUrl from "./audio/beginning-to-believe.ogg?url"
 
 import { AbilitySoundName, EntranceSoundName, FaintSoundName } from "./types"
 
@@ -85,7 +85,7 @@ export const entranceSoundMap: Record<EntranceSoundName, string> = {
   "bender-entrance": benderEntranceUrl,
   "locutus-entrance": locutusEntranceUrl,
   "morpheus-entrance": weAreTheBorgUrl,
-  "neo-entrance": begginingToBelieveUrl,
+  "neo-entrance": beginningToBelieveUrl,
   "pikachu-entrance": pikachuEntranceUrl,
   "terminator-entrance": terminatorEntranceUrl,
   "rick-entrance": imRickUrl,
