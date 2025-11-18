@@ -252,12 +252,7 @@ export const Quiz = () => {
               setIsActive(false)
             }}
             title="What was the pokemon game mentioned above?"
-            answers={[
-              "Green",
-              "Blue",
-              "Yellow",
-              "Gold",
-            ]}
+            answers={["Green", "Blue", "Yellow", "Gold"]}
           />
         )
       case 8:

@@ -1494,7 +1494,10 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
           <div className="game-over-screen">
             <h2>{gameOver === "win" ? "Victory!" : "Defeat!"}</h2>
             <div className="content" style={{ marginBottom: "1rem" }}>
-              <p>Thank you for playing! I haven't quite finished the terminal yet, but I will hopefully soon!</p>
+              <p>
+                Thank you for playing! I haven't quite finished the terminal
+                yet, but I will hopefully soon!
+              </p>
               <p>I hope you enjoyed the nostalgia trip!</p>
             </div>
             <button onClick={onBack}>Return to Menu</button>
