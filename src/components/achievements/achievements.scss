@@ -1,0 +1,129 @@
+@use "bulma/sass/utilities/mixins";
+
+#achievement-window {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 999;
+
+  @include mixins.mobile {
+    top: 1rem;
+    bottom: auto;
+    left: 1rem;
+  }
+
+  .achievement {
+    animation: slideIntro 5s;
+    display: flex;
+    color: white;
+
+    .description {
+      text-overflow: ellipsis;
+      max-height: 1.5rem;
+      overflow-y: hidden;
+      width: 100%;
+      line-height: auto;
+    }
+
+    @include mixins.mobile {
+      animation: slideIntroTop 5s;
+    }
+  }
+}
+
+.achievement {
+  display: flex;
+  flex-direction: row;
+  background: mix(black, mix(black, #00FF00));
+  align-items: center;
+  padding: .5rem;
+  padding-right: 1.5rem;
+  border-radius: 3rem;
+  box-shadow: 0px 0px .5rem .5rem rgba(0,0,0,.18);
+
+  .title {
+    font-family: 'Silkscreen';
+    text-wrap: break-word;
+    font-size: 1rem;
+    line-height: .9rem;
+    margin-bottom: .2rem;
+  }
+
+  .description {
+    font-size: .8rem;
+    line-height: .8rem;
+  }
+
+  .achievement-trophy {
+    background: mix(black, #00FF00);
+    font-size: 1.5rem;
+    min-width: 3rem;
+    min-height: 3rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+  }
+}
+
+.achievements {
+  padding: 1rem 0rem;
+  margin: 1rem 0rem;
+
+  @include mixins.mobile {
+    &.grid.is-col-min-14 {
+      --bulma-grid-column-min: 9rem;
+    }
+  }
+
+  // .achievement {
+  //   &:not(:first-child) {
+  //     margin-top: 2rem;
+  //   }
+  // }
+}
+
+@keyframes slideIntro {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slideIntroTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}

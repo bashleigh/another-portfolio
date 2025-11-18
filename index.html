@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" class="loading">
+  <head>
+    <meta charSet="utf-8" />
+    <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Ashleigh Simonelli | Software Engineer</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "image": "/images/ashleigh.jpg",
+        "jobTitle": "Platform Applications Principal Engineer, Manager",
+        "name": "Ashleigh Simonelli",
+        "birthPlace": "Rochford, Essex",
+        "birthDate": "1992-03-5",
+        "gender": "female",
+        "nationality": "British",
+        "url": "http://www.ashleighsimonelli.co.uk"
+      }
+    </script>
+    <meta name="description" content="Ashleigh is a Software Engineer with over 10 years of experience in the workplace. Her Portfolio website is a showcase of what a backend developer can achieve with a bit of creativity, showcasing the media from the 80s and 90s that influenced her into becoming a web developer." />
+    <meta name="keywords" content="" />
+    <meta name="authors" content="Ashleigh Simonelli" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/images/monitor.png" as="image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Inline CSS for immediate loading screen -->
+    <style>
+      /* Prevent body overflow while loading */
+      body.loading {
+        overflow: hidden;
+        height: 100vh;
+      }
+      
+      html.loading {
+        overflow: hidden;
+        height: 100%;
+      }
+      
+      #initial-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000;
+        color: #00d1b2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Courier New', monospace;
+        z-index: 99999;
+        opacity: 1;
+        transition: opacity 0.3s ease-out;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      #initial-loading.hidden {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+      }
+      
+      #initial-loading .loading-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        animation: blink 1.4s infinite;
+      }
+      
+      #initial-loading .loading-dots {
+        font-size: 1.5rem;
+        letter-spacing: 0.5rem;
+      }
+      
+      #initial-loading .loading-dots span {
+        animation: blink 1.4s infinite;
+      }
+      
+      #initial-loading .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      
+      #initial-loading .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      
+      @keyframes blink {
+        0%, 100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+    </style>
+    <!-- Google Analytics 4 - Only loads in production builds -->
+    <script type="module">
+      // Only initialize GA4 in production builds with a valid tracking ID
+      if (import.meta.env.PROD && import.meta.env.VITE_GA_TRACKING_ID) {
+        // Load gtag.js
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', import.meta.env.VITE_GA_TRACKING_ID);
+        
+        // Inject the script
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + import.meta.env.VITE_GA_TRACKING_ID;
+        document.head.appendChild(script);
+      }
+    </script>
+  </head>
+  <body class="theme-dark loading">
+    <!-- Initial loading screen - shows immediately before React loads -->
+    <div id="initial-loading">
+      <div class="loading-title">Ashleigh_OS</div>
+      <div class="loading-dots">
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </div>
+    </div>
+    
+    <div id="root"></div>
+    <script type="module" src="src/index.tsx"></script>
+    <!-- <script type="text/javascript" src="https://js-dos.com/cdn/js-dos-api.js"></script> -->
+  </body>
+</html>

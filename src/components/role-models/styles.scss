@@ -1,0 +1,278 @@
+@import "./glitch/animations.scss";
+
+.role-models {
+  background-color: rgb(12, 12, 31);
+  background-image: linear-gradient(to top, rgb(10, 10, 35), rgb(42, 42, 95), rgb(10, 10, 35));
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+
+  &.is-fullheight.hero .hero-body {
+    display: block;
+  }
+
+  .progressbar {
+    opacity: .5;
+    max-width: 90px;
+
+    progress {
+      width: 100%;
+    }
+  }
+
+  .screen-buzz {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    background: linear-gradient(to top, #0d015a, #0d015a, transparent, transparent);
+    background-size: cover;
+    background-size: 200% 10px;
+    filter: blur(.8px);
+    // animation: moveDownwards 60s infinite;
+
+    &:nth-child(2) {
+    background-size: 200% 5px;
+    display: none;
+    // background: linear-gradient(to top, transparent, transparent, #301dae, #301dae);
+    }
+  }
+
+  .screen-buzz-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding: .4rem;
+    backdrop-filter: blur(3px);
+    bottom: 50%;
+    // background-color: red;
+    opacity: 1;
+    // animation: movementBlink 5s infinite, blink 2s infinite;
+
+    hr {
+      background-color: blue;
+      margin: 0;
+    }
+  }
+
+  .mobile-controls {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    top: 50vh;
+    left: 0;
+    right: 0;
+    @media only screen and (max-width: 750px) {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+  
+    .carousel-button {
+      color: white;
+      font-size: 2.5rem;
+      padding: .25rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      svg {
+        width: 2rem;
+        height: 3rem;
+      }
+    }
+  }
+}
+
+.terminal-boxes {
+  display: flex;
+  justify-content: space-between;
+
+  @media only screen and (max-width: 750px) {
+    flex-direction: column;
+
+    .terminal-box:nth-child(1) {
+      margin-bottom: .75rem;
+      margin-right: 0 !important;
+    }
+
+    .terminal-box:nth-child(2) {
+      display: none;
+    }
+  }
+
+  .terminal-box:nth-child(1) {
+    flex-grow: 1;
+    margin-right: 1rem;
+  }
+  
+  .control-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: .5rem 0 .25rem;
+
+    .active {
+      filter: drop-shadow(0 1px 3px);
+      color: white;
+    }
+  }
+}
+
+.terminal-box {
+  background-color: rgba(45, 54, 179, .3);
+  backdrop-filter: blur(2px);
+  color: rgb(198, 197, 197);
+  padding: 2rem 1rem;
+  border: 1px solid blue;
+  border-radius: 0;
+  font-family: 'Silkscreen';
+
+  @media only screen and (max-width: 1000px) {
+    .title {
+      font-size: 2rem !important;
+    }
+  }
+
+  .title, .subtitle, .content p, .label {
+    font-family: 'Silkscreen';
+    filter: drop-shadow(0 1px 3px);
+  }
+  
+  .highlight {
+    background: rgba(170, 50, 20, 0.843);
+    display: inline-block;
+    padding: .25rem 1rem;
+    filter: none;
+
+    &.blink {
+      color: white;
+      animation: blink 3s infinite;
+    }
+  }
+}
+
+.role-model-container {
+  margin: 1rem 0;
+  // position: relative;
+  // height: 70vh;
+
+  @media only screen and (max-width: 750px) {
+    margin: 0;
+  }
+  
+  .role-group {
+    flex-direction: row;
+    display: none;
+    // position: absolute;
+    // top: 0;
+    // bottom: 0;
+    // left: 0;
+    // right: 0;
+
+    &.active {
+      display: flex;
+    }
+
+    .card {
+      margin: 0rem 1rem;
+      width: calc((100vw / 3) - 3.3rem);
+
+      @media only screen and (max-width: 750px) {
+        width: calc(100vw - 3.3rem);
+      }
+
+      @media only screen and (min-width: 751px) and (max-width: 1032px) {
+        width: calc((100vw / 2) - 3.3rem);
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+  
+      .title, .subtitle, .content p, .label {
+        font-family: 'Silkscreen';
+      }
+
+      .content {
+        font-size: .8rem;
+      }
+    
+      .image {
+        overflow: hidden;
+        display: flex;
+        margin-bottom: 2rem;
+    
+        height: 250px;
+        justify-content: center;
+    
+        img {
+          width: 250px;
+          border-radius: 0;
+          opacity: .7;
+        }
+      }
+    }
+  }
+}
+
+// Can't figure out how to make each card glitch before disppearing without using JS
+// .role-group {
+//   .card {
+//     animation: paths 1s forwards, glitchOut .5s forwards;
+
+//     @for $i from 1 through 3 {
+//       .card:nth-child(#{$i}n) {
+//         animation-delay: .4s * $i;
+//       }
+//     }
+//   }
+
+//   &.active {
+//     .card {
+//       animation: paths 1s forwards, glitchIn .5s forwards;
+//     }
+//   }
+// }
+
+@keyframes glitchOut {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes glitchIn {
+  0% {
+    opacity: 0;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  0% {opacity: .5;}
+  29% {opacity: .5;}
+  30% {opacity: 1;}
+  90% {opacity: 1;}
+  91% {opacity: .5;}
+  100% {opacity: .5;}
+}

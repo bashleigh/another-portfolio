@@ -1,0 +1,157 @@
+@use "bulma/sass/utilities/mixins";
+
+.timemachine-container {
+  max-width: 100%;
+}
+
+.hero.is-timemachine {
+    background-image: linear-gradient(180deg, var(--bulma-primary-10), var(--bulma-info));
+
+    @include mixins.mobile {
+      background-color: var(--bulma-info);
+      background-image: none;
+    }
+}
+
+.time-machine {
+  padding-top: 4rem;
+
+  @include mixins.mobile {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    overflow-x: scroll;
+  }
+
+  .card-stack {
+    z-index: 100;
+    position: relative;
+    @include mixins.tablet {
+      padding: 0rem 10vw;
+    }
+
+    .card {
+      z-index: 100;
+      background: white;
+      padding: 2rem 4rem;
+      padding-top: .5rem;
+      padding-bottom: 6rem;
+      position: sticky;
+      top: 0;
+      margin-bottom: 4rem;
+      border-radius: 1rem;
+      box-shadow: 0px 0px 5px 5px rgba(0,0,0,.018);
+      color: rgb(0,0,0);
+
+      @include mixins.mobile {
+        padding: .4rem .2rem;
+      }
+
+      .content {
+        @include mixins.mobile {
+          padding: .4rem;
+        }
+      }
+
+      .mobile-hidden {
+        @include mixins.mobile {
+          display: none;
+        }
+      }
+
+      &:nth-last-child(2) {
+        margin-bottom: 0;
+        padding-bottom: 20rem;
+      }
+
+      @for $i from 1 through 9 {
+        &:nth-child(#{$i}n) {
+          top: $i * 2rem;
+        }
+      }
+
+      .subtitle {
+        font-family: "Silkscreen";
+        color: var(--bulma-primary-30);
+
+        @include mixins.tablet {
+          font-size: 1.2vw;
+        }
+
+        @include mixins.mobile {
+          font-size: .8rem;
+        }
+      }
+
+      .title {
+        color: var(--bulma-info-40);
+      }
+
+      small {
+        font-style: italic;
+        // color: black;
+        font-size: .8rem;
+      }
+    }
+  }
+
+  .bottom-reveal {
+    position: sticky;
+    bottom: 5vh;
+    z-index: 0;
+    opacity: 0;
+
+    &.active {
+      opacity: 1;
+    }
+
+    @include mixins.mobile {
+      display: none;
+    }
+  }
+
+  .work-experience-years.card {
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @include mixins.mobile {
+    .card-stack {
+      display: flex;
+      flex-direction: row;
+
+      @for $i from 1 through 12 {
+        &.card-length-#{$i} {
+          width: $i * 100vw;
+        }
+
+        &.position-#{$i} {
+          transform: translateX($i * 100vw);
+        }
+      }
+
+      .card {
+        margin: 0rem 1rem;
+        padding: 1rem;
+        width: calc(100vw - 2rem);
+
+        &.work-experience-years {
+          display: flex;
+        }
+
+        &:last-child {
+          padding-bottom: 0;
+        }
+
+        p:not(.excert) {
+          display: none;
+        }
+
+        .level, .level-item {
+          align-items: start;
+          gap: normal;
+        }
+      }
+    }
+  }
+}

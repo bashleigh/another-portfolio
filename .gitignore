@@ -56,7 +56,6 @@ typings/
 
 # gatsby files
 .cache/
-public
 
 # Mac files
 .DS_Store
@@ -68,3 +67,5 @@ yarn-error.log
 # Yarn Integrity file
 .yarn-integrity
 .todo.md
+
+build/

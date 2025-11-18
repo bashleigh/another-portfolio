@@ -1,0 +1,161 @@
+.slide-body.matrix {
+  background-image: url('/images/matrix.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.slide-body.thegoodthebadtheugly {
+  background-image: url('/images/standoff.jpg');
+  background-size: cover;
+}
+
+.slide-body.johnnyfive {
+  background-image: url('/images/johnnyfive.jpg');
+  background-size: cover;
+}
+
+.slide-body.virus {
+  background-image: url('/images/virus.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  position: relative;
+  overflow: hidden;
+
+  .alarm {
+    position: absolute;
+    top: -5vw;
+    right: -5vw;
+    width: 10vw;
+    height: 10vw;
+    background: red;
+    border-radius: 10vw;
+    box-shadow: 0px 0px 40rem 20rem red;
+    opacity: 0;
+
+    animation: flash infinite 5s;
+
+    &.right {
+      bottom: -5vw;
+      left: -5vw;
+      top: auto;
+      animation-delay: 2.5s;
+    }
+  }
+}
+
+.slide-body.terminator {
+  background-image: url('/images/terminator.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.slide-body.jurassic-park {
+  background-image: url('/images/jurassicpark.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.slide-body.gizmo {
+  background-image: url('/images/gizmo&gadget.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.slide-body.robotwars {
+  background-image: url('/images/matilda.webp');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+
+  .column.content {
+    position: absolute;
+    bottom: 4rem;
+    right: 4rem;
+  }
+
+  .greenlight {
+    background: var(--bulma-primary);
+    border-radius: 100%;
+    width: 20vw;
+    height: 20vw;
+    position: absolute;
+    top: -5vw;
+    box-shadow: 0px 0px 40rem 30rem var(--bulma-primary);
+    opacity: .15;
+    animation: semi-flash infinite 2.5s;
+    right: 0;
+  }
+}
+
+.blur-card {
+  backdrop-filter: blur(10px);
+  background-color: rgba(0,0,0,.18);
+  border-radius: .2rem;
+  padding: 1rem 2rem;
+}
+
+.has-text-shadow {
+  text-shadow: 0px 0px .75rem rgba(0,0,0,.8);
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: .4;
+  }
+  50% {
+    opacity: .4;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes semi-flash {
+  0% {
+    opacity: .01;
+  }
+  30% {
+    opacity: .15;
+  }
+  50% {
+    opacity: .15;
+  }
+  80% {
+    opacity: .01;
+  }
+  100% {
+    opacity: .01;
+  }
+}
+
+@keyframes shuttle {
+  0% {
+    left: 0%;
+  }
+  10% {
+    left: 0%;
+  }
+  40% {
+    left: 100%;
+  }
+  70% {
+    left: 100%;
+  }
+  100% {
+    left: 0%;
+  }
+}

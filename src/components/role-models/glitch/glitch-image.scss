@@ -1,0 +1,21 @@
+@import "./animations.scss";
+
+.glitch-image {
+  position: relative;
+
+  .blue-image {
+    position: absolute;
+    top: -0rem;
+    left: -.5rem;
+    filter: sepia(100%) hue-rotate(190deg) saturate(500%);
+    animation: paths 1s step-end infinite, opacity 5s step-end infinite;
+  }
+
+  .red-image {
+    position: absolute;
+    top: 0rem;
+    left: .5rem;
+    filter: sepia(100%) hue-rotate(-100deg) saturate(500%);
+    animation: paths 1s step-end infinite, opacity 5s step-end infinite;
+  }
+}

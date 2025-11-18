@@ -1,0 +1,87 @@
+.workplace {
+  .workplace-name {
+    font-weight: bold;
+    font-size: 2rem;
+    font-family: 'Orbitron';
+  }
+
+  .jobtitle {
+    font-family: "Silkscreen";
+    color: #bd28b3;
+  }
+
+  .date {
+    font-weight: bold;
+  }
+
+  .description {
+    margin: 1rem .25rem;
+  }
+  margin: 6vw 0rem 6rem 12rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+#what-i-know {
+  .subtitle {
+    font-family: "Silkscreen";
+  }
+}
+
+.input.search {
+  &:focus {
+    outline: 1px solid var(--bulma-primary);
+  }
+}
+
+.grid {
+  li, .subtitle {
+    transition: all .5s ease;
+  }
+}
+
+.grid.searching {
+  li, .subtitle {
+    opacity: .3;
+  }
+
+  li.highlighted, .subtitle.highlighted {
+    opacity: 1;
+  }
+
+  &.is-mobile {
+    .cell {
+      display: none;
+
+      &.is-active {
+        display: block;
+      }
+    }
+  }
+}
+
+.is-dark-primary {
+  background-color: #14570d;
+}
+
+.cv-section {
+  position: relative;
+
+  &.game-active {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .space-invaders-game {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100vh;
+      z-index: 10;
+    }
+  }
+}

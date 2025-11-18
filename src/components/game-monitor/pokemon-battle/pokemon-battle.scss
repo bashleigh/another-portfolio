@@ -1,0 +1,404 @@
+.pokemon-battle {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: hidden;
+  position: relative;
+
+  .back-button {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    background: var(--bulma-primary);
+    color: #000;
+    font-size: .6rem;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-family: "Silkscreen", sans-serif;
+    cursor: pointer;
+    border-radius: 4px;
+    z-index: 100;
+
+    &:hover {
+      background-color: rgba(15, 240, 15, 1);
+    }
+  }
+
+  .battle-arena {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .battle-area {
+    flex: 3;
+    position: relative;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--bulma-primary);
+    margin-bottom: 0.5rem;
+
+
+    .enemy-sprite {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 20vw;
+      height: 20vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.attacking {
+        animation: attackAnimation 0.5s;
+      }
+
+      &.bursting-through {
+        animation: burstThroughWall 1s ease-out;
+      }
+
+      &.fainted {
+        filter: grayscale(40%) brightness(0.9);
+        opacity: 0.8;
+
+        .sprite-image {
+          filter: grayscale(40%) brightness(0.9);
+        }
+      }
+
+      .sprite-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+      }
+
+      .sprite-placeholder {
+        text-align: center;
+        color: var(--bulma-primary);
+        font-family: "Silkscreen", sans-serif;
+        font-size: 0.7rem;
+
+        .small {
+          font-size: 0.5rem;
+          opacity: 0.7;
+        }
+      }
+    }
+
+    .player-sprite {
+      position: absolute;
+      bottom: 0rem;
+      left: 1rem;
+      // width: 15vw;
+      height: 15vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.attacking {
+        animation: attackAnimation 0.5s;
+      }
+
+      &.entering {
+        animation: slideInFromLeft 0.8s ease-out;
+      }
+
+      &.fainted {
+        filter: grayscale(40%) brightness(0.9);
+        opacity: 0.8;
+
+        .sprite-image {
+          filter: grayscale(40%) brightness(0.9);
+        }
+      }
+
+      .sprite-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+      }
+
+      .sprite-placeholder {
+        text-align: center;
+        color: var(--bulma-primary);
+        font-family: "Silkscreen", sans-serif;
+        font-size: 0.7rem;
+
+        .small {
+          font-size: 0.5rem;
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+  .bottom-panels {
+    flex: 1;
+    display: flex;
+    gap: 0.5rem;
+    min-height: 0;
+  }
+
+  .description-panel {
+    flex: 1;
+    border: 2px solid var(--bulma-primary);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+
+    p {
+      font-family: "Silkscreen", sans-serif;
+      font-size: 0.9rem;
+      color: var(--bulma-primary);
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
+
+  .menu-panel {
+    flex: 1;
+    border: 2px solid var(--bulma-primary);
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.25rem;
+    flex: 1;
+
+    .menu-item {
+      // border: 2px solid var(--bulma-primary);
+      padding: 0.75rem;
+      font-family: "Silkscreen", sans-serif;
+      font-size: 0.9rem;
+      color: var(--bulma-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      // transition: background 0.2s;
+
+      // &:hover,
+      // &.selected {
+      //   background: rgba(200, 200, 200, 0.9);
+      // }
+
+      .cursor {
+        color: var(--bulma-primary);
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .pokemon-selection-fullscreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,1);
+    border: 2px solid var(--bulma-primary);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+  }
+
+  .pokemon-list-fullscreen {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+
+    .pokemon-list-item {
+      border: 2px solid #000;
+      padding: .25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      color: var(--bulma-primary);
+
+      &:not(:last-child) {
+        border-bottom: 2px solid var(--bulma-primary);
+      }
+
+      &:hover:not(.fainted),
+      &.selected:not(.fainted) {
+        background: var(--bulma-primary);
+        color: #000;
+
+        .sprite-placeholder {
+          color: #000;
+          border-color: #000;
+        }
+      }
+
+      &.fainted {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .pokemon-icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 100px;
+
+        .cursor {
+          color: black;
+          font-size: 1rem;
+        }
+
+        .sprite-placeholder {
+          width: 60px;
+          height: 60px;
+          border: 2px solid var(--bulma-primary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: "Silkscreen", sans-serif;
+          font-size: 0.6rem;
+          color: var(--bulma-primary);
+          text-align: center;
+        }
+      }
+
+      .pokemon-stats {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .pokemon-name {
+          font-family: "Silkscreen", sans-serif;
+          font-size: 1.2rem;
+          font-weight: bold;
+          color: var(--bulma-primary);
+        }
+
+        .pokemon-level {
+          font-family: "Silkscreen", sans-serif;
+          font-size: 1rem;
+          color: var(--bulma-primary);
+        }
+
+        .pokemon-hp {
+          font-family: "Silkscreen", sans-serif;
+          font-size: 1rem;
+          color: var(--bulma-primary);
+        }
+      }
+    }
+  }
+
+  .description-overlay {
+    // Now inside bottom-panels, so it takes full width and height of the container
+    flex: 1;
+    width: 100%;
+    background: rgba(0,0,0, 1);
+    border: 2px solid var(--bulma-primary);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .description-overlay-content {
+      font-family: "Silkscreen", sans-serif;
+      font-size: 0.9rem;
+      color: var(--bulma-primary);
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .game-over-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    .game-over-screen {
+      background: rgba(0, 0, 0, 0.95);
+      border: 1px solid var(--bulma-primary);
+      padding: 2rem;
+      text-align: center;
+
+      h2 {
+        color: white;
+        font-family: "Silkscreen", sans-serif;
+        font-size: 2rem;
+        margin: 0 0 1.5rem 0;
+      }
+
+      button {
+        background: var(--bulma-primary);
+        color: #000;
+        border: none;
+        padding: 1rem 2rem;
+        font-family: "Silkscreen", sans-serif;
+        cursor: pointer;
+        border-radius: 4px;
+        font-weight: bold;
+
+        &:hover {
+          background: lightgreen;
+        }
+      }
+    }
+  }
+}
+
+@keyframes attackAnimation {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2rem);
+  }
+}
+
+@keyframes burstThroughWall {
+  0% {
+    transform: translateX(200px) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-10px) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
