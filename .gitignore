@@ -69,3 +69,6 @@ yarn-error.log
 .todo.md
 
 build/
+
+# Local Netlify folder
+.netlify

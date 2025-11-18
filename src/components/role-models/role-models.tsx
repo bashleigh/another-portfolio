@@ -83,12 +83,6 @@ const roleModels: RoleModel[] = [
       "A paleobotanist turned velociraptor bait, Ellie inspired me to become a scientist and a fighter no matter the situation.",
     ],
   },
-  // {
-  //   name: 'Sarah Connor',
-  //   image: 'images/sarahconnor.webp',
-  //   programOrFilm: 'Terminator',
-  //   description: [],
-  // },
   {
     name: "Lisa Simpson",
     image: "images/role-models/lisasimpson.webp",
@@ -109,15 +103,12 @@ const roleModels: RoleModel[] = [
   {
     name: "Velma Dinkley",
     image: "images/role-models/velmadinkley.webp",
-    programOrFilm: "Scooby Doo",
-    description: [],
+    programOrFilm: "Scooby",
+    description: [
+      "Velma always used her brains over brawn which was something I always admired about her.",
+      "I always admired the way she would solve the case by using logic and deduction rather than brute force.",
+    ],
   },
-  // {
-  //   name: 'Trinity',
-  //   image: 'images/trinity.jpg',
-  //   programOrFilm: 'The Matrix',
-  //   description: [],
-  // },
   {
     name: "Lara Croft",
     image: "images/role-models/laracroft.webp",
