@@ -3,6 +3,7 @@ import "./statement.scss"
 import { Carousel } from "./carousel"
 import { useOnScreen } from "../useOneScreen"
 import { AchievementContext } from "../achievements"
+import { ACHIEVEMENTS } from "../achievements/achievementsList"
 
 export const Statement = () => {
   const gizmoRef = useRef<any>()
@@ -10,11 +11,7 @@ export const Statement = () => {
 
   const gizmoOnScreen = useOnScreen(gizmoRef)
 
-  if (gizmoOnScreen)
-    addAchievement({
-      title: "All the content",
-      description: "Congratulations, you've viewed all of my slider content!",
-    })
+  if (gizmoOnScreen) addAchievement(ACHIEVEMENTS.ALL_THE_CONTENT)
 
   return (
     <div id="statement">

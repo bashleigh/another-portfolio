@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react"
+import React, { useState, useEffect, useCallback, useRef, useContext } from "react"
 import Typewriter from "typewriter-effect"
 import "./pokemon-battle.scss"
 import { Ability, Character } from "./types"
@@ -8,6 +8,8 @@ import { battleMusicManager } from "./battle-music"
 import { pokemonSoundManager } from "./pokemon-sounds"
 import { PokemonStats } from "./pokemon-stats"
 import { useRickOverlay } from "../rick-overlay-context"
+import { AchievementContext } from "../../achievements"
+import { ACHIEVEMENTS } from "../../achievements/achievementsList"
 import {
   getAbilityDamage,
   applyStatusEffectsToDamage,
@@ -282,6 +284,7 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
   onComplete,
 }) => {
   const { showRick, setOverlayPosition } = useRickOverlay()
+  const { addAchievement } = useContext(AchievementContext)
   // Track if Bender has left the game
   const [benderHasLeft, setBenderHasLeft] = useState(false)
   // Track if we need to end player turn after Pokemon selection (when Bender leaves)
@@ -438,12 +441,13 @@ export const PokemonBattle: React.FC<PokemonBattleProps> = ({
     })
   }, [])
 
-  // Stop music when game ends
+  // Stop music when game ends and award achievement
   useEffect(() => {
     if (gameOver !== null) {
       battleMusicManager.stop()
+      addAchievement(ACHIEVEMENTS.POKEMON_BATTLE_COMPLETE)
     }
-  }, [gameOver])
+  }, [gameOver, addAchievement])
 
   const handleMainMenuSelect = useCallback(
     (index: number) => {

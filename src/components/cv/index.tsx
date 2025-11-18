@@ -4,6 +4,7 @@ import { Bingo } from "./bingo"
 import { TimeMachine } from "./time-machine"
 import { SpaceInvaders } from "./space-invaders"
 import { AchievementContext } from "../achievements"
+import { ACHIEVEMENTS } from "../achievements/achievementsList"
 
 const cells = {
   languages: [
@@ -138,11 +139,7 @@ export const CV = () => {
                             placeholder="Search..."
                             value={searchPhrase}
                             onChange={event => {
-                              addAchievement({
-                                title: "Search...",
-                                description:
-                                  "You used the search highlight feature to find out what I know quicker.",
-                              })
+                              addAchievement(ACHIEVEMENTS.SEARCH)
                               setSearchPhrase(event.target.value)
                             }}
                           />

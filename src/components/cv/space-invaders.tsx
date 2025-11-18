@@ -9,6 +9,7 @@ import React, {
 import "./space-invaders.scss"
 import { AchievementContext } from "../achievements"
 import { soundManager } from "./sounds"
+import { ACHIEVEMENTS } from "../achievements/achievementsList"
 
 type Letter = {
   char: string
@@ -475,11 +476,7 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
             const newLives = prevLives - 1
             if (newLives <= 0 && !gameOver) {
               setGameOver(true)
-              addAchievement({
-                title: "Defeated",
-                description:
-                  "The skills got the better of you this time. Better luck next time!",
-              })
+              addAchievement(ACHIEVEMENTS.DEFEATED)
             }
             return newLives
           })
@@ -530,11 +527,7 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
             const newLives = prevLives - 1
             if (newLives <= 0 && !gameOver) {
               setGameOver(true)
-              addAchievement({
-                title: "Defeated",
-                description:
-                  "The skills got the better of you this time. Better luck next time!",
-              })
+              addAchievement(ACHIEVEMENTS.DEFEATED)
             }
             return newLives
           })
@@ -550,10 +543,7 @@ export const SpaceInvaders: FC<SpaceInvadersProps> = ({ words, onGameEnd }) => {
         )
         if (allDestroyed && prev.length > 0 && !gameWon) {
           setGameWon(true)
-          addAchievement({
-            title: "Space Invader",
-            description: "You cleared all the skills! Impressive shooting!",
-          })
+          addAchievement(ACHIEVEMENTS.SPACE_INVADER)
         }
         return prev
       })

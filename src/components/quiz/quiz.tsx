@@ -8,6 +8,7 @@ import React, {
 } from "react"
 import "./quiz.scss"
 import { AchievementContext } from "../achievements"
+import { ACHIEVEMENTS } from "../achievements/achievementsList"
 
 const Question: FC<{
   submit: (selectedAnswerIndex: number) => void
@@ -113,11 +114,7 @@ export const Quiz = () => {
   useEffect(() => {
     if (warning) {
       setWarningCount(warning => warning + 1)
-      addAchievement({
-        title: "SHAME",
-        description:
-          "You tried to cheat at the most important quiz in the world!",
-      })
+      addAchievement(ACHIEVEMENTS.SHAME)
     }
   }, [warning])
 
@@ -256,17 +253,8 @@ export const Quiz = () => {
           />
         )
       case 8:
-        if (score === 7)
-          addAchievement({
-            title: "I'm Impressed!",
-            description:
-              "You did it! You must know me or something because you got every question correct!",
-          })
-        else if (calledMeOld)
-          addAchievement({
-            title: "Not impressed.",
-            description: "How dare you call me old!",
-          })
+        if (score === 7) addAchievement(ACHIEVEMENTS.IMPRESSED)
+        else if (calledMeOld) addAchievement(ACHIEVEMENTS.NOT_IMPRESSED)
         return (
           <div className="hero-body is-justify-content-center">
             <div className="columns">
@@ -334,10 +322,7 @@ export const Quiz = () => {
                     setQuestionIndex(0)
                     setIsActive(false)
                     setScore(0)
-                    addAchievement({
-                      title: "Booo!",
-                      description: "At least you admitted you're a cheater...",
-                    })
+                    addAchievement(ACHIEVEMENTS.BOOO)
                   }}
                   className="button is-info"
                 >

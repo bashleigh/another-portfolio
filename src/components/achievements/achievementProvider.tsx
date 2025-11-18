@@ -2,6 +2,14 @@ import { FC, useState } from "react"
 import { Achievement, AchievementContext } from "./achievementContext"
 import "./achievements.scss"
 
+// Declare gtag for TypeScript
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void
+    dataLayer?: any[]
+  }
+}
+
 export const AchievementProvider: FC = ({ children }) => {
   const [achievements, setAchievements] = useState<Achievement[]>([])
   const [latestAchievement, setLatestAchievement] = useState<
@@ -12,6 +20,15 @@ export const AchievementProvider: FC = ({ children }) => {
     if (!achievements.map(stored => stored.title).includes(achievement.title)) {
       setAchievements(stored => [...stored, achievement])
       setLatestAchievement(achievement)
+
+      // Track achievement unlock in Google Analytics
+      if (typeof window !== "undefined" && window.gtag) {
+        window.gtag("event", "achievement_unlocked", {
+          event_category: "achievement",
+          event_label: achievement.title,
+          value: achievements.length + 1,
+        })
+      }
 
       setTimeout(() => {
         setLatestAchievement(undefined)

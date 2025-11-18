@@ -11,6 +11,7 @@ import "./old-terminal.scss"
 import { TypewriterSection } from "./typewriter-section"
 import { AchievementContext } from "../achievements"
 import { useOnScreen } from "../useOneScreen"
+import { ACHIEVEMENTS } from "../achievements/achievementsList"
 
 // Rick is trapped in the monitor
 // He slags off the security of the terminal
@@ -386,11 +387,7 @@ export const OldTerminal = () => {
 
     switch (cariage) {
       case "whoami":
-        addAchievement({
-          title: "Identity Crisis",
-          description:
-            'You ran "whoami" on the terminal to try and find out what user was logged in.',
-        })
+        addAchievement(ACHIEVEMENTS.IDENTITY_CRISIS)
         setLines([
           ...lines,
           {
@@ -409,17 +406,10 @@ export const OldTerminal = () => {
             ],
           },
         ])
-        addAchievement({
-          title: "Clean Freak",
-          description: "You really like being clean don't you?",
-        })
+        addAchievement(ACHIEVEMENTS.CLEAN_FREAK)
         break
       case "top":
-        addAchievement({
-          title: "Hacker",
-          description:
-            "You ran the top command to try and save rick from the security process!",
-        })
+        addAchievement(ACHIEVEMENTS.HACKER)
         setLines(lines => [...lines, topCommand(killedProcesses, doomRunning)])
         break
       case "ls":
@@ -447,10 +437,7 @@ export const OldTerminal = () => {
         ])
         break
       case "tail /proc/1/fd/1":
-        addAchievement({
-          title: "Spare Parts",
-          description: "Virus detected, oxigenated tissues, nerous systems...",
-        })
+        addAchievement(ACHIEVEMENTS.SPARE_PARTS)
         setLines(lines => [
           ...lines,
           {
@@ -473,11 +460,7 @@ export const OldTerminal = () => {
       case "restart":
         setKilledProcesses([])
         start(setLines)
-        addAchievement({
-          title: "C137",
-          description:
-            "You decided the first terminal wasn't good enough and started all over again!",
-        })
+        addAchievement(ACHIEVEMENTS.C137)
         break
       case "doom":
         setDoomRunning(true)
@@ -495,10 +478,7 @@ export const OldTerminal = () => {
         //   })
         // }, 1000)
 
-        addAchievement({
-          title: "DOOM!",
-          description: "You tried to run DOOM.",
-        })
+        addAchievement(ACHIEVEMENTS.DOOM)
 
         setLines(lines => [
           ...lines,
@@ -514,11 +494,7 @@ export const OldTerminal = () => {
         ])
         break
       default:
-        addAchievement({
-          title: "NOT FOUND!",
-          description:
-            "You ran a command that didn't exist! In a HTML/CSS terminal. Who'd have thought it!",
-        })
+        addAchievement(ACHIEVEMENTS.NOT_FOUND)
         setCommandNotFoundCount(commandNotFoundCount + 1)
         setLines(lines => [
           ...lines,
@@ -609,11 +585,7 @@ export const OldTerminal = () => {
                     howUnfortuitous(setLines)
                     break
                   case AfterLineSetEnum.KILLED_RICK:
-                    addAchievement({
-                      title: "Rickless & Dangerous",
-                      description:
-                        "Well, you got Rick killed and now you're a Rickless Morty. Destined to dwell with the other Rickless Morty's in the Citadel.",
-                    })
+                    addAchievement(ACHIEVEMENTS.RICKLESS_AND_DANGEROUS)
                     killRick(setLines)
                     break
                   case AfterLineSetEnum.KILLED_SECURITY:

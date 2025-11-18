@@ -9,6 +9,7 @@ import "./time-machine.scss"
 import { workexperience } from "./work-experience"
 import { useOnScreen } from "../useOneScreen"
 import { AchievementContext } from "../achievements"
+import { ACHIEVEMENTS } from "../achievements/achievementsList"
 
 export const TimeMachine = () => {
   const [previousScrollVal, setPreviousScrollVal] = useState<number>(0)
@@ -37,11 +38,7 @@ export const TimeMachine = () => {
       } else if (previousScrollVal < window.scrollY) {
         if (onScreen && onScreenExperience) {
           setShowText(true)
-          addAchievement({
-            title: "Years, years and years.",
-            description:
-              "It's always about how many years you've worked, never what you know.",
-          })
+          addAchievement(ACHIEVEMENTS.YEARS_YEARS_AND_YEARS)
         }
       }
       setPreviousScrollVal(window.scrollY)
@@ -59,12 +56,7 @@ export const TimeMachine = () => {
   }, [handleScrollingText])
 
   useEffect(() => {
-    if (onScreen2)
-      addAchievement({
-        title: "Years, years and years.",
-        description:
-          "It's always about how many years you've worked, never what you know.",
-      })
+    if (onScreen2) addAchievement(ACHIEVEMENTS.YEARS_YEARS_AND_YEARS)
   }, [onScreen2])
 
   // console.log('onscreen', onScreen, showText, onScreenExperience)

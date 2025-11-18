@@ -3,6 +3,7 @@ import "./bingo.scss"
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
 import Confetti from "react-confetti"
 import { AchievementContext } from "../achievements"
+import { ACHIEVEMENTS } from "../achievements/achievementsList"
 
 const BingoCard: FC<{
   words: [string, string, string]
@@ -51,11 +52,7 @@ export const Bingo: FC<{
   const intervalRef = useRef<any>()
 
   const start = () => {
-    addAchievement({
-      title: "Played Bingo",
-      description:
-        "Congratulations! You've played a game of Software Buzzword Bingo!",
-    })
+    addAchievement(ACHIEVEMENTS.PLAYED_BINGO)
     setCalled([])
     const toSelect = [
       ...words
@@ -84,11 +81,7 @@ export const Bingo: FC<{
       mySelectedValues?.every(selected => called.includes(selected)) &&
       mySelectedValues.length === 3
     ) {
-      addAchievement({
-        title: "Winner, Winner, Chicken Dinner!",
-        description:
-          "You're an absolute wiz at Software Buzzword Bingo! you've won a prize! It's this achievement. Don't be ungrateful!",
-      })
+      addAchievement(ACHIEVEMENTS.WINNER_WINNER_CHICKEN_DINNER)
       setResult("Winner")
     } else setResult("Loser")
   }

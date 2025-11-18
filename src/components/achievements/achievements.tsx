@@ -1,9 +1,10 @@
 import React, { useContext } from "react"
 import { AchievementContext } from "./achievementContext"
+import { ACHIEVEMENTS } from "./achievementsList"
 
 export const Achievements = () => {
   const { achievements } = useContext(AchievementContext)
-  const achievementCount = 17
+  const achievementCount = Object.keys(ACHIEVEMENTS).length
 
   const percentageComplete = Math.floor(
     (achievements.length / achievementCount) * 100,
