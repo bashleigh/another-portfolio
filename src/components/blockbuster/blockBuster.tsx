@@ -31,7 +31,7 @@ const mediaItems: MediaItem[] = [
   {
     src: "images/blockbuster/star-trek-armada.webp",
     alt: "Star Trek: The Next Generation - The Aramda DVD cover",
-    type: "dvd",
+    type: "game",
   },
   {
     src: "images/blockbuster/virus-dvd.webp",
@@ -66,6 +66,11 @@ const mediaItems: MediaItem[] = [
   {
     src: "images/blockbuster/star-trek-voyager.webp",
     alt: "Star Trek: Voyager DVD cover",
+    type: "dvd",
+  },
+  {
+    src: "images/blockbuster/johnny-five-dvd.webp",
+    alt: "Johnny Five DVD cover",
     type: "dvd",
   },
   {

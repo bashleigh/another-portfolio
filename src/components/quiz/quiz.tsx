@@ -209,8 +209,8 @@ export const Quiz = () => {
               if (selectedAnswerIndex === 1) setScore(score + 1)
               setQuestionIndex(questionIndex + 1)
             }}
-            title="What was the female robot from Robot Wars called?"
-            answers={["HerBot", "Matilda", "Shella", "Dot Matrix"]}
+            title="Which of these was NOT a pokemon within the terminal game?"
+            answers={["T-800", "Morpheus", "Locutus of Borg", "Pikachu"]}
           />
         )
       case 5:
@@ -218,15 +218,15 @@ export const Quiz = () => {
           <Question
             questionIndex={questionIndex}
             submit={selectedAnswerIndex => {
-              if (selectedAnswerIndex === 3) setScore(score + 1)
+              if (selectedAnswerIndex === 2) setScore(score + 1)
               setQuestionIndex(questionIndex + 1)
             }}
-            title="What was Rick's username on the terminal?"
+            title="Whick one of these was NOT one of my role models?"
             answers={[
-              "toxic_gnome",
-              "trojan_dez_nutz",
-              "dora_the_fedora",
-              "terminal_hacker_69",
+              "Seven of Nine",
+              "Commander Data",
+              "Jean-Luc Picard",
+              "Dexter",
             ]}
           />
         )
@@ -247,15 +247,16 @@ export const Quiz = () => {
           <Question
             questionIndex={questionIndex}
             submit={selectedAnswerIndex => {
-              if (selectedAnswerIndex === 0) setScore(score + 1)
+              if (selectedAnswerIndex === 2) setScore(score + 1)
               setQuestionIndex(questionIndex + 1)
               setIsActive(false)
             }}
-            title="What are the correct films that were used as inspiration in the design of this site?"
+            title="What was the pokemon game mentioned above?"
             answers={[
-              "Virus, Short Circuit, Matrix, Jurassic Park",
-              "Wall-e, Virus, Matrix, Jurassic World",
-              "Matrix, Virus, Robot Wars, Jurassic Park II",
+              "Green",
+              "Blue",
+              "Yellow",
+              "Gold",
             ]}
           />
         )
