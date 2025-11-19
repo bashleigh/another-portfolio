@@ -2,10 +2,9 @@ import { FC, useState } from "react"
 import { Achievement, AchievementContext } from "./achievementContext"
 import "./achievements.scss"
 
-// Declare gtag for TypeScript
+// Declare analytics globals for TypeScript
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void
     dataLayer?: any[]
   }
 }
@@ -21,12 +20,14 @@ export const AchievementProvider: FC = ({ children }) => {
       setAchievements(stored => [...stored, achievement])
       setLatestAchievement(achievement)
 
-      // Track achievement unlock in Google Analytics
-      if (typeof window !== "undefined" && window.gtag) {
-        window.gtag("event", "achievement_unlocked", {
-          event_category: "achievement",
-          event_label: achievement.title,
-          value: achievements.length + 1,
+      // Track achievement unlock in Google Analytics 4
+      if (typeof window !== "undefined") {
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push({
+          event: "achievement_unlocked",
+          achievement_title: achievement.title,
+          achievement_description: achievement.description,
+          achievement_count: achievements.length + 1,
         })
       }
 
